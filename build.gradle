@@ -1,0 +1,24 @@
+plugins {
+    id 'java'
+}
+
+group 'fr.mathisskate'
+version '1.0-RELEASE'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://litarvan.github.io/maven'
+    }
+}
+
+dependencies {
+    implementation files('libs/flowupdater-1.5.2.jar')
+    implementation files('libs/flowmultitools-1.4.0.jar')
+    implementation files('libs/swinger-1.0.1-BETA.jar')
+    implementation 'fr.flowarg:openlauncherlib:3.2.2'
+    implementation 'fr.litarvan:openauth:1.1.2'
+}
+
+test {
+}
