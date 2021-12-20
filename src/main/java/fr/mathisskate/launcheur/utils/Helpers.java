@@ -1,5 +1,6 @@
 package fr.mathisskate.launcheur.utils;
 
+import fr.flowarg.flowio.FileUtils;
 import fr.flowarg.flowlogger.ILogger;
 import fr.flowarg.flowlogger.Logger;
 import fr.flowarg.flowupdater.FlowUpdater;
@@ -19,6 +20,7 @@ import fr.theshark34.openlauncherlib.util.Saver;
 import fr.theshark34.openlauncherlib.util.ramselector.RamSelector;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 
 public class Helpers {
@@ -28,24 +30,26 @@ public class Helpers {
     public static final GameVersion MC_VERSION = new GameVersion("1.12.2", GameType.V1_8_HIGHER);
     public static final GameInfos MC_INFOS = new GameInfos("munchies", MC_VERSION, new GameTweak[]{GameTweak.FORGE});
     public static final Path MC_DIR = MC_INFOS.getGameDir();
-    public static final Path TEMP = MC_INFOS.getGameDir().resolve(".cfp");
     public static final Saver SAVER = new Saver(Helpers.MC_DIR.resolve("options.properties"));
     public static final RamSelector RAM_SELECTOR = new RamSelector(Helpers.MC_DIR.resolve("ram.properties"));
+    public static final ILogger LOGGER = new Logger("[Munchies]", Helpers.MC_DIR.resolve("logs.log"), true);
+    public static final Path TEMP = MC_INFOS.getGameDir().resolve(".cfp");
     //FlowUpdater
     public static final IProgressCallback CALLBACK = new ProgressBarAPI();
-    public static final ILogger LOGGER = new Logger("[Munchies]", Helpers.MC_DIR.resolve("logs.log"), true);
     public static final VanillaVersion VANILLA = new VanillaVersion.VanillaVersionBuilder()
             .withName("1.12.2")
             .withVersionType(VersionType.FORGE)
             .build();
-    public static final CurseModPackInfo MODPACK = new CurseModPackInfo("https://munchies.websr.fr/download/1.2.zip", true);
+
+    public static final CurseModPackInfo MODPACK = new CurseModPackInfo("https://munchies.websr.fr/download/1.4.zip", true);
     public static final UpdaterOptions OPTIONS = new UpdaterOptions.UpdaterOptionsBuilder().build();
     public static final AbstractForgeVersion FORGE_VERSION = new ForgeVersionBuilder(ForgeVersionBuilder.ForgeVersionType.NEW)
-            .withForgeVersion("1.12.2-14.23.5.2855")
+            .withForgeVersion("1.12.2-14.23.5.2859")
             .withCurseModPack(MODPACK)
             .withFileDeleter(new ModFileDeleter(true))
-                    /*,"nom.jar",)*/
+            /*,"nom.jar",)*/
             .build();
+
     public static final FlowUpdater UPDATER = new FlowUpdater.FlowUpdaterBuilder()
             .withVanillaVersion(VANILLA)
             .withLogger(LOGGER)
@@ -55,9 +59,17 @@ public class Helpers {
             .build();
 
     public static void cleanDirectory(File dir, String exept) {
-        if(dir.exists())
+        if (dir.exists())
             for (File file : dir.listFiles())
                 if (!file.getName().equals(exept))
                     file.delete();
+    }
+
+    public static void cleanMunchies(File dir, String version) throws IOException {
+        if (TEMP.resolve(version).toFile().exists())
+            if (dir.exists())
+                for (File file : dir.listFiles())
+                    if (file.getName().equals("libraries") || file.getName().equals("config") || file.getName().equals("scripts") || file.getName().equals("resources"))
+                        FileUtils.deleteDirectory(file.toPath());
     }
 }

@@ -1,9 +1,11 @@
 plugins {
     id 'java'
+    id 'idea'
+    id 'application'
 }
 
 group 'fr.mathisskate'
-version '1.0-RELEASE'
+version '1.2-RELEASE'
 
 repositories {
     mavenCentral()
@@ -16,8 +18,21 @@ dependencies {
     implementation files('libs/flowupdater-1.5.2.jar')
     implementation files('libs/flowmultitools-1.4.0.jar')
     implementation files('libs/swinger-1.0.1-BETA.jar')
-    implementation 'fr.flowarg:openlauncherlib:3.2.2'
+    implementation 'fr.flowarg:openlauncherlib:3.2.3'
     implementation 'fr.litarvan:openauth:1.1.2'
+    implementation 'fr.litarvan:openauth:1.1.2'
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'org.json:json:20211205'
+    implementation 'org.apache.commons:commons-compress:1.21'
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'fr.mathisskate.launcheur.Main'
+    }
+    archiveBaseName = "Munchies"
+    from { configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }
 
 test {
