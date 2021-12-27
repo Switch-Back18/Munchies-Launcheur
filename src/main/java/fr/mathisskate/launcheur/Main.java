@@ -11,14 +11,12 @@ public class Main {
     public static LauncheurFrame frameInstance;
 
     public static void main(String[] args) {
-        Helpers.cleanDirectory(Helpers.TEMP.toFile(), "1.4.zip");
+        Helpers.cleanDirectory(Helpers.TEMP.toFile(), "1.4");
         try {
-            Helpers.cleanMunchies(Helpers.MC_DIR.toFile(), "1.3.zip");
+            Helpers.cleanLauncheurFolder("1.3", "libraries", "scripts", "resources", "config");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(Helpers.MC_DIR.resolve("manifest.cache.json").toFile().exists())
-            Helpers.MC_DIR.resolve("manifest.cache.json").toFile().delete();
         Swinger.setSystemLookNFeel();
         try {
             frameInstance = new LauncheurFrame();

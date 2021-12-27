@@ -22,6 +22,7 @@ import fr.theshark34.openlauncherlib.util.ramselector.RamSelector;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Objects;
 
 public class Helpers {
     //OpenLauncheurLib
@@ -58,18 +59,26 @@ public class Helpers {
             .withUpdaterOptions(OPTIONS)
             .build();
 
-    public static void cleanDirectory(File dir, String exept) {
+    public static void cleanDirectory(File dir, String version) {
         if (dir.exists())
-            for (File file : dir.listFiles())
-                if (!file.getName().equals(exept))
+            for (File file : Objects.requireNonNull(dir.listFiles()))
+                if (!file.getName().equals(version+".zip"))
                     file.delete();
+        if(Helpers.MC_DIR.resolve("manifest.cache.json").toFile().exists())
+            Helpers.MC_DIR.resolve("manifest.cache.json").toFile().delete();
+        if(Helpers.MC_DIR.resolve("manifest.json").toFile().exists())
+            Helpers.MC_DIR.resolve("manifest.json").toFile().delete();
     }
 
-    public static void cleanMunchies(File dir, String version) throws IOException {
-        if (TEMP.resolve(version).toFile().exists())
-            if (dir.exists())
-                for (File file : dir.listFiles())
-                    if (file.getName().equals("libraries") || file.getName().equals("config") || file.getName().equals("scripts") || file.getName().equals("resources"))
-                        FileUtils.deleteDirectory(file.toPath());
+    public static void cleanLauncheurFolder(String oldVersion, String... filesToRemove) throws IOException {
+        System.out.println("Cleaning Installation Folder...");
+        File dir = Helpers.MC_DIR.toFile();
+        if (dir.exists())
+            if (TEMP.resolve(oldVersion + ".zip").toFile().exists())
+                for (File file : Objects.requireNonNull(dir.listFiles()))
+                    for (String s : filesToRemove)
+                        if (file.getName().equals(s))
+                            FileUtils.deleteDirectory(file.toPath());
+        System.out.println("Cleaning Done !");
     }
 }
