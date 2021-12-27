@@ -13,7 +13,7 @@ public class Main {
     public static void main(String[] args) {
         Helpers.cleanDirectory(Helpers.TEMP.toFile(), "1.4");
         try {
-            Helpers.cleanLauncheurFolder("1.3", "libraries", "scripts", "resources", "config");
+            Helpers.cleanLauncheurFolder("1.3", "libraries", "scripts", "resources", "config", "mods");
         } catch (IOException e) {
             e.printStackTrace();
         }

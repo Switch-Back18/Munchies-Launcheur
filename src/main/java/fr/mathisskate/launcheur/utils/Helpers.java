@@ -47,8 +47,8 @@ public class Helpers {
     public static final AbstractForgeVersion FORGE_VERSION = new ForgeVersionBuilder(ForgeVersionBuilder.ForgeVersionType.NEW)
             .withForgeVersion("1.12.2-14.23.5.2859")
             .withCurseModPack(MODPACK)
-            .withFileDeleter(new ModFileDeleter(true))
-            /*,"nom.jar",)*/
+            /*.withFileDeleter(new ModFileDeleter(true))
+            ,"nom.jar",)*/
             .build();
 
     public static final FlowUpdater UPDATER = new FlowUpdater.FlowUpdaterBuilder()
