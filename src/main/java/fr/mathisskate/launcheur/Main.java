@@ -10,13 +10,13 @@ import java.io.IOException;
 public class Main {
     public static LauncheurFrame frameInstance;
 
-    public static void main(String[] args) {
-        Helpers.cleanDirectory(Helpers.TEMP.toFile(), "1.5");
+    public static void main(String[] args)  {
         try {
             Helpers.cleanLauncheurFolder("1.4", "scripts", "config", "mods");
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Helpers.cleanDirectory(Helpers.TEMP.toFile(), "1.5");
         Swinger.setSystemLookNFeel();
         try {
             frameInstance = new LauncheurFrame();
