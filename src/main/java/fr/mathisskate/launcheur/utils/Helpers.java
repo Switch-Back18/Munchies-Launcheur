@@ -36,13 +36,14 @@ public class Helpers {
     public static final ILogger LOGGER = new Logger("[Munchies]", Helpers.MC_DIR.resolve("logs.log"), true);
     public static final Path TEMP = MC_INFOS.getGameDir().resolve(".cfp");
     //FlowUpdater
+    public static final String MODPACK_VERSION = "1.5";
     public static final IProgressCallback CALLBACK = new ProgressBarAPI();
     public static final VanillaVersion VANILLA = new VanillaVersion.VanillaVersionBuilder()
             .withName("1.12.2")
             .withVersionType(VersionType.FORGE)
             .build();
 
-    public static final CurseModPackInfo MODPACK = new CurseModPackInfo("https://munchies.websr.fr/download/1.4.zip", true);
+    public static final CurseModPackInfo MODPACK = new CurseModPackInfo("https://munchies.websr.fr/download/" + MODPACK_VERSION + ".zip", true);
     public static final UpdaterOptions OPTIONS = new UpdaterOptions.UpdaterOptionsBuilder().build();
     public static final AbstractForgeVersion FORGE_VERSION = new ForgeVersionBuilder(ForgeVersionBuilder.ForgeVersionType.NEW)
             .withForgeVersion("1.12.2-14.23.5.2859")
