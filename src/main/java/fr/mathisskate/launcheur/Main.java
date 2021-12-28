@@ -11,9 +11,9 @@ public class Main {
     public static LauncheurFrame frameInstance;
 
     public static void main(String[] args) {
-        Helpers.cleanDirectory(Helpers.TEMP.toFile(), "1.4");
+        Helpers.cleanDirectory(Helpers.TEMP.toFile(), "1.5");
         try {
-            Helpers.cleanLauncheurFolder("1.3", "libraries", "scripts", "resources", "config", "mods");
+            Helpers.cleanLauncheurFolder("1.4", "scripts", "config", "mods");
         } catch (IOException e) {
             e.printStackTrace();
         }
