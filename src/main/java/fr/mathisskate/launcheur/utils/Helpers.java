@@ -36,7 +36,7 @@ public class Helpers {
     public static final ILogger LOGGER = new Logger("[Munchies]", Helpers.MC_DIR.resolve("logs.log"), true);
     public static final Path TEMP = MC_INFOS.getGameDir().resolve(".cfp");
     //FlowUpdater
-    public static final String MODPACK_VERSION = "1.5";
+    public static final String MODPACK_VERSION = "1.6";
     public static final IProgressCallback CALLBACK = new ProgressBarAPI();
     public static final VanillaVersion VANILLA = new VanillaVersion.VanillaVersionBuilder()
             .withName("1.12.2")
@@ -71,11 +71,11 @@ public class Helpers {
             Helpers.MC_DIR.resolve("manifest.json").toFile().delete();
     }
 
-    public static void cleanLauncheurFolder(String oldVersion, String... filesToRemove) throws IOException {
+    public static void cleanLauncheurFolder(String version, String... filesToRemove) throws IOException {
         System.out.println("Cleaning Installation Folder...");
         File dir = Helpers.MC_DIR.toFile();
         if (dir.exists())
-            if (TEMP.resolve(oldVersion + ".zip").toFile().exists())
+            if (!TEMP.resolve(version + ".zip").toFile().exists())
                 for (File file : Objects.requireNonNull(dir.listFiles()))
                     for (String s : filesToRemove)
                         if (file.getName().equals(s))

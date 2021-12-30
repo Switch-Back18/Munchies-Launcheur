@@ -12,11 +12,11 @@ public class Main {
 
     public static void main(String[] args)  {
         try {
-            Helpers.cleanLauncheurFolder("1.4", "scripts", "config", "mods");
+            Helpers.cleanLauncheurFolder(Helpers.MODPACK_VERSION, "scripts", "config", "mods");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Helpers.cleanDirectory(Helpers.TEMP.toFile(), "1.5");
+        Helpers.cleanDirectory(Helpers.TEMP.toFile(), Helpers.MODPACK_VERSION);
         Swinger.setSystemLookNFeel();
         try {
             frameInstance = new LauncheurFrame();
