@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'fr.mathisskate'
-version '1.5-RELEASE'
+version '1.6-RELEASE'
 
 repositories {
     mavenCentral()
