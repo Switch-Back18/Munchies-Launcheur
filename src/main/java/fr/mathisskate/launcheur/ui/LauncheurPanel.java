@@ -7,7 +7,6 @@ import fr.mathisskate.launcheur.Main;
 import fr.mathisskate.launcheur.utils.Helpers;
 import fr.theshark34.openlauncherlib.LaunchException;
 import fr.theshark34.openlauncherlib.util.ramselector.RamSelector;
-import fr.theshark34.swinger.Swinger;
 import fr.theshark34.swinger.event.SwingerEvent;
 import fr.theshark34.swinger.event.SwingerEventListener;
 import fr.theshark34.swinger.textured.STexturedButton;
@@ -26,23 +25,22 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
 
     //Images
     BufferedImage transpa = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("transpa.png")));
-    BufferedImage imgJouer = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/jouer.png")));
-    BufferedImage imgLoad = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("load.png")));
-    BufferedImage imgOption = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/option.png")));
-    BufferedImage imgQuit = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/fermer.png")));
-    BufferedImage imgMini = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/mini.png")));
-    BufferedImage imgDiscord = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/discord.png")));
-    BufferedImage imgSite = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/site.png")));
-    BufferedImage launcheur = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("launcheur.png")));
-
-    private final STexturedProgressBar progressBar = new STexturedProgressBar(transpa, imgLoad);
-    private final STexturedButton jouer = new STexturedButton(transpa, imgJouer);
-    private final STexturedButton option = new STexturedButton(transpa, imgOption);
-    private final STexturedButton quit = new STexturedButton(transpa, imgQuit);
-    private final STexturedButton mini = new STexturedButton(transpa, imgMini);
-    private final STexturedButton discord = new STexturedButton(transpa, imgDiscord);
-    private final STexturedButton site = new STexturedButton(transpa, imgSite);
     private final STexturedButton dossier = new STexturedButton(transpa);
+    BufferedImage imgJouer = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/jouer.png")));
+    private final STexturedButton jouer = new STexturedButton(transpa, imgJouer);
+    BufferedImage imgLoad = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("load.png")));
+    private final STexturedProgressBar progressBar = new STexturedProgressBar(transpa, imgLoad);
+    BufferedImage imgOption = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/option.png")));
+    private final STexturedButton option = new STexturedButton(transpa, imgOption);
+    BufferedImage imgQuit = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/fermer.png")));
+    private final STexturedButton quit = new STexturedButton(transpa, imgQuit);
+    BufferedImage imgMini = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/mini.png")));
+    private final STexturedButton mini = new STexturedButton(transpa, imgMini);
+    BufferedImage imgDiscord = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/discord.png")));
+    private final STexturedButton discord = new STexturedButton(transpa, imgDiscord);
+    BufferedImage imgSite = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/site.png")));
+    private final STexturedButton site = new STexturedButton(transpa, imgSite);
+    BufferedImage launcheur = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("launcheur.png")));
 
     public LauncheurPanel() throws IOException {
         setLayout(null);
@@ -131,7 +129,6 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
                         ex.printStackTrace();
                     }
                     try {
-                        //Launcher.launchFix();
                         Launcheur.launch();
                     } catch (LaunchException ex) {
                         ex.printStackTrace();

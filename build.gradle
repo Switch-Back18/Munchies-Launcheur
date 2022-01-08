@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'fr.mathisskate'
-version '1.7-RELEASE'
+version '1.8-RELEASE'
 
 repositories {
     mavenCentral()
@@ -16,13 +16,10 @@ repositories {
 
 dependencies {
     implementation files('libs/swinger-1.0.1-BETA.jar')
-    implementation 'fr.flowarg:flowupdater:1.5.2'
+    implementation files('libs/s-update-3.1.0-BETA.jar')
     implementation 'fr.flowarg:openlauncherlib:3.2.3'
     implementation 'fr.litarvan:openauth:1.1.2'
-    implementation 'fr.litarvan:openauth:1.1.2'
-    implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'org.json:json:20211205'
-    implementation 'org.apache.commons:commons-compress:1.21'
 }
 
 task fatJar(type: Jar) {

@@ -12,9 +12,10 @@ import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
 import fr.theshark34.openlauncherlib.minecraft.GameFolder;
 import fr.theshark34.openlauncherlib.minecraft.MinecraftLauncher;
 import fr.theshark34.openlauncherlib.util.ProcessLogManager;
+import fr.theshark34.supdate.BarAPI;
+import fr.theshark34.supdate.application.integrated.FileDeleter;
 import fr.theshark34.swinger.animation.Animator;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -37,7 +38,26 @@ public class Launcheur {
     }
 
     public static void update() throws Exception {
-        Helpers.UPDATER.update(Helpers.MC_DIR);
+        Helpers.sUpdate.getServerRequester().setRewriteEnabled(true);
+        Helpers.sUpdate.addApplication(new FileDeleter());
+        Thread threadBar = new Thread() {
+            private int val;
+            private int max;
+
+            @Override
+            public void run() {
+                while (!isInterrupted()) {
+                    val = (int) (BarAPI.getNumberOfTotalDownloadedBytes() / 1000);
+                    max = (int) (BarAPI.getNumberOfTotalBytesToDownload() / 1000);
+
+                    Main.frameInstance.getLauncherPanel().getProgressBar().setMaximum(max);
+                    Main.frameInstance.getLauncherPanel().getProgressBar().setValue(val);
+                }
+            }
+        };
+        threadBar.start();
+        Helpers.sUpdate.start();
+        threadBar.interrupt();
     }
 
     public static void launch() throws LaunchException, IOException {
@@ -58,18 +78,5 @@ public class Launcheur {
             e.printStackTrace();
         }
         System.exit(0);
-    }
-
-    public static void launchFix() {
-        try {
-            Process process = Runtime.getRuntime().exec(
-                    new String[]{"cmd", "/c", "fix.bat"},
-                    null,
-                    new File(System.getenv("APPDATA") + "\\.munchies\\Launcheur")
-            );
-            process.destroyForcibly();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
