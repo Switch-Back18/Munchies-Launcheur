@@ -6,7 +6,6 @@ import fr.flowarg.flowlogger.Logger;
 import fr.flowarg.flowupdater.FlowUpdater;
 import fr.flowarg.flowupdater.download.IProgressCallback;
 import fr.flowarg.flowupdater.download.json.CurseModPackInfo;
-import fr.flowarg.flowupdater.utils.ModFileDeleter;
 import fr.flowarg.flowupdater.utils.UpdaterOptions;
 import fr.flowarg.flowupdater.versions.AbstractForgeVersion;
 import fr.flowarg.flowupdater.versions.ForgeVersionBuilder;
@@ -36,7 +35,7 @@ public class Helpers {
     public static final ILogger LOGGER = new Logger("[Munchies]", Helpers.MC_DIR.resolve("logs.log"), true);
     public static final Path TEMP = MC_INFOS.getGameDir().resolve(".cfp");
     //FlowUpdater
-    public static final String MODPACK_VERSION = "1.6";
+    public static final String MODPACK_VERSION = "1.7";
     public static final IProgressCallback CALLBACK = new ProgressBarAPI();
     public static final VanillaVersion VANILLA = new VanillaVersion.VanillaVersionBuilder()
             .withName("1.12.2")
@@ -46,7 +45,7 @@ public class Helpers {
     public static final CurseModPackInfo MODPACK = new CurseModPackInfo("https://munchies.websr.fr/download/" + MODPACK_VERSION + ".zip", true);
     public static final UpdaterOptions OPTIONS = new UpdaterOptions.UpdaterOptionsBuilder().build();
     public static final AbstractForgeVersion FORGE_VERSION = new ForgeVersionBuilder(ForgeVersionBuilder.ForgeVersionType.NEW)
-            .withForgeVersion("1.12.2-14.23.5.2859")
+            .withForgeVersion("1.12.2-14.23.5.2860")
             .withCurseModPack(MODPACK)
             /*.withFileDeleter(new ModFileDeleter(true))
             ,"nom.jar",)*/

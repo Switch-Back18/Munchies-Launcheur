@@ -12,7 +12,7 @@ public class Main {
 
     public static void main(String[] args)  {
         try {
-            Helpers.cleanLauncheurFolder(Helpers.MODPACK_VERSION, "scripts", "config", "mods");
+            Helpers.cleanLauncheurFolder(Helpers.MODPACK_VERSION, "libraries", "scripts", "config", "mods");
         } catch (IOException e) {
             e.printStackTrace();
         }
