@@ -1,4 +1,4 @@
-/src/test/
-/.idea
-/.gradle
-/build
+src/test/
+.idea/
+.gradle/
+build/
