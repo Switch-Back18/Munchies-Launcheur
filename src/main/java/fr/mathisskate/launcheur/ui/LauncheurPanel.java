@@ -44,7 +44,7 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
 
     public LauncheurPanel() throws IOException {
         setLayout(null);
-        setMinMaxRam(7, 16);
+        setMinMaxRam(6, 15);
 
         jouer.setBounds(346, 556, 320, 114);
         jouer.addEventListener(this);
@@ -101,7 +101,7 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
         } else if (e.getSource() == discord) {
             try {
                 Desktop desktop = Desktop.getDesktop();
-                URI oURL = new URI("https://discord.com/invite/QX9suwt9Uk");
+                URI oURL = new URI("https://discord.com/invite/erUg4NnADM");
                 desktop.browse(oURL);
             } catch (URISyntaxException | IOException ex) {
                 ex.printStackTrace();

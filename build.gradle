@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'fr.mathisskate'
-version '1.10-RELEASE'
+version '1.11-RELEASE'
 
 repositories {
     mavenCentral()
@@ -23,6 +23,7 @@ dependencies {
 }
 
 task fatJar(type: Jar) {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
         attributes 'Main-Class': 'fr.mathisskate.launcheur.Main'
     }
