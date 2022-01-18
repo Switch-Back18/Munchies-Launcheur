@@ -1,7 +1,6 @@
 package fr.mathisskate.launcheur.ui;
 
 import fr.mathisskate.launcheur.Main;
-import fr.theshark34.swinger.Swinger;
 import fr.theshark34.swinger.util.WindowMover;
 
 import javax.imageio.ImageIO;

@@ -137,10 +137,10 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
                     jouer.setEnabled(true);
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(Main.frameInstance,
-                            "Impossible de se connecter : identifiant invalide. E-mail invalide ou mauvais mot de passe !\n Vérifie si tu as un compte Mojang ou Microsoft (Utilise le button pour changer).", "Erreur",
+                            "Impossible de se connecter : Verifie si tu as un compte Minecraft lie Microsoft.", "Erreur",
                             JOptionPane.ERROR_MESSAGE);
                 } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, "Impossible de mettre à jour ton dossier ! : " + ex.getMessage(),
+                    JOptionPane.showMessageDialog(null, "Impossible de mettre a jour ton jeu ! : " + ex.getMessage(),
                             "Erreur !", JOptionPane.ERROR_MESSAGE);
                     jouer.setEnabled(true);
                     ex.printStackTrace();
