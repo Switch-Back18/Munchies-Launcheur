@@ -12,8 +12,6 @@ import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
 import fr.theshark34.openlauncherlib.minecraft.GameFolder;
 import fr.theshark34.openlauncherlib.minecraft.MinecraftLauncher;
 import fr.theshark34.openlauncherlib.util.ProcessLogManager;
-import fr.theshark34.supdate.BarAPI;
-import fr.theshark34.supdate.application.integrated.FileDeleter;
 import fr.theshark34.swinger.animation.Animator;
 
 import java.io.IOException;
@@ -38,26 +36,7 @@ public class Launcheur {
     }
 
     public static void update() throws Exception {
-        Helpers.sUpdate.getServerRequester().setRewriteEnabled(true);
-        Helpers.sUpdate.addApplication(new FileDeleter());
-        Thread threadBar = new Thread() {
-            private int val;
-            private int max;
-
-            @Override
-            public void run() {
-                while (!isInterrupted()) {
-                    val = (int) (BarAPI.getNumberOfTotalDownloadedBytes() / 1000);
-                    max = (int) (BarAPI.getNumberOfTotalBytesToDownload() / 1000);
-
-                    Main.frameInstance.getLauncherPanel().getProgressBar().setMaximum(max);
-                    Main.frameInstance.getLauncherPanel().getProgressBar().setValue(val);
-                }
-            }
-        };
-        threadBar.start();
-        Helpers.sUpdate.start();
-        threadBar.interrupt();
+        Helpers.UPDATER.update(Helpers.MC_DIR);
     }
 
     public static void launch() throws LaunchException, IOException {
