@@ -2,3 +2,4 @@ src/test/
 .idea/
 .gradle/
 build/
+forge-installer-patched.jar.log

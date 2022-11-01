@@ -44,7 +44,7 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
 
     public LauncheurPanel() throws IOException {
         setLayout(null);
-        setMinMaxRam(6, 15);
+        setMinMaxRam(8, 17);
 
         jouer.setBounds(346, 556, 320, 114);
         jouer.addEventListener(this);

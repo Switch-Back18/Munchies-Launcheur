@@ -9,7 +9,7 @@ import java.io.IOException;
 public class Main {
     public static LauncheurFrame frameInstance;
 
-    public static void main(String[] args) {
+     public static void main(String[] args) {
         Swinger.setSystemLookNFeel();
         try {
             frameInstance = new LauncheurFrame();

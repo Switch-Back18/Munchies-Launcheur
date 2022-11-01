@@ -37,7 +37,7 @@ public class Helpers {
             .withName("1.16.5")
             .build();
 
-    public static final CurseModPackInfo MODPACK = new CurseModPackInfo(626647, 4000796, true);
+    public static final CurseModPackInfo MODPACK = new CurseModPackInfo(626647, 4061266, true);
 
     public static final UpdaterOptions OPTIONS = new UpdaterOptions.UpdaterOptionsBuilder().build();
 
