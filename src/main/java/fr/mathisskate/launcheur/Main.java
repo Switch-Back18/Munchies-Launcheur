@@ -1,6 +1,7 @@
 package fr.mathisskate.launcheur;
 
 import fr.mathisskate.launcheur.ui.LauncheurFrame;
+import fr.mathisskate.launcheur.utils.Helpers;
 import fr.theshark34.swinger.Swinger;
 import fr.theshark34.swinger.animation.Animator;
 
@@ -16,7 +17,12 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Animator.fadeInFrame(frameInstance, 5);
+         try {
+             Helpers.doUpdate();
+         } catch (IOException e) {
+             throw new RuntimeException(e);
+         }
+         Animator.fadeInFrame(frameInstance, 5);
         frameInstance.setVisible(true);
     }
 }
