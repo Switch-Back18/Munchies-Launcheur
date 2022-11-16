@@ -13,6 +13,7 @@ import fr.theshark34.openlauncherlib.minecraft.GameFolder;
 import fr.theshark34.openlauncherlib.minecraft.MinecraftLauncher;
 import fr.theshark34.openlauncherlib.util.ProcessLogManager;
 import fr.theshark34.swinger.animation.Animator;
+import net.arikia.dev.drpc.DiscordRPC;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -52,6 +53,7 @@ public class Launcheur {
             Animator.fadeOutFrame(Main.frameInstance, 5);
             Thread.sleep(5000L);
             Main.frameInstance.setVisible(false);
+            DiscordRPC.discordShutdown();
             p.waitFor();
         } catch (InterruptedException e) {
             e.printStackTrace();
