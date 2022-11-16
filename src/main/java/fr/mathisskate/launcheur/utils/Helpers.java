@@ -108,7 +108,6 @@ public class Helpers {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(id);
         return Integer.parseInt(id);
     }
 
@@ -119,7 +118,6 @@ public class Helpers {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(id);
         return Integer.parseInt(id);
     }
 
@@ -130,7 +128,6 @@ public class Helpers {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(id);
         return id;
     }
 }
