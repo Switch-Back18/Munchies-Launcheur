@@ -24,81 +24,83 @@ import java.util.Objects;
 public class LauncheurPanel extends JPanel implements SwingerEventListener {
 
     //Images
-    BufferedImage transpa = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("transpa.png")));
-    private final STexturedButton dossier = new STexturedButton(transpa);
-    BufferedImage imgJouer = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/jouer.png")));
-    private final STexturedButton jouer = new STexturedButton(transpa, imgJouer);
-    BufferedImage imgLoad = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("load.png")));
-    private final STexturedProgressBar progressBar = new STexturedProgressBar(transpa, imgLoad);
-    BufferedImage imgOption = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/option.png")));
-    private final STexturedButton option = new STexturedButton(transpa, imgOption);
-    BufferedImage imgQuit = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/fermer.png")));
-    private final STexturedButton quit = new STexturedButton(transpa, imgQuit);
-    BufferedImage imgMini = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/mini.png")));
-    private final STexturedButton mini = new STexturedButton(transpa, imgMini);
-    BufferedImage imgDiscord = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/discord.png")));
-    private final STexturedButton discord = new STexturedButton(transpa, imgDiscord);
-    BufferedImage imgSite = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/site.png")));
-    private final STexturedButton site = new STexturedButton(transpa, imgSite);
-    BufferedImage launcheur = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("launcheur.png")));
+    private final BufferedImage TRANSPA = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("transpa.png")));
+    private final STexturedButton DOSSIER = new STexturedButton(TRANSPA);
+    private final BufferedImage IMG_JOUER = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/jouer.png")));
+    private final STexturedButton JOUER = new STexturedButton(TRANSPA, IMG_JOUER);
+    private final BufferedImage IMG_LOAD = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("load.png")));
+    private final STexturedProgressBar PROGRESS_BAR = new STexturedProgressBar(TRANSPA, IMG_LOAD);
+    private final BufferedImage IMG_OPTION = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/option.png")));
+    private final STexturedButton OPTION = new STexturedButton(TRANSPA, IMG_OPTION);
+    private final BufferedImage IMG_QUIT = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/fermer.png")));
+    private final STexturedButton QUIT = new STexturedButton(TRANSPA, IMG_QUIT);
+    private final BufferedImage IMG_MINI = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/mini.png")));
+    private final STexturedButton MINI = new STexturedButton(TRANSPA, IMG_MINI);
+    private final BufferedImage IMG_DISCORD = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/discord.png")));
+    private final STexturedButton DISCORD = new STexturedButton(TRANSPA, IMG_DISCORD);
+    private final BufferedImage IMG_SITE = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/site.png")));
+    private final STexturedButton SITE = new STexturedButton(TRANSPA, IMG_SITE);
+    private final BufferedImage LAUNCHEUR = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("launcheur.png")));
+
+    private boolean isLaunch = false;
 
     public LauncheurPanel() throws IOException {
         setLayout(null);
         setMinMaxRam(8, 17);
 
-        jouer.setBounds(346, 556, 320, 114);
-        jouer.addEventListener(this);
-        add(jouer);
+        JOUER.setBounds(346, 556, 320, 114);
+        JOUER.addEventListener(this);
+        add(JOUER);
 
-        progressBar.setBounds(409, 669, 181, 6);
-        progressBar.setStringPainted(true);
-        add(progressBar);
+        PROGRESS_BAR.setBounds(409, 669, 181, 6);
+        PROGRESS_BAR.setStringPainted(true);
+        add(PROGRESS_BAR);
 
-        quit.setBounds(638, 358, 50, 50);
-        quit.addEventListener(this);
-        add(quit);
+        QUIT.setBounds(638, 358, 50, 50);
+        QUIT.addEventListener(this);
+        add(QUIT);
 
-        mini.setBounds(682, 479, 50, 50);
-        mini.addEventListener(this);
-        add(mini);
+        MINI.setBounds(682, 479, 50, 50);
+        MINI.addEventListener(this);
+        add(MINI);
 
-        option.setBounds(660, 525, 50, 50);
-        option.addEventListener(this);
-        add(option);
+        OPTION.setBounds(660, 525, 50, 50);
+        OPTION.addEventListener(this);
+        add(OPTION);
 
-        discord.setBounds(290, 570, 50, 50);
-        discord.addEventListener(this);
-        add(discord);
+        DISCORD.setBounds(290, 570, 50, 50);
+        DISCORD.addEventListener(this);
+        add(DISCORD);
 
-        site.setBounds(257, 508, 50, 50);
-        site.addEventListener(this);
-        add(site);
+        SITE.setBounds(257, 508, 50, 50);
+        SITE.addEventListener(this);
+        add(SITE);
 
-        dossier.setBounds(460, 285, 50, 50);
-        dossier.addEventListener(this);
-        add(dossier);
+        DOSSIER.setBounds(460, 285, 50, 50);
+        DOSSIER.addEventListener(this);
+        add(DOSSIER);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        g.drawImage(launcheur, 0, 0, this);
+        g.drawImage(LAUNCHEUR, 0, 0, this);
     }
 
     @Override
     public void onEvent(SwingerEvent e) {
-        if (e.getSource() == option) {
+        if (e.getSource() == OPTION) {
             Helpers.RAM_SELECTOR.display();
-        } else if (e.getSource() == quit) {
+        } else if (e.getSource() == QUIT) {
             System.exit(0);
-        } else if (e.getSource() == mini) {
+        } else if (e.getSource() == MINI) {
             Main.frameInstance.setState(Frame.ICONIFIED);
-        } else if (e.getSource() == dossier) {
+        } else if (e.getSource() == DOSSIER) {
             try {
                 Desktop.getDesktop().open(Helpers.MC_DIR.toFile());
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-        } else if (e.getSource() == discord) {
+        } else if (e.getSource() == DISCORD) {
             try {
                 Desktop desktop = Desktop.getDesktop();
                 URI oURL = new URI("https://discord.com/invite/erUg4NnADM");
@@ -106,7 +108,7 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
             } catch (URISyntaxException | IOException ex) {
                 ex.printStackTrace();
             }
-        } else if (e.getSource() == site) {
+        } else if (e.getSource() == SITE) {
             try {
                 Desktop desktop = Desktop.getDesktop();
                 URI oURL = new URI("https://munchies.websr.fr");
@@ -114,44 +116,46 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
             } catch (URISyntaxException | IOException ex) {
                 ex.printStackTrace();
             }
-        } else if (e.getSource() == jouer) {
-            Thread t = new Thread(() -> {
-                jouer.setEnabled(false);
-                try {
-                    Launcheur.auth(hasLogged());
+        } else if (e.getSource() == JOUER) {
+            if(!isLaunch) {
+                isLaunch = true;
+                Thread t = new Thread(() -> {
                     try {
-                        Launcheur.update();
-                        if (Helpers.MC_DIR.toFile().exists()) {
-                            Helpers.SAVER.set("token", Launcheur.result.getRefreshToken());
-                            Helpers.RAM_SELECTOR.save();
+                        Launcheur.auth(hasLogged());
+                        try {
+                            Launcheur.update();
+                            if (Helpers.MC_DIR.toFile().exists()) {
+                                Helpers.SAVER.set("token", Launcheur.result.getRefreshToken());
+                                Helpers.RAM_SELECTOR.save();
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
                         }
-                    } catch (Exception ex) {
+                        try {
+                            Launcheur.launch();
+                        } catch (LaunchException ex) {
+                            ex.printStackTrace();
+                        }
+                    } catch (AuthenticationException | MicrosoftAuthenticationException ex) {
+                        isLaunch = false;
+                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(Main.frameInstance,
+                                "Impossible de se connecter : Verifie si tu as un compte Minecraft lie Microsoft.", "Erreur",
+                                JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        isLaunch = false;
+                        JOptionPane.showMessageDialog(null, "Impossible de mettre a jour ton jeu ! : " + ex.getMessage(),
+                                "Erreur !", JOptionPane.ERROR_MESSAGE);
                         ex.printStackTrace();
                     }
-                    try {
-                        Launcheur.launch();
-                    } catch (LaunchException ex) {
-                        ex.printStackTrace();
-                    }
-                } catch (AuthenticationException | MicrosoftAuthenticationException ex) {
-                    jouer.setEnabled(true);
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(Main.frameInstance,
-                            "Impossible de se connecter : Verifie si tu as un compte Minecraft lie Microsoft.", "Erreur",
-                            JOptionPane.ERROR_MESSAGE);
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, "Impossible de mettre a jour ton jeu ! : " + ex.getMessage(),
-                            "Erreur !", JOptionPane.ERROR_MESSAGE);
-                    jouer.setEnabled(true);
-                    ex.printStackTrace();
-                }
-            });
-            t.start();
+                });
+                t.start();
+            }
         }
     }
 
     public STexturedProgressBar getProgressBar() {
-        return progressBar;
+        return PROGRESS_BAR;
     }
 
     public void setMinMaxRam(int min, int max) {
