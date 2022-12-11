@@ -9,9 +9,6 @@ import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
 
 import java.io.IOException;
-import java.sql.Time;
-import java.time.LocalTime;
-import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static LauncheurFrame frameInstance;

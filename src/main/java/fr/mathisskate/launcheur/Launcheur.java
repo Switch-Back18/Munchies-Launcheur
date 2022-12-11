@@ -46,15 +46,15 @@ public class Launcheur {
                 Arrays.asList(Helpers.RAM_SELECTOR.getRamArguments())
         );
         ExternalLauncher launcher = new ExternalLauncher(profile);
-        Process p = launcher.launch();
-        ProcessLogManager manager = new ProcessLogManager(p.getInputStream(), Paths.get(Helpers.MC_DIR + "logs.txt"));
+        Process process = launcher.launch();
+        ProcessLogManager manager = new ProcessLogManager(process.getInputStream(), Paths.get(Helpers.MC_DIR + "mc_logs.txt"));
         manager.start();
         try {
             Animator.fadeOutFrame(Main.frameInstance, 5);
             Thread.sleep(5000L);
             Main.frameInstance.setVisible(false);
             DiscordRPC.discordShutdown();
-            p.waitFor();
+            process.waitFor();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
