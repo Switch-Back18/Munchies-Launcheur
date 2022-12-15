@@ -17,13 +17,10 @@ public class Main {
          Swinger.setSystemLookNFeel();
          try {
              frameInstance = new LauncheurFrame();
+             Helpers.doUpdate();
+             Helpers.downloadServerIP();
          } catch (IOException e) {
              e.printStackTrace();
-         }
-         try {
-             Helpers.doUpdate();
-         } catch (IOException e) {
-             throw new RuntimeException(e);
          }
          Animator.fadeInFrame(frameInstance, 5);
          frameInstance.setVisible(true);

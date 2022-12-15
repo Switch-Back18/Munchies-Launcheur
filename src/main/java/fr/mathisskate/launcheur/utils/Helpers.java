@@ -17,10 +17,13 @@ import fr.theshark34.openlauncherlib.minecraft.GameType;
 import fr.theshark34.openlauncherlib.minecraft.GameVersion;
 import fr.theshark34.openlauncherlib.util.Saver;
 import fr.theshark34.openlauncherlib.util.ramselector.RamSelector;
+import net.lingala.zip4j.ZipFile;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -129,5 +132,20 @@ public class Helpers {
             throw new RuntimeException(e);
         }
         return id;
+    }
+
+    public static void downloadServerIP() throws IOException {
+        URL serverIP_URL = new URL("https://munchies.websr.fr/download/servers.zip");
+        File serverIP_ZIP = new File(MC_DIR.toFile(), "servers.zip");
+
+        if(serverIP_ZIP.exists())
+            serverIP_ZIP.delete();
+        org.apache.commons.io.FileUtils.copyURLToFile(serverIP_URL, serverIP_ZIP);
+        unZip(serverIP_ZIP, MC_DIR);
+    }
+
+    public static void unZip(File source, Path target) throws IOException {
+        new ZipFile(source).extractAll(target.toString());
+        source.delete();
     }
 }
