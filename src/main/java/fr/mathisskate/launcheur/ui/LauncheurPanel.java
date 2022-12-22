@@ -119,6 +119,7 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
         } else if (e.getSource() == JOUER) {
             if(!isLaunch) {
                 isLaunch = true;
+                JOUER.setTexture(IMG_JOUER);
                 Thread t = new Thread(() -> {
                     try {
                         Launcheur.auth(hasLogged());
@@ -138,12 +139,14 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
                         }
                     } catch (AuthenticationException | MicrosoftAuthenticationException ex) {
                         isLaunch = false;
+                        JOUER.setTexture(TRANSPA);
                         ex.printStackTrace();
                         JOptionPane.showMessageDialog(Main.frameInstance,
                                 "Impossible de se connecter : Verifie si tu as un compte Minecraft lie Microsoft.", "Erreur",
                                 JOptionPane.ERROR_MESSAGE);
                     } catch (IOException ex) {
                         isLaunch = false;
+                        JOUER.setTexture(TRANSPA);
                         JOptionPane.showMessageDialog(null, "Impossible de mettre a jour ton jeu ! : " + ex.getMessage(),
                                 "Erreur !", JOptionPane.ERROR_MESSAGE);
                         ex.printStackTrace();

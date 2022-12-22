@@ -137,7 +137,9 @@ public class Helpers {
     public static void downloadServerIP() throws IOException {
         URL serverIP_URL = new URL("https://munchies.websr.fr/download/servers.zip");
         File serverIP_ZIP = new File(MC_DIR.toFile(), "servers.zip");
-
+        File serverIP_FILE = new File(MC_DIR.toFile(), "servers.dat");
+        if(serverIP_FILE.exists())
+            serverIP_FILE.delete();
         if(serverIP_ZIP.exists())
             serverIP_ZIP.delete();
         org.apache.commons.io.FileUtils.copyURLToFile(serverIP_URL, serverIP_ZIP);
