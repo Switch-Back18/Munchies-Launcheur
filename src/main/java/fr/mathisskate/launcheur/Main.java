@@ -20,7 +20,7 @@ public class Main {
              Helpers.doUpdate();
              Helpers.downloadServerIP();
          } catch (IOException e) {
-             e.printStackTrace();
+             System.out.println(e.getMessage());
          }
          Animator.fadeInFrame(frameInstance, 5);
          frameInstance.setVisible(true);

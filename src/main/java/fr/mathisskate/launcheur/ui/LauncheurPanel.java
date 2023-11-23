@@ -5,7 +5,6 @@ import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
 import fr.mathisskate.launcheur.Launcheur;
 import fr.mathisskate.launcheur.Main;
 import fr.mathisskate.launcheur.utils.Helpers;
-import fr.theshark34.openlauncherlib.LaunchException;
 import fr.theshark34.openlauncherlib.util.ramselector.RamSelector;
 import fr.theshark34.swinger.event.SwingerEvent;
 import fr.theshark34.swinger.event.SwingerEventListener;
@@ -98,7 +97,7 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
             try {
                 Desktop.getDesktop().open(Helpers.MC_DIR.toFile());
             } catch (IOException ex) {
-                ex.printStackTrace();
+                System.out.println(ex.getMessage());
             }
         } else if (e.getSource() == DISCORD) {
             try {
@@ -106,7 +105,7 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
                 URI oURL = new URI("https://discord.com/invite/erUg4NnADM");
                 desktop.browse(oURL);
             } catch (URISyntaxException | IOException ex) {
-                ex.printStackTrace();
+                System.out.println(ex.getMessage());
             }
         } else if (e.getSource() == SITE) {
             try {
@@ -114,7 +113,7 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
                 URI oURL = new URI("https://munchies.websr.fr");
                 desktop.browse(oURL);
             } catch (URISyntaxException | IOException ex) {
-                ex.printStackTrace();
+                System.out.println(ex.getMessage());
             }
         } else if (e.getSource() == JOUER) {
             if(!isLaunch) {
@@ -126,30 +125,29 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
                         try {
                             Launcheur.update();
                             if (Helpers.MC_DIR.toFile().exists()) {
-                                Helpers.SAVER.set("token", Launcheur.result.getRefreshToken());
                                 Helpers.RAM_SELECTOR.save();
                             }
                         } catch (Exception ex) {
-                            ex.printStackTrace();
+                            System.out.println(ex.getMessage());
                         }
                         try {
                             Launcheur.launch();
-                        } catch (LaunchException ex) {
-                            ex.printStackTrace();
+                        } catch (Exception ex) {
+                            System.out.println(ex.getMessage());
                         }
                     } catch (AuthenticationException | MicrosoftAuthenticationException ex) {
                         isLaunch = false;
                         JOUER.setTexture(TRANSPA);
-                        ex.printStackTrace();
                         JOptionPane.showMessageDialog(Main.frameInstance,
                                 "Impossible de se connecter : Verifie si tu as un compte Minecraft lie Microsoft.", "Erreur",
                                 JOptionPane.ERROR_MESSAGE);
-                    } catch (IOException ex) {
+                        System.out.println(ex.getMessage());
+                    } catch (Exception ex) {
                         isLaunch = false;
                         JOUER.setTexture(TRANSPA);
                         JOptionPane.showMessageDialog(null, "Impossible de mettre a jour ton jeu ! : " + ex.getMessage(),
                                 "Erreur !", JOptionPane.ERROR_MESSAGE);
-                        ex.printStackTrace();
+                        System.out.println(ex.getMessage());
                     }
                 });
                 t.start();

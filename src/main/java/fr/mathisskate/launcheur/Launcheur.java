@@ -1,22 +1,16 @@
 package fr.mathisskate.launcheur;
 
+import fr.flowarg.openlauncherlib.NoFramework;
 import fr.litarvan.openauth.AuthenticationException;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthResult;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
 import fr.mathisskate.launcheur.utils.Helpers;
-import fr.theshark34.openlauncherlib.LaunchException;
-import fr.theshark34.openlauncherlib.external.ExternalLaunchProfile;
-import fr.theshark34.openlauncherlib.external.ExternalLauncher;
 import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
 import fr.theshark34.openlauncherlib.minecraft.GameFolder;
-import fr.theshark34.openlauncherlib.minecraft.MinecraftLauncher;
-import fr.theshark34.openlauncherlib.util.ProcessLogManager;
 import fr.theshark34.swinger.animation.Animator;
 import net.arikia.dev.drpc.DiscordRPC;
 
-import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.Arrays;
 
 public class Launcheur {
@@ -40,15 +34,16 @@ public class Launcheur {
         Helpers.UPDATER.update(Helpers.MC_DIR);
     }
 
-    public static void launch() throws LaunchException, IOException {
-        ExternalLaunchProfile profile = MinecraftLauncher.createExternalProfile(Helpers.MC_INFOS, GameFolder.FLOW_UPDATER, authInfos);
-        profile.getVmArgs().addAll(
-                Arrays.asList(Helpers.RAM_SELECTOR.getRamArguments())
+    public static void launch() throws Exception {
+        NoFramework noFramework = new NoFramework(
+                Helpers.MC_DIR,
+                authInfos,
+                GameFolder.FLOW_UPDATER
         );
-        ExternalLauncher launcher = new ExternalLauncher(profile);
-        Process process = launcher.launch();
-        ProcessLogManager manager = new ProcessLogManager(process.getInputStream(), Paths.get(Helpers.MC_DIR + "mc_logs.txt"));
-        manager.start();
+
+        noFramework.getAdditionalVmArgs().add(Helpers.RAM_SELECTOR.getRamArguments()[1]);
+
+        Process process = noFramework.launch("1.18.2", "40.2.10", NoFramework.ModLoader.FORGE);
         try {
             Animator.fadeOutFrame(Main.frameInstance, 5);
             Thread.sleep(5000L);
@@ -56,7 +51,7 @@ public class Launcheur {
             DiscordRPC.discordShutdown();
             process.waitFor();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         System.exit(0);
     }

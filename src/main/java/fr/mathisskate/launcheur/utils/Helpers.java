@@ -10,6 +10,7 @@ import fr.flowarg.flowupdater.utils.ModFileDeleter;
 import fr.flowarg.flowupdater.utils.UpdaterOptions;
 import fr.flowarg.flowupdater.versions.AbstractForgeVersion;
 import fr.flowarg.flowupdater.versions.ForgeVersionBuilder;
+import fr.flowarg.flowupdater.versions.ForgeVersionType;
 import fr.flowarg.flowupdater.versions.VanillaVersion;
 import fr.flowarg.openlauncherlib.NewForgeVersionDiscriminator;
 import fr.theshark34.openlauncherlib.minecraft.GameInfos;
@@ -22,7 +23,6 @@ import net.lingala.zip4j.ZipFile;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -30,9 +30,9 @@ import java.util.Scanner;
 
 public class Helpers {
     //OpenLauncheurLib
-    public static final NewForgeVersionDiscriminator FORGE = new NewForgeVersionDiscriminator("36.2.39", "1.16.5", "net.minecraftforge", "20210115.111550");
-    public static final GameType version = GameType.V1_13_HIGHER_FORGE.setNFVD(FORGE);
-    public static final GameVersion MC_VERSION = new GameVersion("1.16.5", version);
+    public static final NewForgeVersionDiscriminator FORGE = new NewForgeVersionDiscriminator("40.2.10", "1.18.2", "net.minecraftforge", "20220404.173914");
+    public static final GameType GAME_VERSION = GameType.V1_13_HIGHER_FORGE.setNFVD(FORGE);
+    public static final GameVersion MC_VERSION = new GameVersion("1.18.2", GAME_VERSION);
     public static final GameInfos MC_INFOS = new GameInfos("munchies", MC_VERSION, null);
     public static final Path MC_DIR = MC_INFOS.getGameDir();
     public static final Saver SAVER = new Saver(Helpers.MC_DIR.resolve("options.properties"));
@@ -45,25 +45,26 @@ public class Helpers {
 
     public static IProgressCallback CALLBACK = new ProgressBarAPI();
     public static VanillaVersion VANILLA = new VanillaVersion.VanillaVersionBuilder()
-            .withName("1.16.5")
+            .withName("1.18.2")
             .build();
 
     public static final CurseModPackInfo MODPACK = new CurseModPackInfo(PROJECT_ID, FILE_ID, true);
 
     public static final UpdaterOptions OPTIONS = new UpdaterOptions.UpdaterOptionsBuilder().build();
 
-    public static final AbstractForgeVersion FORGE_VERSION = new ForgeVersionBuilder(ForgeVersionBuilder.ForgeVersionType.NEW)
-            .withForgeVersion("1.16.5-36.2.39")
+    public static final AbstractForgeVersion FORGE_VERSION = new ForgeVersionBuilder(ForgeVersionType.NEW)
+            .withForgeVersion("1.18.2-40.2.10")
             .withCurseModPack(MODPACK)
+            .withMods("https://munchies.websr.fr/download/mods/mods.json")
             .withFileDeleter(new ModFileDeleter(true))
             .build();
 
     public static final FlowUpdater UPDATER = new FlowUpdater.FlowUpdaterBuilder()
             .withVanillaVersion(VANILLA)
             .withLogger(LOGGER)
-            .withModLoaderVersion(FORGE_VERSION)
             .withProgressCallback(CALLBACK)
             .withUpdaterOptions(OPTIONS)
+            .withModLoaderVersion(FORGE_VERSION)
             .build();
 
     //Minecraft File
@@ -75,7 +76,7 @@ public class Helpers {
     public static final Path SCRIPT = MC_INFOS.getGameDir().resolve("scripts");
     public static final Path KUBEJS = MC_INFOS.getGameDir().resolve("kubejs");
     public static final String VERSION = getModPackVersion();
-    public static final File MODPACK_ZIP = TEMP.resolve("[Munchies]Limitless Experience-" + VERSION + ".zip").toFile();
+    public static final File MODPACK_ZIP = TEMP.resolve("[Munchies]Over The Limit-" + VERSION + ".zip").toFile();
 
     public static void doUpdate() throws IOException {
         if (MANIFEST.exists())
@@ -138,9 +139,9 @@ public class Helpers {
         URL serverIP_URL = new URL("https://munchies.websr.fr/download/servers.zip");
         File serverIP_ZIP = new File(MC_DIR.toFile(), "servers.zip");
         File serverIP_FILE = new File(MC_DIR.toFile(), "servers.dat");
-        if(serverIP_FILE.exists())
+        if (serverIP_FILE.exists())
             serverIP_FILE.delete();
-        if(serverIP_ZIP.exists())
+        if (serverIP_ZIP.exists())
             serverIP_ZIP.delete();
         org.apache.commons.io.FileUtils.copyURLToFile(serverIP_URL, serverIP_ZIP);
         unZip(serverIP_ZIP, MC_DIR);

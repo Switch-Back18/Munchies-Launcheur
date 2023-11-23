@@ -4,8 +4,6 @@ import fr.flowarg.flowupdater.download.DownloadList;
 import fr.flowarg.flowupdater.download.IProgressCallback;
 import fr.mathisskate.launcheur.Main;
 
-import java.text.DecimalFormat;
-
 public class ProgressBarAPI implements IProgressCallback {
 
     @Override
