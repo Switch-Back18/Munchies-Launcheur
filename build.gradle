@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'idea'
     id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
 application {
@@ -22,8 +23,13 @@ repositories {
 dependencies {
     implementation files('libs/swinger-1.0.1-BETA.jar')
     implementation files('libs/discord-rpc.jar')
-    implementation files('libs/openlauncherlib-fixed-3.2.6.jar')
-    implementation 'fr.flowarg:flowupdater:1.8.0'
+    //implementation files('libs/openlauncherlib-fixed-3.2.6.jar')
+    implementation 'org.openjfx:javafx-swing:17'
+    implementation 'org.openjfx:javafx-controls:17'
+    implementation 'org.openjfx:javafx-web:17'
+    implementation 'org.openjfx:javafx-fxml:17'
+    implementation 'fr.flowarg:flowupdater:1.8.2'
+    implementation 'fr.flowarg:openlauncherlib:3.2.6'
     implementation 'fr.litarvan:openauth:1.1.6'
     implementation 'org.json:json:20230227'
     implementation 'commons-io:commons-io:2.11.0'

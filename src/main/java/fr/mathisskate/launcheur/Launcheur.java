@@ -11,8 +11,6 @@ import fr.theshark34.openlauncherlib.minecraft.GameFolder;
 import fr.theshark34.swinger.animation.Animator;
 import net.arikia.dev.drpc.DiscordRPC;
 
-import java.util.Arrays;
-
 public class Launcheur {
     public static MicrosoftAuthResult result;
     private static MicrosoftAuthenticator authentificator;
@@ -45,7 +43,6 @@ public class Launcheur {
 
         Process process = noFramework.launch("1.18.2", "40.2.10", NoFramework.ModLoader.FORGE);
         try {
-            Animator.fadeOutFrame(Main.frameInstance, 5);
             Thread.sleep(5000L);
             Main.frameInstance.setVisible(false);
             DiscordRPC.discordShutdown();

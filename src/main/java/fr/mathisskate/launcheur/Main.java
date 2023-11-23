@@ -22,7 +22,6 @@ public class Main {
          } catch (IOException e) {
              System.out.println(e.getMessage());
          }
-         Animator.fadeInFrame(frameInstance, 5);
          frameInstance.setVisible(true);
          initDiscord();
          while (true)
