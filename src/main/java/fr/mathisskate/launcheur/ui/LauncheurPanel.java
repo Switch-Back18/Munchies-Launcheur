@@ -126,6 +126,7 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
                             Launcheur.update();
                             if (Helpers.MC_DIR.toFile().exists()) {
                                 Helpers.RAM_SELECTOR.save();
+                                Helpers.SAVER.set("token", Launcheur.result.getRefreshToken());
                             }
                         } catch (Exception ex) {
                             System.out.println(ex.getMessage());

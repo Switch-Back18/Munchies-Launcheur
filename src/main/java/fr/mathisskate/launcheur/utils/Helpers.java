@@ -19,20 +19,23 @@ import fr.theshark34.openlauncherlib.minecraft.GameVersion;
 import fr.theshark34.openlauncherlib.util.Saver;
 import fr.theshark34.openlauncherlib.util.ramselector.RamSelector;
 import net.lingala.zip4j.ZipFile;
+import org.cef.OS;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Helpers {
     //OpenLauncheurLib
-    public static final NewForgeVersionDiscriminator FORGE = new NewForgeVersionDiscriminator("40.2.10", "1.18.2", "net.minecraftforge", "20220404.173914");
+    public static final NewForgeVersionDiscriminator FORGE = new NewForgeVersionDiscriminator(getForgeVersion(), getMinecraftVersion(), "net.minecraftforge", "20220404.173914");
     public static final GameType GAME_VERSION = GameType.V1_13_HIGHER_FORGE.setNFVD(FORGE);
-    public static final GameVersion MC_VERSION = new GameVersion("1.18.2", GAME_VERSION);
+    public static final GameVersion MC_VERSION = new GameVersion(getMinecraftVersion(), GAME_VERSION);
     public static final GameInfos MC_INFOS = new GameInfos("munchies", MC_VERSION, null);
     public static final Path MC_DIR = MC_INFOS.getGameDir();
     public static final Saver SAVER = new Saver(Helpers.MC_DIR.resolve("options.properties"));
@@ -45,7 +48,7 @@ public class Helpers {
 
     public static IProgressCallback CALLBACK = new ProgressBarAPI();
     public static VanillaVersion VANILLA = new VanillaVersion.VanillaVersionBuilder()
-            .withName("1.18.2")
+            .withName(getMinecraftVersion())
             .build();
 
     public static final CurseModPackInfo MODPACK = new CurseModPackInfo(PROJECT_ID, FILE_ID, true);
@@ -53,7 +56,7 @@ public class Helpers {
     public static final UpdaterOptions OPTIONS = new UpdaterOptions.UpdaterOptionsBuilder().build();
 
     public static final AbstractForgeVersion FORGE_VERSION = new ForgeVersionBuilder(ForgeVersionType.NEW)
-            .withForgeVersion("1.18.2-40.2.10")
+            .withForgeVersion(getMinecraftVersion() + "-" +getForgeVersion())
             .withCurseModPack(MODPACK)
             .withMods("https://munchies.websr.fr/download/mods/mods.json")
             .withFileDeleter(new ModFileDeleter(true))
@@ -98,8 +101,15 @@ public class Helpers {
     }
 
     public static ArrayList<String> readFile() throws FileNotFoundException {
+        final String os = Objects.requireNonNull(System.getProperty("os.name")).toLowerCase();
         ArrayList<String> list = new ArrayList<>();
-        Scanner scanner = new Scanner(MC_DIR.resolve("Launcheur/ModPackInfo.txt").toFile());
+        Scanner scanner = null;
+        if(os.contains("win"))
+            scanner = new Scanner(Paths.get(System.getenv("APPDATA"),".munchies", "Launcheur", "LauncheurConfig.txt").toFile());
+        else if (os.contains("mac"))
+            scanner = new Scanner(Paths.get(System.getProperty("user.home"), "Library", "Application Support", "munchies", "Launcheur", "LauncheurConfig.txt").toFile());
+        else
+            scanner = new Scanner(Paths.get(System.getProperty("user.home"), ".local", "share", "munchies", "Launcheur", "LauncheurConfig.txt").toFile());
         while (scanner.hasNext())
             list.add(scanner.nextLine());
         return list;
@@ -108,7 +118,7 @@ public class Helpers {
     public static int getFileID() {
         String id = null;
         try {
-            id = readFile().get(2).split(": ")[1];
+            id = readFile().get(4).split(": ")[1];
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -118,7 +128,7 @@ public class Helpers {
     public static int getProjectID() {
         String id = null;
         try {
-            id = readFile().get(1).split(": ")[1];
+            id = readFile().get(3).split(": ")[1];
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -128,7 +138,27 @@ public class Helpers {
     public static String getModPackVersion() {
         String id = null;
         try {
+            id = readFile().get(2).split(": ")[1];
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return id;
+    }
+
+    public static String getMinecraftVersion() {
+        String id = null;
+        try {
             id = readFile().get(0).split(": ")[1];
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return id;
+    }
+
+    public static String getForgeVersion() {
+        String id = null;
+        try {
+            id = readFile().get(1).split(": ")[1];
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }

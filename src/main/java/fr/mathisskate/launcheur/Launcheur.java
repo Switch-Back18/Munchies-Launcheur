@@ -8,7 +8,6 @@ import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
 import fr.mathisskate.launcheur.utils.Helpers;
 import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
 import fr.theshark34.openlauncherlib.minecraft.GameFolder;
-import fr.theshark34.swinger.animation.Animator;
 import net.arikia.dev.drpc.DiscordRPC;
 
 public class Launcheur {
