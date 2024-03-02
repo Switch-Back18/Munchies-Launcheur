@@ -19,7 +19,6 @@ import fr.theshark34.openlauncherlib.minecraft.GameVersion;
 import fr.theshark34.openlauncherlib.util.Saver;
 import fr.theshark34.openlauncherlib.util.ramselector.RamSelector;
 import net.lingala.zip4j.ZipFile;
-import org.cef.OS;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,7 +32,7 @@ import java.util.Scanner;
 
 public class Helpers {
     //OpenLauncheurLib
-    public static final NewForgeVersionDiscriminator FORGE = new NewForgeVersionDiscriminator(getForgeVersion(), getMinecraftVersion(), "net.minecraftforge", "20220404.173914");
+    public static final NewForgeVersionDiscriminator FORGE = new NewForgeVersionDiscriminator(getForgeVersion(), getMinecraftVersion(), "net.minecraftforge", getMCP());
     public static final GameType GAME_VERSION = GameType.V1_13_HIGHER_FORGE.setNFVD(FORGE);
     public static final GameVersion MC_VERSION = new GameVersion(getMinecraftVersion(), GAME_VERSION);
     public static final GameInfos MC_INFOS = new GameInfos("munchies", MC_VERSION, null);
@@ -58,7 +57,7 @@ public class Helpers {
     public static final AbstractForgeVersion FORGE_VERSION = new ForgeVersionBuilder(ForgeVersionType.NEW)
             .withForgeVersion(getMinecraftVersion() + "-" +getForgeVersion())
             .withCurseModPack(MODPACK)
-            .withMods("https://munchies.websr.fr/download/mods/mods.json")
+            //.withMods("https://munchies.websr.fr/download/mods/mods.json")
             .withFileDeleter(new ModFileDeleter(true))
             .build();
 
@@ -115,36 +114,6 @@ public class Helpers {
         return list;
     }
 
-    public static int getFileID() {
-        String id = null;
-        try {
-            id = readFile().get(4).split(": ")[1];
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return Integer.parseInt(id);
-    }
-
-    public static int getProjectID() {
-        String id = null;
-        try {
-            id = readFile().get(3).split(": ")[1];
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return Integer.parseInt(id);
-    }
-
-    public static String getModPackVersion() {
-        String id = null;
-        try {
-            id = readFile().get(2).split(": ")[1];
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return id;
-    }
-
     public static String getMinecraftVersion() {
         String id = null;
         try {
@@ -163,6 +132,47 @@ public class Helpers {
             throw new RuntimeException(e);
         }
         return id;
+    }
+
+    public static String getMCP() {
+        String id = null;
+        try {
+            id = readFile().get(2).split(": ")[1];
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return id;
+    }
+
+
+    public static String getModPackVersion() {
+        String id = null;
+        try {
+            id = readFile().get(3).split(": ")[1];
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return id;
+    }
+
+    public static int getProjectID() {
+        String id = null;
+        try {
+            id = readFile().get(4).split(": ")[1];
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return Integer.parseInt(id);
+    }
+
+    public static int getFileID() {
+        String id = null;
+        try {
+            id = readFile().get(5).split(": ")[1];
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return Integer.parseInt(id);
     }
 
     public static void downloadServerIP() throws IOException {

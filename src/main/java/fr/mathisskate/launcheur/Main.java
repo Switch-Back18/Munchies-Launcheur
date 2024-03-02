@@ -18,7 +18,6 @@ public class Main {
          try {
              frameInstance = new LauncheurFrame();
              Helpers.doUpdate();
-             Helpers.downloadServerIP();
          } catch (IOException e) {
              System.out.println(e.getMessage());
          }

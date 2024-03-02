@@ -40,7 +40,7 @@ public class Launcheur {
 
         noFramework.getAdditionalVmArgs().add(Helpers.RAM_SELECTOR.getRamArguments()[1]);
 
-        Process process = noFramework.launch("1.18.2", "40.2.10", NoFramework.ModLoader.FORGE);
+        Process process = noFramework.launch(Helpers.getMinecraftVersion(), Helpers.getForgeVersion(), NoFramework.ModLoader.FORGE);
         try {
             Thread.sleep(5000L);
             Main.frameInstance.setVisible(false);
