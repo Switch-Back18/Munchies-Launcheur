@@ -55,9 +55,8 @@ public class Helpers {
     public static final UpdaterOptions OPTIONS = new UpdaterOptions.UpdaterOptionsBuilder().build();
 
     public static final AbstractForgeVersion FORGE_VERSION = new ForgeVersionBuilder(ForgeVersionType.NEW)
-            .withForgeVersion(getMinecraftVersion() + "-" +getForgeVersion())
+            .withForgeVersion(getMinecraftVersion() + "-" + getForgeVersion())
             .withCurseModPack(MODPACK)
-            //.withMods("https://munchies.websr.fr/download/mods/mods.json")
             .withFileDeleter(new ModFileDeleter(true))
             .build();
 
@@ -103,8 +102,8 @@ public class Helpers {
         final String os = Objects.requireNonNull(System.getProperty("os.name")).toLowerCase();
         ArrayList<String> list = new ArrayList<>();
         Scanner scanner = null;
-        if(os.contains("win"))
-            scanner = new Scanner(Paths.get(System.getenv("APPDATA"),".munchies", "Launcheur", "LauncheurConfig.txt").toFile());
+        if (os.contains("win"))
+            scanner = new Scanner(Paths.get(System.getenv("APPDATA"), ".munchies", "Launcheur", "LauncheurConfig.txt").toFile());
         else if (os.contains("mac"))
             scanner = new Scanner(Paths.get(System.getProperty("user.home"), "Library", "Application Support", "munchies", "Launcheur", "LauncheurConfig.txt").toFile());
         else

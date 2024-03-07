@@ -11,7 +11,7 @@ application {
 }
 
 group 'fr.mathisskate'
-version '1.18'
+version '1.19'
 
 repositories {
     mavenCentral()
@@ -26,7 +26,7 @@ dependencies {
     implementation 'org.openjfx:javafx-swing:17'
     implementation 'org.openjfx:javafx-controls:17'
     implementation 'org.openjfx:javafx-web:17'
-    implementation 'fr.flowarg:flowupdater:1.8.3'
+    implementation 'fr.flowarg:flowupdater:1.8.4'
     implementation 'fr.flowarg:openlauncherlib:3.2.8'
     implementation 'fr.litarvan:openauth:1.1.6'
     implementation 'org.json:json:20230227'
