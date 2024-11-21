@@ -1,8 +1,8 @@
-package fr.mathisskate.launcheur.utils;
+package fr.switchback.launcheur.utils;
 
 import fr.flowarg.flowupdater.download.DownloadList;
 import fr.flowarg.flowupdater.download.IProgressCallback;
-import fr.mathisskate.launcheur.Main;
+import fr.switchback.launcheur.Main;
 
 public class ProgressBarAPI implements IProgressCallback {
 

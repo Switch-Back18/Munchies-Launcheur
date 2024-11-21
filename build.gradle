@@ -7,10 +7,10 @@ plugins {
 
 application {
     mainModule = 'fr.litarvan.openauth.microsoft.MicrosoftAuthenticator'
-    mainClass = 'fr.mathisskate.launcheur.Main'
+    mainClass = 'fr.switchback.launcheur.Main'
 }
 
-group 'fr.mathisskate'
+group 'fr.switchback'
 version '1.19'
 
 repositories {
@@ -26,18 +26,19 @@ dependencies {
     implementation 'org.openjfx:javafx-swing:17'
     implementation 'org.openjfx:javafx-controls:17'
     implementation 'org.openjfx:javafx-web:17'
-    implementation 'fr.flowarg:flowupdater:1.8.4'
-    implementation 'fr.flowarg:openlauncherlib:3.2.8'
+    implementation 'fr.flowarg:flowupdater:1.9.2'
+    implementation 'fr.flowarg:flowmultitools:1.4.4'
+    implementation 'fr.flowarg:openlauncherlib:3.2.11'
+    implementation 'fr.flowarg:azuljavadownloader:1.0.1'
     implementation 'fr.litarvan:openauth:1.1.6'
-    implementation 'org.json:json:20230227'
-    implementation 'commons-io:commons-io:2.11.0'
-    implementation 'net.lingala.zip4j:zip4j:2.11.5'
+    implementation 'commons-io:commons-io:2.14.0'
+    implementation 'org.json:json:20240303'
 }
 
 task fatJar(type: Jar) {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
-        attributes 'Main-Class': 'fr.mathisskate.launcheur.Main'
+        attributes 'Main-Class': 'fr.switchback.launcheur.Main'
     }
     archiveBaseName = "MunchiesLauncheur"
     from { configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) } }

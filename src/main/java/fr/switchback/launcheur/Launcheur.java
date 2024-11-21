@@ -1,11 +1,11 @@
-package fr.mathisskate.launcheur;
+package fr.switchback.launcheur;
 
 import fr.flowarg.openlauncherlib.NoFramework;
 import fr.litarvan.openauth.AuthenticationException;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthResult;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
-import fr.mathisskate.launcheur.utils.Helpers;
+import fr.switchback.launcheur.utils.Helpers;
 import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
 import fr.theshark34.openlauncherlib.minecraft.GameFolder;
 import net.arikia.dev.drpc.DiscordRPC;
@@ -32,15 +32,11 @@ public class Launcheur {
     }
 
     public static void launch() throws Exception {
-        NoFramework noFramework = new NoFramework(
-                Helpers.MC_DIR,
-                authInfos,
-                GameFolder.FLOW_UPDATER
-        );
+        NoFramework noFramework = new NoFramework(Helpers.MC_DIR, authInfos, GameFolder.FLOW_UPDATER);
 
         noFramework.getAdditionalVmArgs().add(Helpers.RAM_SELECTOR.getRamArguments()[1]);
 
-        Process process = noFramework.launch(Helpers.getMinecraftVersion(), Helpers.getForgeVersion(), NoFramework.ModLoader.FORGE);
+        Process process = noFramework.launch(Helpers.getMinecraftVersion(), Helpers.getLoaderVersion(), NoFramework.ModLoader.FORGE);
         try {
             Thread.sleep(5000L);
             Main.frameInstance.setVisible(false);

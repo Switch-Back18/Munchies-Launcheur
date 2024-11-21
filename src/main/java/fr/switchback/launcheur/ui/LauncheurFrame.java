@@ -1,6 +1,6 @@
-package fr.mathisskate.launcheur.ui;
+package fr.switchback.launcheur.ui;
 
-import fr.mathisskate.launcheur.Main;
+import fr.switchback.launcheur.Main;
 import fr.theshark34.swinger.util.WindowMover;
 
 import javax.imageio.ImageIO;
