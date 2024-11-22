@@ -1,7 +1,7 @@
 package fr.switchback.launcheur;
 
 import fr.switchback.launcheur.ui.LauncheurFrame;
-import fr.switchback.launcheur.utils.Helpers;
+import fr.switchback.launcheur.utils.Utils;
 import fr.theshark34.swinger.Swinger;
 import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
@@ -17,9 +17,9 @@ public class Main {
          Swinger.setSystemLookNFeel();
          try {
              frameInstance = new LauncheurFrame();
-             Helpers.JavaSetup();
-             Helpers.doUpdate();
-             Helpers.setMinMaxRam(8, 17);
+             Utils.javaSetup();
+             Utils.doUpdate();
+             Utils.setMinMaxRam(8, 17);
          } catch (IOException e) {
              System.out.println(e.getMessage());
          }
@@ -28,7 +28,7 @@ public class Main {
 
     private static void initDiscord() {
         DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler((discordUser) -> {
-            DiscordRichPresence richPresence = new DiscordRichPresence.Builder("Launcheur du Serveur Munchies").setStartTimestamps(System.currentTimeMillis() / 1000).setBigImage("logo", "Munchies : Beyond Limits - v" + Helpers.getModPackVersion()).build();
+            DiscordRichPresence richPresence = new DiscordRichPresence.Builder("Launcheur du Serveur Munchies").setStartTimestamps(System.currentTimeMillis() / 1000).setBigImage("logo", "Munchies : Beyond Limits - v" + Utils.getModPackVersion()).build();
             DiscordRPC.discordUpdatePresence(richPresence);
         }).build();
         DiscordRPC.discordInitialize("399951697360846859", handlers, false);

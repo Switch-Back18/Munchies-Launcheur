@@ -4,7 +4,7 @@ import fr.litarvan.openauth.AuthenticationException;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
 import fr.switchback.launcheur.Launcheur;
 import fr.switchback.launcheur.Main;
-import fr.switchback.launcheur.utils.Helpers;
+import fr.switchback.launcheur.utils.Utils;
 import fr.theshark34.swinger.event.SwingerEvent;
 import fr.theshark34.swinger.event.SwingerEventListener;
 import fr.theshark34.swinger.textured.STexturedButton;
@@ -110,14 +110,14 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
     public void onEvent(SwingerEvent e) {
         Desktop desktop = Desktop.getDesktop();
         if (e.getSource() == buttonOPTION) {
-            Helpers.RAM_SELECTOR.display();
+            Utils.RAM_SELECTOR.display();
         } else if (e.getSource() == buttonQUIT) {
             System.exit(0);
         } else if (e.getSource() == buttonMINI) {
             Main.frameInstance.setState(Frame.ICONIFIED);
         } else if (e.getSource() == buttonDossier) {
             try {
-                Desktop.getDesktop().open(Helpers.MC_DIR.toFile());
+                Desktop.getDesktop().open(Utils.MC_DIR.toFile());
             } catch (IOException ex) {
                 System.out.println(ex.getMessage());
             }
@@ -144,9 +144,9 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
                         Launcheur.auth(hasLogged());
                         try {
                             Launcheur.update();
-                            if (Helpers.MC_DIR.toFile().exists()) {
-                                Helpers.RAM_SELECTOR.save();
-                                Helpers.SAVER.set("token", Launcheur.result.getRefreshToken());
+                            if (Utils.MC_DIR.toFile().exists()) {
+                                Utils.RAM_SELECTOR.save();
+                                Utils.SAVER.set("token", Launcheur.result.getRefreshToken());
                             }
                             Launcheur.launch();
                         } catch (Exception ex) {
@@ -181,6 +181,6 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
     }
 
     private boolean hasLogged() {
-        return Helpers.SAVER.get("token") != null;
+        return Utils.SAVER.get("token") != null;
     }
 }

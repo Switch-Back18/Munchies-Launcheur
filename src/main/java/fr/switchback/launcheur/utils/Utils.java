@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class Helpers {
+public class Utils {
     //OpenLauncheurLib
     public static final Path MC_DIR = GameDirGenerator.createGameDir("munchies", true);
     public static final Saver SAVER = new Saver(MC_DIR.resolve("options.properties"));
@@ -56,12 +56,11 @@ public class Helpers {
             .withFileDeleter(new ModFileDeleter(true, "OptiFine_1.12.2_HD_U_G5.jar"))
             .build();
 
-    public static void JavaSetup() throws IOException {
+    public static void javaSetup() throws IOException {
 
         final AzulJavaDownloader downloader = new AzulJavaDownloader(new Callback() {
             @Override
             public void onStep(Step step) {
-                System.out.println(step.name());
                 if(step == Step.DONE)
                     Main.frameInstance.getLauncherPanel().getButtonJouer().setEnabled(true);
             }
