@@ -13,6 +13,7 @@ public class Main {
     public static LauncheurFrame frameInstance;
 
      public static void main(String[] args) {
+         initDiscord();
          Swinger.setSystemLookNFeel();
          try {
              frameInstance = new LauncheurFrame();
@@ -23,7 +24,6 @@ public class Main {
              System.out.println(e.getMessage());
          }
          frameInstance.setVisible(true);
-         initDiscord();
     }
 
     private static void initDiscord() {

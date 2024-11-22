@@ -108,6 +108,7 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
 
     @Override
     public void onEvent(SwingerEvent e) {
+        Desktop desktop = Desktop.getDesktop();
         if (e.getSource() == buttonOPTION) {
             Helpers.RAM_SELECTOR.display();
         } else if (e.getSource() == buttonQUIT) {
@@ -122,7 +123,6 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
             }
         } else if (e.getSource() == buttonDISCORD) {
             try {
-                Desktop desktop = Desktop.getDesktop();
                 URI oURL = new URI("https://discord.com/invite/erUg4NnADM");
                 desktop.browse(oURL);
             } catch (URISyntaxException | IOException ex) {
@@ -130,7 +130,6 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
             }
         } else if (e.getSource() == buttonSITE) {
             try {
-                Desktop desktop = Desktop.getDesktop();
                 URI oURL = new URI("https://munchies.websr.fr");
                 desktop.browse(oURL);
             } catch (URISyntaxException | IOException ex) {
@@ -149,10 +148,6 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
                                 Helpers.RAM_SELECTOR.save();
                                 Helpers.SAVER.set("token", Launcheur.result.getRefreshToken());
                             }
-                        } catch (Exception ex) {
-                            System.out.println(ex.getMessage());
-                        }
-                        try {
                             Launcheur.launch();
                         } catch (Exception ex) {
                             System.out.println(ex.getMessage());
@@ -161,7 +156,7 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
                         isLaunch = false;
                         buttonJOUER.setTexture(IMAGE_TRANSPARENT);
                         JOptionPane.showMessageDialog(Main.frameInstance,
-                                "Impossible de se connecter : Verifie si tu as un compte Minecraft lie Microsoft.", "Erreur",
+                                "Impossible de se connecter : Verifie si tu as un compte Minecraft / Microsoft.", "Erreur",
                                 JOptionPane.ERROR_MESSAGE);
                         System.out.println(ex.getMessage());
                     } catch (Exception ex) {

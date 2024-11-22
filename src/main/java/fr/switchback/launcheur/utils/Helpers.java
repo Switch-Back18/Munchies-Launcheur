@@ -30,16 +30,16 @@ import java.util.Scanner;
 public class Helpers {
     //OpenLauncheurLib
     public static final Path MC_DIR = GameDirGenerator.createGameDir("munchies", true);
-    public static final Saver SAVER = new Saver(Helpers.MC_DIR.resolve("options.properties"));
-    public static final RamSelector RAM_SELECTOR = new RamSelector(Helpers.MC_DIR.resolve("ram.properties"));
+    public static final Saver SAVER = new Saver(MC_DIR.resolve("options.properties"));
+    public static final RamSelector RAM_SELECTOR = new RamSelector(MC_DIR.resolve("ram.properties"));
 
     //FlowUpdater
     public static final int PROJECT_ID = getProjectID();
     public static final int FILE_ID = getFileID();
-    public static final ILogger LOGGER = new Logger("[Munchies Launcheur]", Helpers.MC_DIR.resolve("logs.log"), true);
+    public static final ILogger LOGGER = new Logger("[Munchies Launcheur]", MC_DIR.resolve("logs.log"), true);
 
-    public static IProgressCallback CALLBACK = new ProgressBarAPI();
-    public static VanillaVersion VANILLA = new VanillaVersion.VanillaVersionBuilder()
+    public static final IProgressCallback CALLBACK = new ProgressBarAPI();
+    public static final VanillaVersion VANILLA = new VanillaVersion.VanillaVersionBuilder()
             .withName(getMinecraftVersion())
             .build();
 
