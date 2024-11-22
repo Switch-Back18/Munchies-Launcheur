@@ -1,7 +1,5 @@
 package fr.switchback.launcheur.ui;
 
-import fr.litarvan.openauth.AuthenticationException;
-import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
 import fr.switchback.launcheur.Launcheur;
 import fr.switchback.launcheur.Main;
 import fr.switchback.launcheur.utils.Utils;
@@ -146,24 +144,17 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
                             Launcheur.update();
                             if (Utils.MC_DIR.toFile().exists()) {
                                 Utils.RAM_SELECTOR.save();
-                                Utils.SAVER.set("token", Launcheur.result.getRefreshToken());
                             }
                             Launcheur.launch();
                         } catch (Exception ex) {
                             System.out.println(ex.getMessage());
                         }
-                    } catch (AuthenticationException | MicrosoftAuthenticationException ex) {
+                    } catch (Exception ex) {
                         isLaunch = false;
                         buttonJOUER.setTexture(IMAGE_TRANSPARENT);
                         JOptionPane.showMessageDialog(Main.frameInstance,
                                 "Impossible de se connecter : Verifie si tu as un compte Minecraft / Microsoft.", "Erreur",
                                 JOptionPane.ERROR_MESSAGE);
-                        System.out.println(ex.getMessage());
-                    } catch (Exception ex) {
-                        isLaunch = false;
-                        buttonJOUER.setTexture(IMAGE_TRANSPARENT);
-                        JOptionPane.showMessageDialog(null, "Impossible de mettre a jour ton jeu ! : " + ex.getMessage(),
-                                "Erreur !", JOptionPane.ERROR_MESSAGE);
                         System.out.println(ex.getMessage());
                     }
                 });
@@ -181,6 +172,6 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
     }
 
     private boolean hasLogged() {
-        return Utils.SAVER.get("token") != null;
+        return Utils.MC_DIR.resolve("login.json").toFile().exists();
     }
 }

@@ -15,7 +15,6 @@ import fr.flowarg.flowupdater.versions.forge.ForgeVersion;
 import fr.flowarg.flowupdater.versions.forge.ForgeVersionBuilder;
 import fr.switchback.launcheur.Main;
 import fr.theshark34.openlauncherlib.minecraft.util.GameDirGenerator;
-import fr.theshark34.openlauncherlib.util.Saver;
 import fr.theshark34.openlauncherlib.util.ramselector.RamSelector;
 
 import java.io.File;
@@ -30,7 +29,6 @@ import java.util.Scanner;
 public class Utils {
     //OpenLauncheurLib
     public static final Path MC_DIR = GameDirGenerator.createGameDir("munchies", true);
-    public static final Saver SAVER = new Saver(MC_DIR.resolve("options.properties"));
     public static final RamSelector RAM_SELECTOR = new RamSelector(MC_DIR.resolve("ram.properties"));
 
     //FlowUpdater
