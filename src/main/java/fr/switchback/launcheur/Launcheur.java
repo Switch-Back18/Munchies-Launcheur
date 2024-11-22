@@ -21,8 +21,8 @@ import java.util.Scanner;
 public class Launcheur {
     private static AuthInfos authInfos;
 
-    public static void auth(boolean logged) throws Exception {
-        if (!logged) {
+    public static void auth(boolean loggedBefore) throws Exception {
+        if (!loggedBefore) {
             HttpClient httpClient = MinecraftAuth.createHttpClient();
             StepFullJavaSession.FullJavaSession javaSession = MinecraftAuth.JAVA_DEVICE_CODE_LOGIN.getFromInput(httpClient, new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
                 Desktop desktop = Desktop.getDesktop();
@@ -38,18 +38,18 @@ public class Launcheur {
             fileWriter.close();
             authInfos = new AuthInfos(javaSession.getMcProfile().getName(), javaSession.getMcProfile().getMcToken().getAccessToken(),
                     javaSession.getMcProfile().getId().toString());
-        } else {
-            String jsonString = "";
-            JsonObject session = new JsonObject();
-            JsonParser parser = new JsonParser();
-            Scanner scanner = new Scanner(Utils.MC_DIR.resolve("login.json").toFile());
-            while (scanner.hasNextLine())
-                jsonString += scanner.nextLine();
-            session = parser.parse(jsonString).getAsJsonObject();
-            StepFullJavaSession.FullJavaSession javaSession = MinecraftAuth.JAVA_DEVICE_CODE_LOGIN.fromJson(session);
-            authInfos = new AuthInfos(javaSession.getMcProfile().getName(), javaSession.getMcProfile().getMcToken().getAccessToken(),
-                    javaSession.getMcProfile().getId().toString());
+            return;
         }
+        String jsonString = "";
+        JsonObject session = new JsonObject();
+        JsonParser parser = new JsonParser();
+        Scanner scanner = new Scanner(Utils.MC_DIR.resolve("login.json").toFile());
+        while (scanner.hasNextLine())
+            jsonString += scanner.nextLine();
+        session = parser.parse(jsonString).getAsJsonObject();
+        StepFullJavaSession.FullJavaSession javaSession = MinecraftAuth.JAVA_DEVICE_CODE_LOGIN.fromJson(session);
+        authInfos = new AuthInfos(javaSession.getMcProfile().getName(), javaSession.getMcProfile().getMcToken().getAccessToken(),
+                javaSession.getMcProfile().getId().toString());
         System.out.println("[Pseudo Minecraft] " + authInfos.getUsername());
     }
 
@@ -59,9 +59,7 @@ public class Launcheur {
 
     public static void launch() throws Exception {
         NoFramework noFramework = new NoFramework(Utils.MC_DIR, authInfos, GameFolder.FLOW_UPDATER);
-
         noFramework.getAdditionalVmArgs().add(Utils.RAM_SELECTOR.getRamArguments()[1]);
-
         Process process = noFramework.launch(Utils.getMinecraftVersion(), Utils.getLoaderVersion(), NoFramework.ModLoader.FORGE);
         try {
             Thread.sleep(5000L);

@@ -40,7 +40,7 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
     private STexturedButton buttonDISCORD;
     private STexturedButton buttonSITE;
 
-    private boolean isLaunch = false;
+    private boolean isLaunching;
 
     public LauncheurPanel() throws IOException {
         IMAGE_TRANSPARENT = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("transpa.png")));
@@ -62,6 +62,8 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
         buttonMINI = new STexturedButton(IMAGE_TRANSPARENT, IMAGE_MINI);
         buttonDISCORD = new STexturedButton(IMAGE_TRANSPARENT, IMAGE_DISCORD);
         buttonSITE = new STexturedButton(IMAGE_TRANSPARENT, IMAGE_SITE);
+
+        isLaunching = false;
 
         setLayout(null);
 
@@ -134,12 +136,12 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
                 System.out.println(ex.getMessage());
             }
         } else if (e.getSource() == buttonJOUER) {
-            if(!isLaunch) {
-                isLaunch = true;
+            if(!isLaunching) {
+                isLaunching = true;
                 buttonJOUER.setTexture(IMAGE_JOUER);
                 Thread t = new Thread(() -> {
                     try {
-                        Launcheur.auth(hasLogged());
+                        Launcheur.auth(loggedBefore());
                         try {
                             Launcheur.update();
                             if (Utils.MC_DIR.toFile().exists()) {
@@ -150,7 +152,7 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
                             System.out.println(ex.getMessage());
                         }
                     } catch (Exception ex) {
-                        isLaunch = false;
+                        isLaunching = false;
                         buttonJOUER.setTexture(IMAGE_TRANSPARENT);
                         JOptionPane.showMessageDialog(Main.frameInstance,
                                 "Impossible de se connecter : Verifie si tu as un compte Minecraft / Microsoft.", "Erreur",
@@ -171,7 +173,7 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
         return buttonJOUER;
     }
 
-    private boolean hasLogged() {
+    private boolean loggedBefore() {
         return Utils.MC_DIR.resolve("login.json").toFile().exists();
     }
 }

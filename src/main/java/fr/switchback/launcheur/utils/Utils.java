@@ -55,7 +55,6 @@ public class Utils {
             .build();
 
     public static void javaSetup() throws IOException {
-
         final AzulJavaDownloader downloader = new AzulJavaDownloader(new Callback() {
             @Override
             public void onStep(Step step) {
@@ -68,7 +67,6 @@ public class Utils {
         final Path javaHomeWindows = downloader.downloadAndInstall(buildInfoWindows, java);
         System.setProperty("java.home",javaHomeWindows.toAbsolutePath().toString());
     }
-
 
     public static final UpdaterOptions OPTIONS = new UpdaterOptions.UpdaterOptionsBuilder()
             .withJavaPath(System.getProperty("java.home"))

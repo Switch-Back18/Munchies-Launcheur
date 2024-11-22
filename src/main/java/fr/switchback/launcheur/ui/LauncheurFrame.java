@@ -16,6 +16,7 @@ public class LauncheurFrame extends JFrame {
     public LauncheurFrame() throws IOException {
         BufferedImage icon = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("icon.png")));
         Color transpa = new Color(255, 255, 255, 0);
+
         setTitle("Munchies Launcher");
         setIconImage(icon);
         setSize(1000, 750);
