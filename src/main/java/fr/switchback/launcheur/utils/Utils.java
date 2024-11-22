@@ -21,9 +21,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class Utils {
@@ -34,7 +32,7 @@ public class Utils {
     //FlowUpdater
     public static final int PROJECT_ID = getProjectID();
     public static final int FILE_ID = getFileID();
-    public static final ILogger LOGGER = new Logger("[Munchies Launcheur]", MC_DIR.resolve("logs.log"), true);
+    public static final ILogger LOGGER = new Logger("[Munchies Launcheur]", MC_DIR.resolve("logs.log"), false);
 
     public static final IProgressCallback CALLBACK = new ProgressBarAPI();
     public static final VanillaVersion VANILLA = new VanillaVersion.VanillaVersionBuilder()
@@ -110,69 +108,37 @@ public class Utils {
         }
     }
 
-    public static ArrayList<String> readFile() throws FileNotFoundException {
-        final String os = Objects.requireNonNull(System.getProperty("os.name")).toLowerCase();
+    public static ArrayList<String> readFile() {
         ArrayList<String> list = new ArrayList<>();
         Scanner scanner = null;
-        if (os.contains("win"))
-            scanner = new Scanner(Paths.get(System.getenv("APPDATA"), ".munchies", "Launcheur", "LauncheurConfig.txt").toFile());
-        else if (os.contains("mac"))
-            scanner = new Scanner(Paths.get(System.getProperty("user.home"), "Library", "Application Support", "munchies", "Launcheur", "LauncheurConfig.txt").toFile());
-        else
-            scanner = new Scanner(Paths.get(System.getProperty("user.home"), ".local", "share", "munchies", "Launcheur", "LauncheurConfig.txt").toFile());
+        try {
+            scanner = new Scanner(MC_DIR.resolve("Launcheur/LauncheurConfig.txt").toFile());
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
         while (scanner.hasNext())
             list.add(scanner.nextLine());
         return list;
     }
 
     public static String getMinecraftVersion() {
-        String id = null;
-        try {
-            id = readFile().get(0).split(": ")[1];
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return id;
+        return readFile().get(0).split(": ")[1];
     }
 
     public static String getLoaderVersion() {
-        String id = null;
-        try {
-            id = readFile().get(1).split(": ")[1];
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return id;
+        return readFile().get(1).split(": ")[1];
     }
 
     public static String getModPackVersion() {
-        String id = null;
-        try {
-            id = readFile().get(2).split(": ")[1];
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return id;
+        return readFile().get(2).split(": ")[1];
     }
 
     public static int getProjectID() {
-        String id = null;
-        try {
-            id = readFile().get(3).split(": ")[1];
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return Integer.parseInt(id);
+        return Integer.parseInt(readFile().get(3).split(": ")[1]);
     }
 
     public static int getFileID() {
-        String id = null;
-        try {
-            id = readFile().get(4).split(": ")[1];
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return Integer.parseInt(id);
+        return Integer.parseInt(readFile().get(4).split(": ")[1]);
     }
 
     public static void setMinMaxRam(int min, int max) {
@@ -182,8 +148,6 @@ public class Utils {
                 RAM_SELECTOR.RAM_ARRAY[y] = i + "Go";
                 y++;
             }
-        } else
-            System.out.println(
-                    "Il faut une différence de 9 entre le max est le min, ici la différence est " + (max - min));
+        }
     }
 }

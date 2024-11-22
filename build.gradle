@@ -17,6 +17,7 @@ dependencies {
     implementation 'fr.flowarg:openlauncherlib:3.2.11'
     implementation 'fr.flowarg:azuljavadownloader:1.0.1'
     implementation 'net.raphimc:MinecraftAuth:4.1.1'
+    implementation 'org.json:json:20240303'
 }
 
 task fatJar(type: Jar) {

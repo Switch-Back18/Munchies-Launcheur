@@ -38,6 +38,7 @@ public class Launcheur {
             fileWriter.close();
             authInfos = new AuthInfos(javaSession.getMcProfile().getName(), javaSession.getMcProfile().getMcToken().getAccessToken(),
                     javaSession.getMcProfile().getId().toString());
+            System.out.println("[Pseudo Minecraft] " + authInfos.getUsername());
             return;
         }
         String jsonString = "";
