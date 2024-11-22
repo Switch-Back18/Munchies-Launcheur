@@ -3,3 +3,4 @@ src/test/
 .gradle/
 build/
 forge-installer-patched.jar.log
+/out/
