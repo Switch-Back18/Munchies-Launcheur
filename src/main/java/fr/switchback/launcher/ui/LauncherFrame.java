@@ -1,6 +1,6 @@
-package fr.switchback.launcheur.ui;
+package fr.switchback.launcher.ui;
 
-import fr.switchback.launcheur.Main;
+import fr.switchback.launcher.Main;
 import fr.theshark34.swinger.util.WindowMover;
 
 import javax.imageio.ImageIO;
@@ -10,10 +10,10 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
 
-public class LauncheurFrame extends JFrame {
-    private final LauncheurPanel launcheurPanel;
+public class LauncherFrame extends JFrame {
+    private final LauncherPanel launcherPanel;
 
-    public LauncheurFrame() throws IOException {
+    public LauncherFrame() throws IOException {
         BufferedImage icon = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("icon.png")));
         Color transpa = new Color(255, 255, 255, 0);
 
@@ -30,12 +30,12 @@ public class LauncheurFrame extends JFrame {
         addMouseListener(mover);
         addMouseMotionListener(mover);
 
-        launcheurPanel = new LauncheurPanel();
-        launcheurPanel.setBounds(0, 0, 1000, 750);
-        add(launcheurPanel);
+        launcherPanel = new LauncherPanel();
+        launcherPanel.setBounds(0, 0, 1000, 750);
+        add(launcherPanel);
     }
 
-    public LauncheurPanel getLauncherPanel() {
-        return launcheurPanel;
+    public LauncherPanel getLauncherPanel() {
+        return launcherPanel;
     }
 }

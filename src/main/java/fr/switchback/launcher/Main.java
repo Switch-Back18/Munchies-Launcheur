@@ -1,7 +1,7 @@
-package fr.switchback.launcheur;
+package fr.switchback.launcher;
 
-import fr.switchback.launcheur.ui.LauncheurFrame;
-import fr.switchback.launcheur.utils.Utils;
+import fr.switchback.launcher.ui.LauncherFrame;
+import fr.switchback.launcher.utils.Utils;
 import fr.theshark34.swinger.Swinger;
 import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
@@ -10,13 +10,13 @@ import net.arikia.dev.drpc.DiscordRichPresence;
 import java.io.IOException;
 
 public class Main {
-    public static LauncheurFrame frameInstance;
+    public static LauncherFrame frameInstance;
 
      public static void main(String[] args) {
          initDiscord();
          Swinger.setSystemLookNFeel();
          try {
-             frameInstance = new LauncheurFrame();
+             frameInstance = new LauncherFrame();
              Utils.javaSetup();
              Utils.doUpdate();
              Utils.setMinMaxRam(8, 17);

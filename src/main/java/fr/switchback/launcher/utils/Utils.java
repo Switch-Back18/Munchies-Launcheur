@@ -1,5 +1,7 @@
-package fr.switchback.launcheur.utils;
+package fr.switchback.launcher.utils;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import fr.flowarg.azuljavadownloader.*;
 import fr.flowarg.flowio.FileUtils;
 import fr.flowarg.flowlogger.ILogger;
@@ -13,15 +15,17 @@ import fr.flowarg.flowupdater.utils.UpdaterOptions;
 import fr.flowarg.flowupdater.versions.*;
 import fr.flowarg.flowupdater.versions.forge.ForgeVersion;
 import fr.flowarg.flowupdater.versions.forge.ForgeVersionBuilder;
-import fr.switchback.launcheur.Main;
+import fr.switchback.launcher.Main;
 import fr.theshark34.openlauncherlib.minecraft.util.GameDirGenerator;
 import fr.theshark34.openlauncherlib.util.ramselector.RamSelector;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Utils {
@@ -60,10 +64,32 @@ public class Utils {
                     Main.frameInstance.getLauncherPanel().getButtonJouer().setEnabled(true);
             }
         });
-        final Path java = MC_DIR.resolve("Launcheur\\java");
-        final AzulJavaBuildInfo buildInfoWindows = downloader.getBuildInfo(new RequestedJavaInfo("1.8", AzulJavaType.JDK, "Windows", "x64", true));
-        final Path javaHomeWindows = downloader.downloadAndInstall(buildInfoWindows, java);
-        System.setProperty("java.home",javaHomeWindows.toAbsolutePath().toString());
+        Path java;
+        switch (OS.getOS()) {
+            case WINDOWS :
+                AzulJavaBuildInfo buildInfoWindows = downloader.getBuildInfo(new RequestedJavaInfo("1.8", AzulJavaType.JRE, AzulJavaOS.WINDOWS, AzulJavaArch.X64).setJavaFxBundled(true));
+                java = MC_DIR.resolve("Launcheur\\java");
+                Path javaHomeWindows = downloader.downloadAndInstall(buildInfoWindows, java);
+                System.setProperty("java.home", javaHomeWindows.toAbsolutePath().toString());
+                System.out.println("Java for Windows");
+                break;
+            case MACOS :
+                AzulJavaBuildInfo buildInfoMac = downloader.getBuildInfo(new RequestedJavaInfo("1.8", AzulJavaType.JRE, AzulJavaOS.MACOS, AzulJavaArch.X64).setJavaFxBundled(true));
+                java = MC_DIR.resolve("Launcheur/java");
+                Path javaHomeMac = downloader.downloadAndInstall(buildInfoMac, java);
+                System.setProperty("java.home", javaHomeMac.toAbsolutePath().toString());
+                System.out.println("Java for MacOS");
+                break;
+            case LINUX :
+                AzulJavaBuildInfo buildInfoLinux = downloader.getBuildInfo(new RequestedJavaInfo("1.8", AzulJavaType.JRE, AzulJavaOS.LINUX, AzulJavaArch.X64).setJavaFxBundled(true));
+                java = MC_DIR.resolve("Launcheur/java");
+                Path javaHomeLinux = downloader.downloadAndInstall(buildInfoLinux, java);
+                System.setProperty("java.home", javaHomeLinux.toAbsolutePath().toString());
+                System.out.println("Java for Linux");
+                break;
+            default:
+                break;
+        }
     }
 
     public static final UpdaterOptions OPTIONS = new UpdaterOptions.UpdaterOptionsBuilder()
@@ -116,13 +142,13 @@ public class Utils {
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         }
-        while (scanner.hasNext())
+        while (Objects.requireNonNull(scanner).hasNext())
             list.add(scanner.nextLine());
         return list;
     }
 
     public static String getMinecraftVersion() {
-        return readFile().get(0).split(": ")[1];
+        return readFile().getFirst().split(": ")[1];
     }
 
     public static String getLoaderVersion() {
@@ -145,9 +171,31 @@ public class Utils {
         int y = 0;
         if (max - min == 9) {
             for (int i = min; i <= max; i++) {
-                RAM_SELECTOR.RAM_ARRAY[y] = i + "Go";
+                RamSelector.RAM_ARRAY[y] = i + "Go";
                 y++;
             }
         }
+    }
+
+    public static void saveJson(JsonObject json) {
+        try {
+            FileWriter fileWriter = new FileWriter(Utils.MC_DIR.resolve("login.json").toFile());
+            fileWriter.write(json.toString());
+            fileWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static JsonObject loadJson() {
+        StringBuilder jsonString = new StringBuilder();
+        try {
+            Scanner scanner = new Scanner(Utils.MC_DIR.resolve("login.json").toFile());
+            while (scanner.hasNextLine())
+                jsonString.append(scanner.nextLine());
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return JsonParser.parseString(jsonString.toString()).getAsJsonObject();
     }
 }

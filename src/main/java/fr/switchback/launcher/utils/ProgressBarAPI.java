@@ -1,8 +1,8 @@
-package fr.switchback.launcheur.utils;
+package fr.switchback.launcher.utils;
 
 import fr.flowarg.flowupdater.download.DownloadList;
 import fr.flowarg.flowupdater.download.IProgressCallback;
-import fr.switchback.launcheur.Main;
+import fr.switchback.launcher.Main;
 
 public class ProgressBarAPI implements IProgressCallback {
 

@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'fr.switchback'
-version '1.20'
+version ''
 
 repositories {
     mavenCentral()
@@ -15,12 +15,12 @@ dependencies {
     implementation files('libs/discord-rpc.jar')
     implementation 'fr.flowarg:flowupdater:1.9.2'
     implementation 'fr.flowarg:openlauncherlib:3.2.11'
-    implementation 'fr.flowarg:azuljavadownloader:1.0.1'
+    implementation 'fr.flowarg:azuljavadownloader:1.0.2'
     implementation 'net.raphimc:MinecraftAuth:4.1.1'
     implementation 'org.json:json:20240303'
 }
 
-task fatJar(type: Jar) {
+tasks.register('fatJar', Jar) {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
         attributes 'Main-Class': 'fr.switchback.launcheur.Main'

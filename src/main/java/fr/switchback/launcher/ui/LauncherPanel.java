@@ -1,8 +1,9 @@
-package fr.switchback.launcheur.ui;
+package fr.switchback.launcher.ui;
 
-import fr.switchback.launcheur.Launcheur;
-import fr.switchback.launcheur.Main;
-import fr.switchback.launcheur.utils.Utils;
+import fr.switchback.launcher.Launcher;
+import fr.switchback.launcher.Main;
+import fr.switchback.launcher.utils.OS;
+import fr.switchback.launcher.utils.Utils;
 import fr.theshark34.swinger.event.SwingerEvent;
 import fr.theshark34.swinger.event.SwingerEventListener;
 import fr.theshark34.swinger.textured.STexturedButton;
@@ -17,7 +18,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
 
-public class LauncheurPanel extends JPanel implements SwingerEventListener {
+public class LauncherPanel extends JPanel implements SwingerEventListener {
 
     //Images
     private final BufferedImage IMAGE_TRANSPARENT;
@@ -42,7 +43,7 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
 
     private boolean isLaunching;
 
-    public LauncheurPanel() throws IOException {
+    public LauncherPanel() throws IOException {
         IMAGE_TRANSPARENT = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("transpa.png")));
         IMAGE_JOUER = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/jouer.png")));
         IMAGE_LOAD = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("load.png")));
@@ -109,13 +110,14 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
     @Override
     public void onEvent(SwingerEvent e) {
         Desktop desktop = Desktop.getDesktop();
-        if (e.getSource() == buttonOPTION) {
+        Runtime runtime = Runtime.getRuntime();
+        if (e.getSource() == buttonOPTION)
             Utils.RAM_SELECTOR.display();
-        } else if (e.getSource() == buttonQUIT) {
+        else if (e.getSource() == buttonQUIT)
             System.exit(0);
-        } else if (e.getSource() == buttonMINI) {
+        else if (e.getSource() == buttonMINI)
             Main.frameInstance.setState(Frame.ICONIFIED);
-        } else if (e.getSource() == buttonDossier) {
+        else if (e.getSource() == buttonDossier) {
             try {
                 Desktop.getDesktop().open(Utils.MC_DIR.toFile());
             } catch (IOException ex) {
@@ -124,14 +126,20 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
         } else if (e.getSource() == buttonDISCORD) {
             try {
                 URI oURL = new URI("https://discord.com/invite/erUg4NnADM");
-                desktop.browse(oURL);
+                if (OS.getOS() == OS.LINUX)
+                    runtime.exec(new String[] {"xdg-open", String.valueOf(oURL)});
+                else
+                    desktop.browse(oURL);
             } catch (URISyntaxException | IOException ex) {
                 System.out.println(ex.getMessage());
             }
         } else if (e.getSource() == buttonSITE) {
             try {
                 URI oURL = new URI("https://munchies.websr.fr");
-                desktop.browse(oURL);
+                if(OS.getOS() == OS.LINUX)
+                    runtime.exec(new String[] {"xdg-open", String.valueOf(oURL)});
+                else
+                    desktop.browse(oURL);
             } catch (URISyntaxException | IOException ex) {
                 System.out.println(ex.getMessage());
             }
@@ -141,13 +149,12 @@ public class LauncheurPanel extends JPanel implements SwingerEventListener {
                 buttonJOUER.setTexture(IMAGE_JOUER);
                 Thread t = new Thread(() -> {
                     try {
-                        Launcheur.auth(loggedBefore());
+                        Launcher.auth(loggedBefore());
                         try {
-                            Launcheur.update();
-                            if (Utils.MC_DIR.toFile().exists()) {
+                            Launcher.update();
+                            if (Utils.MC_DIR.toFile().exists())
                                 Utils.RAM_SELECTOR.save();
-                            }
-                            Launcheur.launch();
+                            Launcher.launch();
                         } catch (Exception ex) {
                             System.out.println(ex.getMessage());
                         }
