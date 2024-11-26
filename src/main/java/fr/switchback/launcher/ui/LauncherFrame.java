@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class LauncherFrame extends JFrame {
-    private final LauncherPanel launcherPanel;
+    private final LauncherPanel LAUNCHER_PANEL;
 
     public LauncherFrame() throws IOException {
         BufferedImage icon = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("icon.png")));
@@ -30,12 +30,12 @@ public class LauncherFrame extends JFrame {
         addMouseListener(mover);
         addMouseMotionListener(mover);
 
-        launcherPanel = new LauncherPanel();
-        launcherPanel.setBounds(0, 0, 1000, 750);
-        add(launcherPanel);
+        LAUNCHER_PANEL = new LauncherPanel();
+        LAUNCHER_PANEL.setBounds(0, 0, 1000, 750);
+        add(LAUNCHER_PANEL);
     }
 
     public LauncherPanel getLauncherPanel() {
-        return launcherPanel;
+        return LAUNCHER_PANEL;
     }
 }

@@ -109,8 +109,6 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
 
     @Override
     public void onEvent(SwingerEvent e) {
-        Desktop desktop = Desktop.getDesktop();
-        Runtime runtime = Runtime.getRuntime();
         if (e.getSource() == buttonOPTION)
             Utils.RAM_SELECTOR.display();
         else if (e.getSource() == buttonQUIT)
@@ -127,9 +125,9 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
             try {
                 URI oURL = new URI("https://discord.com/invite/erUg4NnADM");
                 if (OS.getOS() == OS.LINUX)
-                    runtime.exec(new String[] {"xdg-open", String.valueOf(oURL)});
+                    Runtime.getRuntime().exec(new String[] {"xdg-open", String.valueOf(oURL)});
                 else
-                    desktop.browse(oURL);
+                    Desktop.getDesktop().browse(oURL);
             } catch (URISyntaxException | IOException ex) {
                 System.out.println(ex.getMessage());
             }
@@ -137,9 +135,9 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
             try {
                 URI oURL = new URI("https://munchies.websr.fr");
                 if(OS.getOS() == OS.LINUX)
-                    runtime.exec(new String[] {"xdg-open", String.valueOf(oURL)});
+                    Runtime.getRuntime().exec(new String[] {"xdg-open", String.valueOf(oURL)});
                 else
-                    desktop.browse(oURL);
+                    Desktop.getDesktop().browse(oURL);
             } catch (URISyntaxException | IOException ex) {
                 System.out.println(ex.getMessage());
             }
