@@ -18,10 +18,10 @@ import java.net.URI;
 public class Launcher {
     private static AuthInfos authInfos;
 
-    public static void auth(boolean loggedBefore) throws Exception {
+    public static void auth() throws Exception {
         HttpClient httpClient = MinecraftAuth.createHttpClient();
         FullJavaSession javaSession = null;
-        if (!loggedBefore) {
+        if (!Utils.loggedBefore()) {
             javaSession = MinecraftAuth.JAVA_DEVICE_CODE_LOGIN.getFromInput(httpClient, new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
                 try {
                     URI uri = URI.create(msaDeviceCode.getDirectVerificationUri());

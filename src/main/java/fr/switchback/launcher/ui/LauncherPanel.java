@@ -147,7 +147,7 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
                 buttonJOUER.setTexture(IMAGE_JOUER);
                 Thread t = new Thread(() -> {
                     try {
-                        Launcher.auth(loggedBefore());
+                        Launcher.auth();
                         try {
                             Launcher.update();
                             if (Utils.MC_DIR.toFile().exists())
@@ -176,9 +176,5 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
 
     public STexturedButton getButtonJouer() {
         return buttonJOUER;
-    }
-
-    private boolean loggedBefore() {
-        return Utils.MC_DIR.resolve("login.json").toFile().exists();
     }
 }

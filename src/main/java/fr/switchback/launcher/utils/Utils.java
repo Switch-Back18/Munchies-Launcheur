@@ -18,6 +18,9 @@ import fr.flowarg.flowupdater.versions.forge.ForgeVersionBuilder;
 import fr.switchback.launcher.Main;
 import fr.theshark34.openlauncherlib.minecraft.util.GameDirGenerator;
 import fr.theshark34.openlauncherlib.util.ramselector.RamSelector;
+import net.arikia.dev.drpc.DiscordEventHandlers;
+import net.arikia.dev.drpc.DiscordRPC;
+import net.arikia.dev.drpc.DiscordRichPresence;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -177,25 +180,38 @@ public class Utils {
         }
     }
 
+    public static boolean loggedBefore() {
+        return MC_DIR.resolve("login.json").toFile().exists();
+    }
+
     public static void saveJson(JsonObject json) {
         try {
-            FileWriter fileWriter = new FileWriter(Utils.MC_DIR.resolve("login.json").toFile());
+            FileWriter fileWriter = new FileWriter(MC_DIR.resolve("login.json").toFile());
             fileWriter.write(json.toString());
             fileWriter.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
         }
     }
 
     public static JsonObject loadJson() {
         StringBuilder jsonString = new StringBuilder();
         try {
-            Scanner scanner = new Scanner(Utils.MC_DIR.resolve("login.json").toFile());
+            Scanner scanner = new Scanner(MC_DIR.resolve("login.json").toFile());
             while (scanner.hasNextLine())
                 jsonString.append(scanner.nextLine());
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
         }
         return JsonParser.parseString(jsonString.toString()).getAsJsonObject();
+    }
+
+    public static void initDiscord() {
+        DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler((discordUser) -> {
+            DiscordRichPresence richPresence = new DiscordRichPresence.Builder("Launcheur du Serveur Munchies").setStartTimestamps(System.currentTimeMillis() / 1000).setBigImage("logo", "Munchies : Beyond Limits - v" + Utils.getModPackVersion()).build();
+            DiscordRPC.discordUpdatePresence(richPresence);
+        }).build();
+        DiscordRPC.discordInitialize("399951697360846859", handlers, false);
+        DiscordRPC.discordRegister("399951697360846859", "");
     }
 }
