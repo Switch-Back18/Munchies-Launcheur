@@ -28,18 +28,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class Utils {
-    //OpenLauncheurLib
     public static final Path MC_DIR = GameDirGenerator.createGameDir("munchies", true);
     public static final RamSelector RAM_SELECTOR = new RamSelector(MC_DIR.resolve("ram.properties"));
 
-    //FlowUpdater
     public static final int PROJECT_ID = getProjectID();
     public static final int FILE_ID = getFileID();
-    public static final ILogger LOGGER = new Logger("[Munchies Launcheur]", MC_DIR.resolve("logs.log"), false);
+    public static final ILogger LOGGER = new Logger("[Munchies Launcher]", MC_DIR.resolve("logs.log"), false);
 
     public static final IProgressCallback CALLBACK = new ProgressBarAPI();
     public static final VanillaVersion VANILLA = new VanillaVersion.VanillaVersionBuilder()
@@ -71,21 +68,21 @@ public class Utils {
         switch (OS.getOS()) {
             case WINDOWS :
                 AzulJavaBuildInfo buildInfoWindows = downloader.getBuildInfo(new RequestedJavaInfo("1.8", AzulJavaType.JRE, AzulJavaOS.WINDOWS, AzulJavaArch.X64).setJavaFxBundled(true));
-                java = MC_DIR.resolve("Launcheur\\java");
+                java = MC_DIR.resolve("Launcher\\java");
                 Path javaHomeWindows = downloader.downloadAndInstall(buildInfoWindows, java);
                 System.setProperty("java.home", javaHomeWindows.toAbsolutePath().toString());
                 System.out.println("Java for Windows");
                 break;
             case MACOS :
                 AzulJavaBuildInfo buildInfoMac = downloader.getBuildInfo(new RequestedJavaInfo("1.8", AzulJavaType.JRE, AzulJavaOS.MACOS, AzulJavaArch.X64).setJavaFxBundled(true));
-                java = MC_DIR.resolve("Launcheur/java");
+                java = MC_DIR.resolve("Launcher/java");
                 Path javaHomeMac = downloader.downloadAndInstall(buildInfoMac, java);
                 System.setProperty("java.home", javaHomeMac.toAbsolutePath().toString());
                 System.out.println("Java for MacOS");
                 break;
             case LINUX :
                 AzulJavaBuildInfo buildInfoLinux = downloader.getBuildInfo(new RequestedJavaInfo("1.8", AzulJavaType.JRE, AzulJavaOS.LINUX, AzulJavaArch.X64).setJavaFxBundled(true));
-                java = MC_DIR.resolve("Launcheur/java");
+                java = MC_DIR.resolve("Launcher/java");
                 Path javaHomeLinux = downloader.downloadAndInstall(buildInfoLinux, java);
                 System.setProperty("java.home", javaHomeLinux.toAbsolutePath().toString());
                 System.out.println("Java for Linux");
@@ -107,7 +104,6 @@ public class Utils {
             .withUpdaterOptions(OPTIONS)
             .build();
 
-    //Minecraft File
     public static final Path TEMP = MC_DIR.resolve(".cfp");
     public static final File MANIFEST = MC_DIR.resolve("manifest.json").toFile();
     public static final File MANIFEST_CACHE = MC_DIR.resolve("manifest.cache.json").toFile();
@@ -139,14 +135,12 @@ public class Utils {
 
     public static ArrayList<String> readFile() {
         ArrayList<String> list = new ArrayList<>();
-        Scanner scanner = null;
-        try {
-            scanner = new Scanner(MC_DIR.resolve("Launcheur/LauncheurConfig.txt").toFile());
+        try (Scanner scanner = new Scanner(MC_DIR.resolve("Launcher/LauncherConfig.txt").toFile())) {
+            while (scanner.hasNext())
+                list.add(scanner.nextLine());
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         }
-        while (Objects.requireNonNull(scanner).hasNext())
-            list.add(scanner.nextLine());
         return list;
     }
 

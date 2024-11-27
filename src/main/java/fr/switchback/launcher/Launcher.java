@@ -20,7 +20,7 @@ public class Launcher {
 
     public static void auth() throws Exception {
         HttpClient httpClient = MinecraftAuth.createHttpClient();
-        FullJavaSession javaSession = null;
+        FullJavaSession javaSession;
         if (!Utils.loggedBefore()) {
             javaSession = MinecraftAuth.JAVA_DEVICE_CODE_LOGIN.getFromInput(httpClient, new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
                 try {

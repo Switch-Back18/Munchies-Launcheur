@@ -23,9 +23,9 @@ dependencies {
 tasks.register('fatJar', Jar) {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
-        attributes 'Main-Class': 'fr.switchback.launcheur.Main'
+        attributes 'Main-Class': 'fr.switchback.launcher.Main'
     }
-    archiveBaseName = "MunchiesLauncheur"
+    archiveBaseName = "MunchiesLauncher"
     from { configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
