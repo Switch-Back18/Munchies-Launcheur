@@ -16,7 +16,7 @@ public class Main {
              frameInstance = new LauncherFrame();
              Utils.javaSetup();
              Utils.doUpdate();
-             Utils.setMinMaxRam(8, 17);
+             Utils.setMinimumRam(8);
          } catch (IOException e) {
              System.out.println(e.getMessage());
          }

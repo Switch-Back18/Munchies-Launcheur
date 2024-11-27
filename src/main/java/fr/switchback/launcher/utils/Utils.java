@@ -164,13 +164,11 @@ public class Utils {
         return Integer.parseInt(readFile().get(4).split(": ")[1]);
     }
 
-    public static void setMinMaxRam(int min, int max) {
+    public static void setMinimumRam(int min) {
         int y = 0;
-        if (max - min == 9) {
-            for (int i = min; i <= max; i++) {
-                RamSelector.RAM_ARRAY[y] = i + "Go";
-                y++;
-            }
+        for (int i = min; i <= min + 9; i++) {
+            RamSelector.RAM_ARRAY[y] = i + "Go";
+            y++;
         }
     }
 

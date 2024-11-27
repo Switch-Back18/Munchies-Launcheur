@@ -47,6 +47,7 @@ public class Launcher {
 
     public static void launch() throws Exception {
         NoFramework noFramework = new NoFramework(Utils.MC_DIR, authInfos, GameFolder.FLOW_UPDATER);
+        noFramework.getAdditionalVmArgs().add("-Xms128M");
         noFramework.getAdditionalVmArgs().add(Utils.RAM_SELECTOR.getRamArguments()[1]);
         Process process = noFramework.launch(Utils.getMinecraftVersion(), Utils.getLoaderVersion(), NoFramework.ModLoader.FORGE);
         try {
