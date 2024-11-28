@@ -10,12 +10,12 @@ public class Main {
     public static LauncherFrame frameInstance;
 
      public static void main(String[] args) {
-         Utils.initDiscord();
+         Utils.startDiscordRPC();
          Swinger.setSystemLookNFeel();
          try {
              frameInstance = new LauncherFrame();
              Utils.javaSetup();
-             Utils.doUpdate();
+             Utils.removeOlderFiles();
              Utils.setMinimumRam(8);
          } catch (IOException e) {
              System.out.println(e.getMessage());

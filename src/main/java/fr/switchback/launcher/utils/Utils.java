@@ -3,7 +3,6 @@ package fr.switchback.launcher.utils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import fr.flowarg.azuljavadownloader.*;
-import fr.flowarg.flowio.FileUtils;
 import fr.flowarg.flowlogger.ILogger;
 import fr.flowarg.flowlogger.Logger;
 import fr.flowarg.flowupdater.FlowUpdater;
@@ -22,10 +21,9 @@ import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -45,10 +43,6 @@ public class Utils {
 
     public static final CurseModPackInfo MODPACK = new CurseModPackInfo(PROJECT_ID, FILE_ID, true);
 
-    /*public static final NeoForgeVersion NEO_FORGE_VERSION = new NeoForgeVersionBuilder()
-            .withNeoForgeVersion(getLoaderVersion())
-            .build();*/
-
     public static final ForgeVersion FORGE_VERSION = new ForgeVersionBuilder()
             .withForgeVersion(getMinecraftVersion() + "-" + getLoaderVersion())
             .withCurseModPack(MODPACK)
@@ -64,25 +58,22 @@ public class Utils {
                     Main.frameInstance.getLauncherPanel().getButtonJouer().setEnabled(true);
             }
         });
-        Path java;
+        Path java = MC_DIR.resolve("Launcher").resolve("java");;
         switch (OS.getOS()) {
             case WINDOWS :
                 AzulJavaBuildInfo buildInfoWindows = downloader.getBuildInfo(new RequestedJavaInfo("1.8", AzulJavaType.JRE, AzulJavaOS.WINDOWS, AzulJavaArch.X64).setJavaFxBundled(true));
-                java = MC_DIR.resolve("Launcher\\java");
                 Path javaHomeWindows = downloader.downloadAndInstall(buildInfoWindows, java);
                 System.setProperty("java.home", javaHomeWindows.toAbsolutePath().toString());
                 System.out.println("Java for Windows");
                 break;
             case MACOS :
                 AzulJavaBuildInfo buildInfoMac = downloader.getBuildInfo(new RequestedJavaInfo("1.8", AzulJavaType.JRE, AzulJavaOS.MACOS, AzulJavaArch.X64).setJavaFxBundled(true));
-                java = MC_DIR.resolve("Launcher/java");
                 Path javaHomeMac = downloader.downloadAndInstall(buildInfoMac, java);
                 System.setProperty("java.home", javaHomeMac.toAbsolutePath().toString());
                 System.out.println("Java for MacOS");
                 break;
             case LINUX :
                 AzulJavaBuildInfo buildInfoLinux = downloader.getBuildInfo(new RequestedJavaInfo("1.8", AzulJavaType.JRE, AzulJavaOS.LINUX, AzulJavaArch.X64).setJavaFxBundled(true));
-                java = MC_DIR.resolve("Launcher/java");
                 Path javaHomeLinux = downloader.downloadAndInstall(buildInfoLinux, java);
                 System.setProperty("java.home", javaHomeLinux.toAbsolutePath().toString());
                 System.out.println("Java for Linux");
@@ -105,63 +96,54 @@ public class Utils {
             .build();
 
     public static final Path TEMP = MC_DIR.resolve(".cfp");
-    public static final File MANIFEST = MC_DIR.resolve("manifest.json").toFile();
-    public static final File MANIFEST_CACHE = MC_DIR.resolve("manifest.cache.json").toFile();
+    public static final Path MANIFEST = MC_DIR.resolve("manifest.json");
+    public static final Path MANIFEST_CACHE = MC_DIR.resolve("manifest.cache.json");
     public static final Path CONFIG = MC_DIR.resolve("config");
     public static final Path SCRIPT = MC_DIR.resolve("scripts");
-    //public static final Path DEFAULT_CONFIG = MC_DIR.resolve("defaultconfigs");
-    //public static final Path KUBEJS = MC_DIR.resolve("kubejs");
     public static final String VERSION = getModPackVersion();
-    public static final File MODPACK_ZIP = TEMP.resolve("Munchies - Origin-" + VERSION + ".zip").toFile();
+    public static final Path MODPACK_ZIP = TEMP.resolve("Munchies - Origin-" + VERSION + ".zip");
 
-    public static void doUpdate() throws IOException {
-        if (MANIFEST.exists())
-            MANIFEST.delete();
-        if (MANIFEST_CACHE.exists())
-            MANIFEST_CACHE.delete();
-        if (!MODPACK_ZIP.exists()) {
-            if (TEMP.toFile().exists())
-                FileUtils.deleteDirectory(TEMP);
-            if (CONFIG.toFile().exists())
-                FileUtils.deleteDirectory(CONFIG);
-            if (SCRIPT.toFile().exists())
-                FileUtils.deleteDirectory(SCRIPT);
-            /*if (KUBEJS.toFile().exists())
-                FileUtils.deleteDirectory(KUBEJS);
-            if (DEFAULT_CONFIG.toFile().exists())
-                FileUtils.deleteDirectory(DEFAULT_CONFIG);*/
+    public static void removeOlderFiles() throws IOException {
+        Files.deleteIfExists(MANIFEST);
+        Files.deleteIfExists(MANIFEST_CACHE);
+        if (!Files.exists(MODPACK_ZIP)) {
+            Files.deleteIfExists(TEMP);
+            Files.deleteIfExists(CONFIG);
+            Files.deleteIfExists(SCRIPT);
         }
     }
 
-    public static ArrayList<String> readFile() {
+    public static ArrayList<String> readLauncherConfigFile() {
         ArrayList<String> list = new ArrayList<>();
-        try (Scanner scanner = new Scanner(MC_DIR.resolve("Launcher/LauncherConfig.txt").toFile())) {
+        try {
+            Scanner scanner = new Scanner(MC_DIR.resolve("Launcher").resolve("LauncherConfig.txt"));
             while (scanner.hasNext())
                 list.add(scanner.nextLine());
-        } catch (FileNotFoundException e) {
+            scanner.close();
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
         return list;
     }
 
     public static String getMinecraftVersion() {
-        return readFile().getFirst().split(": ")[1];
+        return readLauncherConfigFile().getFirst().split(": ")[1];
     }
 
     public static String getLoaderVersion() {
-        return readFile().get(1).split(": ")[1];
+        return readLauncherConfigFile().get(1).split(": ")[1];
     }
 
     public static String getModPackVersion() {
-        return readFile().get(2).split(": ")[1];
+        return readLauncherConfigFile().get(2).split(": ")[1];
     }
 
     public static int getProjectID() {
-        return Integer.parseInt(readFile().get(3).split(": ")[1]);
+        return Integer.parseInt(readLauncherConfigFile().get(3).split(": ")[1]);
     }
 
     public static int getFileID() {
-        return Integer.parseInt(readFile().get(4).split(": ")[1]);
+        return Integer.parseInt(readLauncherConfigFile().get(4).split(": ")[1]);
     }
 
     public static void setMinimumRam(int min) {
@@ -173,7 +155,7 @@ public class Utils {
     }
 
     public static boolean loggedBefore() {
-        return MC_DIR.resolve("login.json").toFile().exists();
+        return Files.exists(MC_DIR.resolve("login.json"));
     }
 
     public static void saveJson(JsonObject json) {
@@ -189,16 +171,17 @@ public class Utils {
     public static JsonObject loadJson() {
         StringBuilder jsonString = new StringBuilder();
         try {
-            Scanner scanner = new Scanner(MC_DIR.resolve("login.json").toFile());
+            Scanner scanner = new Scanner(MC_DIR.resolve("login.json"));
             while (scanner.hasNextLine())
                 jsonString.append(scanner.nextLine());
-        } catch (FileNotFoundException e) {
+            scanner.close();
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
         return JsonParser.parseString(jsonString.toString()).getAsJsonObject();
     }
 
-    public static void initDiscord() {
+    public static void startDiscordRPC() {
         DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler((discordUser) -> {
             DiscordRichPresence richPresence = new DiscordRichPresence.Builder("Launcheur du Serveur Munchies").setStartTimestamps(System.currentTimeMillis() / 1000).setBigImage("logo", "Munchies : Beyond Limits - v" + Utils.getModPackVersion()).build();
             DiscordRPC.discordUpdatePresence(richPresence);
