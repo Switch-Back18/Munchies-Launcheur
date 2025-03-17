@@ -3,6 +3,7 @@ package fr.switchback.launcher.utils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import fr.flowarg.azuljavadownloader.*;
+import fr.flowarg.flowio.FileUtils;
 import fr.flowarg.flowlogger.ILogger;
 import fr.flowarg.flowlogger.Logger;
 import fr.flowarg.flowupdater.FlowUpdater;
@@ -98,19 +99,15 @@ public class Utils {
     public static final Path TEMP = MC_DIR.resolve(".cfp");
     public static final Path MANIFEST = MC_DIR.resolve("manifest.json");
     public static final Path MANIFEST_CACHE = MC_DIR.resolve("manifest.cache.json");
-    public static final Path CONFIG = MC_DIR.resolve("config");
-    public static final Path SCRIPT = MC_DIR.resolve("scripts");
     public static final String VERSION = getModPackVersion();
     public static final Path MODPACK_ZIP = TEMP.resolve("Munchies - Origin-" + VERSION + ".zip");
 
     public static void removeOlderFiles() throws IOException {
         Files.deleteIfExists(MANIFEST);
         Files.deleteIfExists(MANIFEST_CACHE);
-        if (!Files.exists(MODPACK_ZIP)) {
-            Files.deleteIfExists(TEMP);
-            Files.deleteIfExists(CONFIG);
-            Files.deleteIfExists(SCRIPT);
-        }
+        if (!Files.exists(MODPACK_ZIP))
+            if(Files.exists(TEMP))
+                FileUtils.deleteDirectory(TEMP);
     }
 
     public static ArrayList<String> readLauncherConfigFile() {

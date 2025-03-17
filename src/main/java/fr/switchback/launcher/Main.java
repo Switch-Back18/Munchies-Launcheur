@@ -13,10 +13,10 @@ public class Main {
          Utils.startDiscordRPC();
          Swinger.setSystemLookNFeel();
          try {
-             frameInstance = new LauncherFrame();
-             Utils.javaSetup();
-             Utils.removeOlderFiles();
              Utils.setMinimumRam(8);
+             frameInstance = new LauncherFrame();
+             Utils.removeOlderFiles();
+             Utils.javaSetup();
          } catch (IOException e) {
              System.out.println(e.getMessage());
          }
