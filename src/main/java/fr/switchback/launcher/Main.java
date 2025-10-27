@@ -4,6 +4,8 @@ import fr.switchback.launcher.ui.LauncherFrame;
 import fr.switchback.launcher.utils.Utils;
 import fr.theshark34.swinger.Swinger;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 
 public class Main {
