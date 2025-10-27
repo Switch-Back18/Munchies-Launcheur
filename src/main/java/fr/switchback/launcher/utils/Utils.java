@@ -52,14 +52,11 @@ public class Utils {
             .build();
 
     public static void javaSetup() throws IOException {
-        final AzulJavaDownloader downloader = new AzulJavaDownloader(new Callback() {
-            @Override
-            public void onStep(Step step) {
-                if(step == Step.DONE)
-                    Main.frameInstance.getLauncherPanel().getButtonJouer().setEnabled(true);
-            }
+        final AzulJavaDownloader downloader = new AzulJavaDownloader(step -> {
+            if(step == Callback.Step.DONE)
+                Main.frameInstance.getLauncherPanel().getButtonJouer().setEnabled(true);
         });
-        Path java = MC_DIR.resolve("Launcher").resolve("java");;
+        Path java = MC_DIR.resolve("Launcher").resolve("java");
         switch (OS.getOS()) {
             case WINDOWS :
                 AzulJavaBuildInfo buildInfoWindows = downloader.getBuildInfo(new RequestedJavaInfo("1.8", AzulJavaType.JRE, AzulJavaOS.WINDOWS, AzulJavaArch.X64).setJavaFxBundled(true));
@@ -179,7 +176,7 @@ public class Utils {
     }
 
     public static void startDiscordRPC() {
-        DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler((discordUser) -> {
+        DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler((_) -> {
             DiscordRichPresence richPresence = new DiscordRichPresence.Builder("Launcheur du Serveur Munchies").setStartTimestamps(System.currentTimeMillis() / 1000).setBigImage("logo", "Munchies : Beyond Limits - v" + Utils.getModPackVersion()).build();
             DiscordRPC.discordUpdatePresence(richPresence);
         }).build();
