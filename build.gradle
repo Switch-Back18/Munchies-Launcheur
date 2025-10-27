@@ -1,33 +1,38 @@
 plugins {
-    id 'java'
-    id 'idea'
+    id("java")
+    id("application")
+    id("idea")
+    id("com.gradleup.shadow") version "9.2.2"
 }
 
-group 'fr.switchback'
-version ''
+group = "fr.switchback"
+
+application {
+    mainClass = "fr.switchback.launcher.Main"
+    applicationDefaultJvmArgs = ["--enable-native-access=ALL-UNNAMED"]
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation files('libs/swinger-1.0.1-BETA.jar')
-    implementation files('libs/discord-rpc.jar')
-    implementation 'fr.flowarg:flowupdater:1.9.2'
-    implementation 'fr.flowarg:openlauncherlib:3.2.11'
-    implementation 'fr.flowarg:azuljavadownloader:1.0.2'
-    implementation 'net.raphimc:MinecraftAuth:4.1.1'
-    implementation 'org.json:json:20240303'
+    implementation files("libs/swinger-1.0.1-BETA.jar")
+    implementation files("libs/discord-rpc.jar")
+    implementation "fr.flowarg:flowupdater:1.9.3"
+    implementation "fr.flowarg:openlauncherlib:3.2.11"
+    implementation "fr.flowarg:azuljavadownloader:1.0.2"
+    implementation "net.raphimc:MinecraftAuth:4.1.2"
+    implementation "org.json:json:20250517"
+    implementation "ch.qos.logback:logback-classic:1.5.20"
 }
 
-tasks.register('fatJar', Jar) {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    manifest {
-        attributes 'Main-Class': 'fr.switchback.launcher.Main'
-    }
-    archiveBaseName = "MunchiesLauncher"
-    from { configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
+jar {
+    enabled = false
+}
+
+shadowJar {
+    archiveFileName = "MunchiesLauncher.jar"
 }
 
 test {

@@ -183,7 +183,7 @@ public class Utils {
             DiscordRichPresence richPresence = new DiscordRichPresence.Builder("Launcheur du Serveur Munchies").setStartTimestamps(System.currentTimeMillis() / 1000).setBigImage("logo", "Munchies : Beyond Limits - v" + Utils.getModPackVersion()).build();
             DiscordRPC.discordUpdatePresence(richPresence);
         }).build();
-        DiscordRPC.discordInitialize("399951697360846859", handlers, false);
+        DiscordRPC.discordInitialize("399951697360846859", handlers, true);
         DiscordRPC.discordRegister("399951697360846859", "");
     }
 }
