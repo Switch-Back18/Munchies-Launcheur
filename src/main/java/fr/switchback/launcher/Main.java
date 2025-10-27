@@ -11,7 +11,7 @@ import java.io.IOException;
 public class Main {
     public static LauncherFrame frameInstance;
 
-     public static void main(String[] args) {
+     static void main(String[] args) {
          Utils.startDiscordRPC();
          Swinger.setSystemLookNFeel();
          try {
