@@ -22,12 +22,11 @@ import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
 
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Utils {
     public static final Path MC_DIR = GameDirGenerator.createGameDir("munchies", true);
@@ -97,7 +96,7 @@ public class Utils {
     public static final Path MANIFEST = MC_DIR.resolve("manifest.json");
     public static final Path MANIFEST_CACHE = MC_DIR.resolve("manifest.cache.json");
     public static final String VERSION = getModPackVersion();
-    public static final Path MODPACK_ZIP = TEMP.resolve("Munchies - Origin-" + VERSION + ".zip");
+    public static final Path MODPACK_ZIP = TEMP.resolve(getModPackName() + VERSION + ".zip");
 
     public static void removeOlderFiles() throws IOException {
         Files.deleteIfExists(MANIFEST);
@@ -107,37 +106,38 @@ public class Utils {
                 FileUtils.deleteDirectory(TEMP);
     }
 
-    public static ArrayList<String> readLauncherConfigFile() {
-        ArrayList<String> list = new ArrayList<>();
-        try {
-            Scanner scanner = new Scanner(MC_DIR.resolve("Launcher").resolve("LauncherConfig.txt"));
-            while (scanner.hasNext())
-                list.add(scanner.nextLine());
-            scanner.close();
+    public static JsonObject loadLauncherConfig() {
+        JsonObject json = new JsonObject();
+        try(FileReader reader = new FileReader(MC_DIR.resolve("Launcher").resolve("config.json").toFile())) {
+            json = JsonParser.parseReader(reader).getAsJsonObject();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        return list;
+        return json;
     }
 
     public static String getMinecraftVersion() {
-        return readLauncherConfigFile().getFirst().split(": ")[1];
+        return loadLauncherConfig().get("MINECRAFT_VERSION").getAsString();
     }
 
     public static String getLoaderVersion() {
-        return readLauncherConfigFile().get(1).split(": ")[1];
+        return loadLauncherConfig().get("LOADER_VERSION").getAsString();
     }
 
     public static String getModPackVersion() {
-        return readLauncherConfigFile().get(2).split(": ")[1];
+        return loadLauncherConfig().get("MODPACK_VERSION").getAsString();
     }
 
     public static int getProjectID() {
-        return Integer.parseInt(readLauncherConfigFile().get(3).split(": ")[1]);
+        return loadLauncherConfig().get("MODPACK_ID").getAsInt();
     }
 
     public static int getFileID() {
-        return Integer.parseInt(readLauncherConfigFile().get(4).split(": ")[1]);
+        return loadLauncherConfig().get("MODPACK_FILE").getAsInt();
+    }
+
+    public static String getModPackName() {
+        return loadLauncherConfig().get("MODPACK_NAME").getAsString();
     }
 
     public static void setMinimumRam(int min) {
@@ -152,27 +152,22 @@ public class Utils {
         return Files.exists(MC_DIR.resolve("login.json"));
     }
 
-    public static void saveJson(JsonObject json) {
-        try {
-            FileWriter fileWriter = new FileWriter(MC_DIR.resolve("login.json").toFile());
+    public static void saveJsonLogin(JsonObject json) {
+        try (FileWriter fileWriter = new FileWriter(MC_DIR.resolve("login.json").toFile())) {
             fileWriter.write(json.toString());
-            fileWriter.close();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public static JsonObject loadJson() {
-        StringBuilder jsonString = new StringBuilder();
-        try {
-            Scanner scanner = new Scanner(MC_DIR.resolve("login.json"));
-            while (scanner.hasNextLine())
-                jsonString.append(scanner.nextLine());
-            scanner.close();
+    public static JsonObject loadJsonLogin() {
+        JsonObject json = new JsonObject();
+        try (FileReader reader = new FileReader(MC_DIR.resolve("login.json").toFile())) {
+            json = JsonParser.parseReader(reader).getAsJsonObject();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        return JsonParser.parseString(jsonString.toString()).getAsJsonObject();
+        return json;
     }
 
     public static void startDiscordRPC() {
