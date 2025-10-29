@@ -8,8 +8,10 @@ import fr.flowarg.flowlogger.ILogger;
 import fr.flowarg.flowlogger.Logger;
 import fr.flowarg.flowupdater.FlowUpdater;
 import fr.flowarg.flowupdater.download.IProgressCallback;
+import fr.flowarg.flowupdater.download.json.CurseFileInfo;
 import fr.flowarg.flowupdater.download.json.CurseModPackInfo;
 import fr.flowarg.flowupdater.download.json.Mod;
+import fr.flowarg.flowupdater.download.json.ModrinthVersionInfo;
 import fr.flowarg.flowupdater.utils.ModFileDeleter;
 import fr.flowarg.flowupdater.utils.UpdaterOptions;
 import fr.flowarg.flowupdater.versions.*;
@@ -46,14 +48,16 @@ public class Utils {
     public static final ForgeVersion FORGE_VERSION = new ForgeVersionBuilder()
             .withForgeVersion(getMinecraftVersion() + "-" + getLoaderVersion())
             .withCurseModPack(MODPACK)
-            .withMods(new Mod("OptiFine_1.12.2_HD_U_G5.jar", "https://munchies.websr.fr/download/OptiFine_1.12.2_HD_U_G5.jar", "a39f8700889872b0c928428660a0d34d", 2670592))
-            .withFileDeleter(new ModFileDeleter(true, "OptiFine_1.12.2_HD_U_G5.jar"))
+            .withMods(new Mod("OptiFine_1.12.2_HD_U_G5.jar", "https://munchies.websr.fr/download/OptiFine_1.12.2_HD_U_G5.jar", "ca3aea3a09ce215906c346fe190907fe0347b0c4", 2669107))
+            .withModrinthMods(new ModrinthVersionInfo("nether-api", "1.3.0"))
+            .withCurseMods(new CurseFileInfo(1165149, 6285724))
+            .withFileDeleter(new ModFileDeleter(true))
             .build();
 
     public static void javaSetup() throws IOException {
         final AzulJavaDownloader downloader = new AzulJavaDownloader(step -> {
             if(step == Callback.Step.DONE)
-                Main.frameInstance.getLauncherPanel().getButtonJouer().setEnabled(true);
+                Main.frameInstance.getLauncherPanel().getPlayButton().setEnabled(true);
         });
         Path java = MC_DIR.resolve("Launcher").resolve("java");
         switch (OS.getOS()) {

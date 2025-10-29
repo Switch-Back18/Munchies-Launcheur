@@ -14,6 +14,7 @@ import net.raphimc.minecraftauth.step.msa.StepMsaDeviceCode;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
 
 public class Launcher {
     private static AuthInfos authInfos;
@@ -38,7 +39,6 @@ public class Launcher {
         }
         Utils.saveJsonLogin(MinecraftAuth.JAVA_DEVICE_CODE_LOGIN.toJson(javaSession));
         authInfos = new AuthInfos(javaSession.getMcProfile().getName(), javaSession.getMcProfile().getMcToken().getAccessToken(), String.valueOf(javaSession.getMcProfile().getId()));
-        System.out.println("[Minecraft Username] : " + javaSession.getMcProfile().getName());
     }
 
     public static void update() throws Exception {
@@ -47,8 +47,13 @@ public class Launcher {
 
     public static void launch() throws Exception {
         NoFramework noFramework = new NoFramework(Utils.MC_DIR, authInfos, GameFolder.FLOW_UPDATER);
-        noFramework.getAdditionalVmArgs().add("-Xms128M");
-        noFramework.getAdditionalVmArgs().add(Utils.RAM_SELECTOR.getRamArguments()[1]);
+        noFramework.getAdditionalVmArgs().add("-XX:+UnlockExperimentalVMOptions");
+        noFramework.getAdditionalVmArgs().addAll(List.of(Utils.RAM_SELECTOR.getRamArguments()));
+        noFramework.getAdditionalVmArgs().add("-XX:+UseG1GC");
+        noFramework.getAdditionalVmArgs().add("-XX:G1NewSizePercent=20");
+        noFramework.getAdditionalVmArgs().add("-XX:G1ReservePercent=20");
+        noFramework.getAdditionalVmArgs().add("-XX:MaxGCPauseMillis=50");
+        noFramework.getAdditionalVmArgs().add("-XX:G1HeapRegionSize=32M");
         Process process = noFramework.launch(Utils.getMinecraftVersion(), Utils.getLoaderVersion(), NoFramework.ModLoader.FORGE);
         try {
             Thread.sleep(5000L);

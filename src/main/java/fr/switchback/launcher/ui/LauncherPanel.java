@@ -21,107 +21,102 @@ import java.util.Objects;
 public class LauncherPanel extends JPanel implements SwingerEventListener {
 
     //Images
-    private final BufferedImage IMAGE_TRANSPARENT;
-    private final BufferedImage IMAGE_JOUER;
-    private final BufferedImage IMAGE_LOAD;
-    private final BufferedImage IMAGE_OPTION;
-    private final BufferedImage IMAGE_QUIT;
-    private final BufferedImage IMAGE_MINI;
-    private final BufferedImage IMAGE_DISCORD;
-    private final BufferedImage IMAGE_SITE;
-    private final BufferedImage IMAGE_LAUNCHEUR;
+    private final BufferedImage TRANSPARENT_IMAGE;
+    private final BufferedImage PLAY_IMAGE;
+    private final BufferedImage LAUNCHER_IMAGE;
 
-    private STexturedProgressBar progressBar;
+    private final STexturedProgressBar PROGRESSBAR;
 
-    private STexturedButton buttonDossier;
-    private STexturedButton buttonJOUER;
-    private STexturedButton buttonOPTION;
-    private STexturedButton buttonQUIT;
-    private STexturedButton buttonMINI;
-    private STexturedButton buttonDISCORD;
-    private STexturedButton buttonSITE;
+    //Buttons
+    private final STexturedButton FOLDER_BUTTON;
+    private final STexturedButton PLAY_BUTTON;
+    private final STexturedButton OPTION_BUTTON;
+    private final STexturedButton QUIT_BUTTON;
+    private final STexturedButton MINIMIZED_BUTTON;
+    private final STexturedButton DISCORD_BUTTON;
+    private final STexturedButton SITE_BUTTON;
 
     private boolean isLaunching;
 
     public LauncherPanel() throws IOException {
-        IMAGE_TRANSPARENT = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("transpa.png")));
-        IMAGE_JOUER = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/jouer.png")));
-        IMAGE_LOAD = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("load.png")));
-        IMAGE_OPTION = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/option.png")));
-        IMAGE_QUIT = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/fermer.png")));
-        IMAGE_MINI = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/mini.png")));
-        IMAGE_DISCORD = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/discord.png")));
-        IMAGE_SITE = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/site.png")));
-        IMAGE_LAUNCHEUR = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("launcheur.png")));
+        TRANSPARENT_IMAGE = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("transparent.png")));
+        PLAY_IMAGE = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/play.png")));
+        BufferedImage LOAD_IMAGE = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("load.png")));
+        BufferedImage OPTION_IMAGE = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/option.png")));
+        BufferedImage QUIT_IMAGE = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/quit.png")));
+        BufferedImage MINIMIZED_IMAGE = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/minimized.png")));
+        BufferedImage DISCORD_IMAGE = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/discord.png")));
+        BufferedImage SITE_IMAGE = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("bouton/site.png")));
+        LAUNCHER_IMAGE = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("launcher.png")));
 
-        progressBar = new STexturedProgressBar(IMAGE_TRANSPARENT, IMAGE_LOAD);
+        PROGRESSBAR = new STexturedProgressBar(TRANSPARENT_IMAGE, LOAD_IMAGE);
 
-        buttonDossier = new STexturedButton(IMAGE_TRANSPARENT);
-        buttonJOUER = new STexturedButton(IMAGE_TRANSPARENT, IMAGE_JOUER);
-        buttonOPTION = new STexturedButton(IMAGE_TRANSPARENT, IMAGE_OPTION);
-        buttonQUIT = new STexturedButton(IMAGE_TRANSPARENT, IMAGE_QUIT);
-        buttonMINI = new STexturedButton(IMAGE_TRANSPARENT, IMAGE_MINI);
-        buttonDISCORD = new STexturedButton(IMAGE_TRANSPARENT, IMAGE_DISCORD);
-        buttonSITE = new STexturedButton(IMAGE_TRANSPARENT, IMAGE_SITE);
+        FOLDER_BUTTON = new STexturedButton(TRANSPARENT_IMAGE);
+        PLAY_BUTTON = new STexturedButton(TRANSPARENT_IMAGE, PLAY_IMAGE);
+        OPTION_BUTTON = new STexturedButton(TRANSPARENT_IMAGE, OPTION_IMAGE);
+        QUIT_BUTTON = new STexturedButton(TRANSPARENT_IMAGE, QUIT_IMAGE);
+        MINIMIZED_BUTTON = new STexturedButton(TRANSPARENT_IMAGE, MINIMIZED_IMAGE);
+        DISCORD_BUTTON = new STexturedButton(TRANSPARENT_IMAGE, DISCORD_IMAGE);
+        SITE_BUTTON = new STexturedButton(TRANSPARENT_IMAGE, SITE_IMAGE);
 
         isLaunching = false;
 
         setLayout(null);
 
-        progressBar.setBounds(409, 669, 181, 6);
-        progressBar.setStringPainted(true);
-        add(progressBar);
+        PROGRESSBAR.setBounds(409, 669, 181, 6);
+        PROGRESSBAR.setStringPainted(true);
+        add(PROGRESSBAR);
 
-        buttonJOUER.setBounds(346, 556, 320, 114);
-        buttonJOUER.setEnabled(false);
-        buttonJOUER.addEventListener(this);
-        add(buttonJOUER);
+        PLAY_BUTTON.setBounds(346, 556, 320, 114);
+        PLAY_BUTTON.setEnabled(false);
+        PLAY_BUTTON.addEventListener(this);
+        add(PLAY_BUTTON);
 
-        buttonQUIT.setBounds(638, 358, 50, 50);
-        buttonQUIT.addEventListener(this);
-        add(buttonQUIT);
+        QUIT_BUTTON.setBounds(638, 358, 50, 50);
+        QUIT_BUTTON.addEventListener(this);
+        add(QUIT_BUTTON);
 
-        buttonMINI.setBounds(682, 479, 50, 50);
-        buttonMINI.addEventListener(this);
-        add(buttonMINI);
+        MINIMIZED_BUTTON.setBounds(682, 479, 50, 50);
+        MINIMIZED_BUTTON.addEventListener(this);
+        add(MINIMIZED_BUTTON);
 
-        buttonOPTION.setBounds(660, 525, 50, 50);
-        buttonOPTION.addEventListener(this);
-        add(buttonOPTION);
+        OPTION_BUTTON.setBounds(660, 525, 50, 50);
+        OPTION_BUTTON.addEventListener(this);
+        add(OPTION_BUTTON);
 
-        buttonDISCORD.setBounds(290, 570, 50, 50);
-        buttonDISCORD.addEventListener(this);
-        add(buttonDISCORD);
+        DISCORD_BUTTON.setBounds(290, 570, 50, 50);
+        DISCORD_BUTTON.addEventListener(this);
+        add(DISCORD_BUTTON);
 
-        buttonSITE.setBounds(257, 508, 50, 50);
-        buttonSITE.addEventListener(this);
-        add(buttonSITE);
+        SITE_BUTTON.setBounds(257, 508, 50, 50);
+        SITE_BUTTON.addEventListener(this);
+        add(SITE_BUTTON);
 
-        buttonDossier.setBounds(460, 285, 50, 50);
-        buttonDossier.addEventListener(this);
-        add(buttonDossier);
+        FOLDER_BUTTON.setBounds(460, 285, 50, 50);
+        FOLDER_BUTTON.addEventListener(this);
+        add(FOLDER_BUTTON);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        g.drawImage(IMAGE_LAUNCHEUR, 0, 0, this);
+        g.drawImage(LAUNCHER_IMAGE, 0, 0, this);
     }
 
     @Override
     public void onEvent(SwingerEvent e) {
-        if (e.getSource() == buttonOPTION)
+        if (e.getSource() == OPTION_BUTTON)
             Utils.RAM_SELECTOR.display();
-        else if (e.getSource() == buttonQUIT)
+        else if (e.getSource() == QUIT_BUTTON)
             System.exit(0);
-        else if (e.getSource() == buttonMINI)
+        else if (e.getSource() == MINIMIZED_BUTTON)
             Main.frameInstance.setState(Frame.ICONIFIED);
-        else if (e.getSource() == buttonDossier) {
+        else if (e.getSource() == FOLDER_BUTTON) {
             try {
                 Desktop.getDesktop().open(Utils.MC_DIR.toFile());
             } catch (IOException ex) {
                 System.out.println(ex.getMessage());
             }
-        } else if (e.getSource() == buttonDISCORD) {
+        } else if (e.getSource() == DISCORD_BUTTON) {
             try {
                 URI oURL = new URI("https://discord.com/invite/erUg4NnADM");
                 if (OS.getOS() == OS.LINUX)
@@ -131,7 +126,7 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
             } catch (URISyntaxException | IOException ex) {
                 System.out.println(ex.getMessage());
             }
-        } else if (e.getSource() == buttonSITE) {
+        } else if (e.getSource() == SITE_BUTTON) {
             try {
                 URI oURL = new URI("https://munchies.websr.fr");
                 if(OS.getOS() == OS.LINUX)
@@ -141,10 +136,10 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
             } catch (URISyntaxException | IOException ex) {
                 System.out.println(ex.getMessage());
             }
-        } else if (e.getSource() == buttonJOUER) {
+        } else if (e.getSource() == PLAY_BUTTON) {
             if(!isLaunching) {
                 isLaunching = true;
-                buttonJOUER.setTexture(IMAGE_JOUER);
+                PLAY_BUTTON.setTexture(PLAY_IMAGE);
                 Thread t = new Thread(() -> {
                     try {
                         Launcher.auth();
@@ -158,9 +153,9 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
                         }
                     } catch (Exception ex) {
                         isLaunching = false;
-                        buttonJOUER.setTexture(IMAGE_TRANSPARENT);
+                        PLAY_BUTTON.setTexture(TRANSPARENT_IMAGE);
                         JOptionPane.showMessageDialog(Main.frameInstance,
-                                "Impossible de se connecter : Verifie si tu as un compte Minecraft / Microsoft.", "Erreur",
+                                "Impossible de se connecter : Vérifie si tu as un compte Microsoft lié à un compte Minecraft.", "Erreur",
                                 JOptionPane.ERROR_MESSAGE);
                         System.out.println(ex.getMessage());
                     }
@@ -171,10 +166,10 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
     }
 
     public STexturedProgressBar getProgressBar() {
-        return progressBar;
+        return PROGRESSBAR;
     }
 
-    public STexturedButton getButtonJouer() {
-        return buttonJOUER;
+    public STexturedButton getPlayButton() {
+        return PLAY_BUTTON;
     }
 }

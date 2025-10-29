@@ -15,8 +15,7 @@ public class LauncherFrame extends JFrame {
 
     public LauncherFrame() throws IOException {
         BufferedImage icon = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource("icon.png")));
-        Color transpa = new Color(255, 255, 255, 0);
-
+        Color transparent = new Color(255, 255, 255, 0);
         setTitle("Munchies Launcher");
         setIconImage(icon);
         setSize(1000, 750);
@@ -24,12 +23,10 @@ public class LauncherFrame extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
         setLayout(null);
-        setBackground(transpa);
-
+        setBackground(transparent);
         WindowMover mover = new WindowMover(this);
         addMouseListener(mover);
         addMouseMotionListener(mover);
-
         LAUNCHER_PANEL = new LauncherPanel();
         LAUNCHER_PANEL.setBounds(0, 0, 1000, 750);
         add(LAUNCHER_PANEL);
