@@ -32,11 +32,18 @@ import java.nio.file.Path;
 
 public class Utils {
     public static final Path MC_DIR = GameDirGenerator.createGameDir("munchies", true);
-    public static final RamSelector RAM_SELECTOR = new RamSelector(MC_DIR.resolve("ram.properties"));
+    public static final Path LAUNCHER_DIR = MC_DIR.resolve("launcher");
+    public static final Path TEMP = MC_DIR.resolve(".cfp");
+    public static final Path MANIFEST = MC_DIR.resolve("manifest.json");
+    public static final Path MANIFEST_CACHE = MC_DIR.resolve("manifest.cache.json");
+    public static final String MODPACK_VERSION = getModPackVersion();
+    public static final Path MODPACK_ZIP = TEMP.resolve(getModPackName() + MODPACK_VERSION + ".zip");
+
+    public static final RamSelector RAM_SELECTOR = new RamSelector(MC_DIR.resolve("launcher").resolve("ram.properties"));
 
     public static final int PROJECT_ID = getProjectID();
     public static final int FILE_ID = getFileID();
-    public static final ILogger LOGGER = new Logger("[Munchies Launcher]", MC_DIR.resolve("logs.log"), false);
+    public static final ILogger LOGGER = new Logger("[Munchies Launcher]", MC_DIR.resolve("launcher").resolve("logs.log"), false);
 
     public static final IProgressCallback CALLBACK = new ProgressBarAPI();
     public static final VanillaVersion VANILLA = new VanillaVersion.VanillaVersionBuilder()
@@ -59,25 +66,25 @@ public class Utils {
             if(step == Callback.Step.DONE)
                 Main.frameInstance.getLauncherPanel().getPlayButton().setEnabled(true);
         });
-        Path java = MC_DIR.resolve("Launcher").resolve("java");
+        Path java = LAUNCHER_DIR.resolve("java");
         switch (OS.getOS()) {
             case WINDOWS :
                 AzulJavaBuildInfo buildInfoWindows = downloader.getBuildInfo(new RequestedJavaInfo("1.8", AzulJavaType.JRE, AzulJavaOS.WINDOWS, AzulJavaArch.X64).setJavaFxBundled(true));
                 Path javaHomeWindows = downloader.downloadAndInstall(buildInfoWindows, java);
                 System.setProperty("java.home", javaHomeWindows.toAbsolutePath().toString());
-                System.out.println("Java for Windows");
+                System.out.println("Java Setup for Windows");
                 break;
             case MACOS :
                 AzulJavaBuildInfo buildInfoMac = downloader.getBuildInfo(new RequestedJavaInfo("1.8", AzulJavaType.JRE, AzulJavaOS.MACOS, AzulJavaArch.X64).setJavaFxBundled(true));
                 Path javaHomeMac = downloader.downloadAndInstall(buildInfoMac, java);
                 System.setProperty("java.home", javaHomeMac.toAbsolutePath().toString());
-                System.out.println("Java for MacOS");
+                System.out.println("Java Setup for MacOS");
                 break;
             case LINUX :
                 AzulJavaBuildInfo buildInfoLinux = downloader.getBuildInfo(new RequestedJavaInfo("1.8", AzulJavaType.JRE, AzulJavaOS.LINUX, AzulJavaArch.X64).setJavaFxBundled(true));
                 Path javaHomeLinux = downloader.downloadAndInstall(buildInfoLinux, java);
                 System.setProperty("java.home", javaHomeLinux.toAbsolutePath().toString());
-                System.out.println("Java for Linux");
+                System.out.println("Java Setup for Linux");
                 break;
             default:
                 break;
@@ -96,12 +103,6 @@ public class Utils {
             .withUpdaterOptions(OPTIONS)
             .build();
 
-    public static final Path TEMP = MC_DIR.resolve(".cfp");
-    public static final Path MANIFEST = MC_DIR.resolve("manifest.json");
-    public static final Path MANIFEST_CACHE = MC_DIR.resolve("manifest.cache.json");
-    public static final String VERSION = getModPackVersion();
-    public static final Path MODPACK_ZIP = TEMP.resolve(getModPackName() + VERSION + ".zip");
-
     public static void removeOlderFiles() throws IOException {
         Files.deleteIfExists(MANIFEST);
         Files.deleteIfExists(MANIFEST_CACHE);
@@ -112,7 +113,7 @@ public class Utils {
 
     public static JsonObject loadLauncherConfig() {
         JsonObject json = new JsonObject();
-        try(FileReader reader = new FileReader(MC_DIR.resolve("Launcher").resolve("config.json").toFile())) {
+        try(FileReader reader = new FileReader(LAUNCHER_DIR.resolve("config.json").toFile())) {
             json = JsonParser.parseReader(reader).getAsJsonObject();
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -153,20 +154,20 @@ public class Utils {
     }
 
     public static boolean loggedBefore() {
-        return Files.exists(MC_DIR.resolve("login.json"));
+        return Files.exists(LAUNCHER_DIR.resolve("login.json"));
     }
 
-    public static void saveJsonLogin(JsonObject json) {
-        try (FileWriter fileWriter = new FileWriter(MC_DIR.resolve("login.json").toFile())) {
+    public static void saveLoginJson(JsonObject json) {
+        try (FileWriter fileWriter = new FileWriter(LAUNCHER_DIR.resolve("login.json").toFile())) {
             fileWriter.write(json.toString());
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public static JsonObject loadJsonLogin() {
+    public static JsonObject loadLoginJson() {
         JsonObject json = new JsonObject();
-        try (FileReader reader = new FileReader(MC_DIR.resolve("login.json").toFile())) {
+        try (FileReader reader = new FileReader(LAUNCHER_DIR.resolve("login.json").toFile())) {
             json = JsonParser.parseReader(reader).getAsJsonObject();
         } catch (IOException e) {
             System.out.println(e.getMessage());

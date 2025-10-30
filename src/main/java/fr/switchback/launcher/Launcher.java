@@ -35,9 +35,9 @@ public class Launcher {
                 }
             }));
         } else {
-            javaSession = MinecraftAuth.JAVA_DEVICE_CODE_LOGIN.refresh(httpClient, MinecraftAuth.JAVA_DEVICE_CODE_LOGIN.fromJson(Utils.loadJsonLogin()));
+            javaSession = MinecraftAuth.JAVA_DEVICE_CODE_LOGIN.refresh(httpClient, MinecraftAuth.JAVA_DEVICE_CODE_LOGIN.fromJson(Utils.loadLoginJson()));
         }
-        Utils.saveJsonLogin(MinecraftAuth.JAVA_DEVICE_CODE_LOGIN.toJson(javaSession));
+        Utils.saveLoginJson(MinecraftAuth.JAVA_DEVICE_CODE_LOGIN.toJson(javaSession));
         authInfos = new AuthInfos(javaSession.getMcProfile().getName(), javaSession.getMcProfile().getMcToken().getAccessToken(), String.valueOf(javaSession.getMcProfile().getId()));
     }
 
