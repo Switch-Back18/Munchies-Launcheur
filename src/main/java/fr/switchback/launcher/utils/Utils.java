@@ -1,34 +1,29 @@
 package fr.switchback.launcher.utils;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import fr.flowarg.azuljavadownloader.*;
 import fr.flowarg.flowio.FileUtils;
 import fr.flowarg.flowlogger.ILogger;
 import fr.flowarg.flowlogger.Logger;
 import fr.flowarg.flowupdater.FlowUpdater;
 import fr.flowarg.flowupdater.download.IProgressCallback;
-import fr.flowarg.flowupdater.download.json.CurseFileInfo;
-import fr.flowarg.flowupdater.download.json.CurseModPackInfo;
-import fr.flowarg.flowupdater.download.json.Mod;
-import fr.flowarg.flowupdater.download.json.ModrinthVersionInfo;
+import fr.flowarg.flowupdater.download.json.*;
 import fr.flowarg.flowupdater.utils.ModFileDeleter;
 import fr.flowarg.flowupdater.utils.UpdaterOptions;
 import fr.flowarg.flowupdater.versions.*;
-import fr.flowarg.flowupdater.versions.forge.ForgeVersion;
-import fr.flowarg.flowupdater.versions.forge.ForgeVersionBuilder;
 import fr.switchback.launcher.Main;
+import fr.switchback.launcher.versions.CleanroomVersion;
+import fr.switchback.launcher.versions.CleanroomVersionBuilder;
 import fr.theshark34.openlauncherlib.minecraft.util.GameDirGenerator;
 import fr.theshark34.openlauncherlib.util.ramselector.RamSelector;
 import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Iterator;
 
 public class Utils {
     public static final Path MC_DIR = GameDirGenerator.createGameDir("munchies", true);
@@ -52,16 +47,13 @@ public class Utils {
 
     public static final CurseModPackInfo MODPACK = new CurseModPackInfo(PROJECT_ID, FILE_ID, true);
 
-    public static final ForgeVersion FORGE_VERSION = new ForgeVersionBuilder()
-            .withForgeVersion(getMinecraftVersion() + "-" + getLoaderVersion())
-            .withCurseModPack(MODPACK)
-            .withMods(new Mod("OptiFine_1.12.2_HD_U_G5.jar", "https://munchies.websr.fr/download/OptiFine_1.12.2_HD_U_G5.jar", "ca3aea3a09ce215906c346fe190907fe0347b0c4", 2669107))
-            .withModrinthMods(new ModrinthVersionInfo("nether-api", "1.3.0"))
-            .withCurseMods(new CurseFileInfo(1165149, 6285724))
+    public static final CleanroomVersion CLEANROOM_VERSION = new CleanroomVersionBuilder()
+            .withCleanroomVersion(getLoaderVersion())
+            //.withCurseModPack(MODPACK)
             .withFileDeleter(new ModFileDeleter(true))
             .build();
 
-    public static void javaSetup() throws IOException {
+    public static void javaSetup(String javaVersion) throws IOException {
         final AzulJavaDownloader downloader = new AzulJavaDownloader(step -> {
             if(step == Callback.Step.DONE)
                 Main.frameInstance.getLauncherPanel().getPlayButton().setEnabled(true);
@@ -69,19 +61,20 @@ public class Utils {
         Path java = LAUNCHER_DIR.resolve("java");
         switch (OS.getOS()) {
             case WINDOWS :
-                AzulJavaBuildInfo buildInfoWindows = downloader.getBuildInfo(new RequestedJavaInfo("1.8", AzulJavaType.JRE, AzulJavaOS.WINDOWS, AzulJavaArch.X64).setJavaFxBundled(true));
+                AzulJavaBuildInfo buildInfoWindows = downloader.getBuildInfo(new RequestedJavaInfo(javaVersion, AzulJavaType.JRE, AzulJavaOS.WINDOWS, AzulJavaArch.X64).setJavaFxBundled(true));
                 Path javaHomeWindows = downloader.downloadAndInstall(buildInfoWindows, java);
                 System.setProperty("java.home", javaHomeWindows.toAbsolutePath().toString());
                 System.out.println("Java Setup for Windows");
+
                 break;
             case MACOS :
-                AzulJavaBuildInfo buildInfoMac = downloader.getBuildInfo(new RequestedJavaInfo("1.8", AzulJavaType.JRE, AzulJavaOS.MACOS, AzulJavaArch.X64).setJavaFxBundled(true));
+                AzulJavaBuildInfo buildInfoMac = downloader.getBuildInfo(new RequestedJavaInfo(javaVersion, AzulJavaType.JRE, AzulJavaOS.MACOS, AzulJavaArch.X64).setJavaFxBundled(true));
                 Path javaHomeMac = downloader.downloadAndInstall(buildInfoMac, java);
-                System.setProperty("java.home", javaHomeMac.toAbsolutePath().toString());
+                System.setProperty("java.home25", javaHomeMac.toAbsolutePath().toString());
                 System.out.println("Java Setup for MacOS");
                 break;
             case LINUX :
-                AzulJavaBuildInfo buildInfoLinux = downloader.getBuildInfo(new RequestedJavaInfo("1.8", AzulJavaType.JRE, AzulJavaOS.LINUX, AzulJavaArch.X64).setJavaFxBundled(true));
+                AzulJavaBuildInfo buildInfoLinux = downloader.getBuildInfo(new RequestedJavaInfo(javaVersion, AzulJavaType.JRE, AzulJavaOS.LINUX, AzulJavaArch.X64).setJavaFxBundled(true));
                 Path javaHomeLinux = downloader.downloadAndInstall(buildInfoLinux, java);
                 System.setProperty("java.home", javaHomeLinux.toAbsolutePath().toString());
                 System.out.println("Java Setup for Linux");
@@ -99,7 +92,7 @@ public class Utils {
             .withVanillaVersion(VANILLA)
             .withLogger(LOGGER)
             .withProgressCallback(CALLBACK)
-            .withModLoaderVersion(FORGE_VERSION)
+            .withModLoaderVersion(CLEANROOM_VERSION)
             .withUpdaterOptions(OPTIONS)
             .build();
 
@@ -173,6 +166,25 @@ public class Utils {
             System.out.println(e.getMessage());
         }
         return json;
+    }
+
+    public static void cleanMinecraftJson(File file) throws IOException {
+        String content = new String(Files.readAllBytes(file.toPath()));
+        JsonObject root = JsonParser.parseString(content).getAsJsonObject();
+        JsonArray libraries = root.getAsJsonArray("libraries");
+
+        Iterator<JsonElement> iterator = libraries.iterator();
+        while (iterator.hasNext()) {
+            JsonObject lib = iterator.next().getAsJsonObject();
+            String name = lib.get("name").getAsString();
+
+            if (name.contains("org.lwjgl") && (name.contains(":2.") || name.contains("platform"))) {
+                iterator.remove();
+            }
+        }
+        try (Writer writer = new FileWriter(file)) {
+            new GsonBuilder().setPrettyPrinting().create().toJson(root, writer);
+        }
     }
 
     public static void startDiscordRPC() {

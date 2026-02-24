@@ -140,7 +140,7 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
             if(!isLaunching) {
                 isLaunching = true;
                 PLAY_BUTTON.setTexture(PLAY_IMAGE);
-                Thread t = new Thread(() -> {
+                Thread launchThread = new Thread(() -> {
                     try {
                         Launcher.auth();
                         try {
@@ -160,7 +160,7 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
                         System.out.println(ex.getMessage());
                     }
                 });
-                t.start();
+                launchThread.start();
             }
         }
     }

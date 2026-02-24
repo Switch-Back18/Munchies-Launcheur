@@ -15,7 +15,7 @@ public class Main {
              Utils.setMinimumRam(8);
              frameInstance = new LauncherFrame();
              Utils.removeOlderFiles();
-             Utils.javaSetup();
+             Utils.javaSetup("25");
          } catch (IOException e) {
              System.out.println(e.getMessage());
          }

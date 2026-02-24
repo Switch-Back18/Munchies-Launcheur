@@ -43,18 +43,20 @@ public class Launcher {
 
     public static void update() throws Exception {
         Utils.UPDATER.update(Utils.MC_DIR);
+        if(Utils.UPDATER.getModLoaderVersion().name().equals("Cleanroom"))
+            Utils.cleanMinecraftJson(Utils.MC_DIR.resolve("1.12.2.json").toFile());
     }
 
     public static void launch() throws Exception {
         NoFramework noFramework = new NoFramework(Utils.MC_DIR, authInfos, GameFolder.FLOW_UPDATER);
-        noFramework.getAdditionalVmArgs().add("-XX:+UnlockExperimentalVMOptions");
         noFramework.getAdditionalVmArgs().addAll(List.of(Utils.RAM_SELECTOR.getRamArguments()));
-        noFramework.getAdditionalVmArgs().add("-XX:+UseG1GC");
-        noFramework.getAdditionalVmArgs().add("-XX:G1NewSizePercent=20");
-        noFramework.getAdditionalVmArgs().add("-XX:G1ReservePercent=20");
-        noFramework.getAdditionalVmArgs().add("-XX:MaxGCPauseMillis=50");
-        noFramework.getAdditionalVmArgs().add("-XX:G1HeapRegionSize=32M");
-        Process process = noFramework.launch(Utils.getMinecraftVersion(), Utils.getLoaderVersion(), NoFramework.ModLoader.FORGE);
+        noFramework.getAdditionalVmArgs().add("-XX:+UseCompactObjectHeaders");
+        noFramework.getAdditionalVmArgs().add("-XX:+UseZGC");
+        noFramework.getAdditionalVmArgs().add("-XX:+ZGenerational");
+        noFramework.getAdditionalArgs().add("--width=1024");
+        noFramework.getAdditionalArgs().add("--height=768");
+        NoFramework.ModLoader.CUSTOM.setJsonFileNameProvider((version, loaderVer) -> Utils.UPDATER.getModLoaderVersion().name() + "-" + loaderVer + ".json");
+        Process process = noFramework.launch(Utils.getMinecraftVersion(), Utils.getLoaderVersion(),  NoFramework.ModLoader.CUSTOM);
         try {
             Thread.sleep(5000L);
             Main.frameInstance.setVisible(false);
