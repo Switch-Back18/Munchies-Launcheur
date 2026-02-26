@@ -49,7 +49,7 @@ public class Utils {
 
     public static final CleanroomVersion CLEANROOM_VERSION = new CleanroomVersionBuilder()
             .withCleanroomVersion(getLoaderVersion())
-            //.withCurseModPack(MODPACK)
+            .withCurseModPack(MODPACK)
             .withFileDeleter(new ModFileDeleter(true))
             .build();
 
@@ -59,29 +59,10 @@ public class Utils {
                 Main.frameInstance.getLauncherPanel().getPlayButton().setEnabled(true);
         });
         Path java = LAUNCHER_DIR.resolve("java");
-        switch (OS.getOS()) {
-            case WINDOWS :
-                AzulJavaBuildInfo buildInfoWindows = downloader.getBuildInfo(new RequestedJavaInfo(javaVersion, AzulJavaType.JRE, AzulJavaOS.WINDOWS, AzulJavaArch.X64).setJavaFxBundled(true));
-                Path javaHomeWindows = downloader.downloadAndInstall(buildInfoWindows, java);
-                System.setProperty("java.home", javaHomeWindows.toAbsolutePath().toString());
-                System.out.println("Java Setup for Windows");
-
-                break;
-            case MACOS :
-                AzulJavaBuildInfo buildInfoMac = downloader.getBuildInfo(new RequestedJavaInfo(javaVersion, AzulJavaType.JRE, AzulJavaOS.MACOS, AzulJavaArch.X64).setJavaFxBundled(true));
-                Path javaHomeMac = downloader.downloadAndInstall(buildInfoMac, java);
-                System.setProperty("java.home25", javaHomeMac.toAbsolutePath().toString());
-                System.out.println("Java Setup for MacOS");
-                break;
-            case LINUX :
-                AzulJavaBuildInfo buildInfoLinux = downloader.getBuildInfo(new RequestedJavaInfo(javaVersion, AzulJavaType.JRE, AzulJavaOS.LINUX, AzulJavaArch.X64).setJavaFxBundled(true));
-                Path javaHomeLinux = downloader.downloadAndInstall(buildInfoLinux, java);
-                System.setProperty("java.home", javaHomeLinux.toAbsolutePath().toString());
-                System.out.println("Java Setup for Linux");
-                break;
-            default:
-                break;
-        }
+        AzulJavaBuildInfo buildInfo = downloader.getBuildInfo(new RequestedJavaInfo(javaVersion, AzulJavaType.JRE, OS.getOS().getAzulJavaOS(), AzulJavaArch.X64).setJavaFxBundled(true));
+        Path javaHome = downloader.downloadAndInstall(buildInfo, java);
+        System.setProperty("java.home", javaHome.toAbsolutePath().toString());
+        System.out.println("Java Setup for " + OS.getOS().getOsName());
     }
 
     public static final UpdaterOptions OPTIONS = new UpdaterOptions.UpdaterOptionsBuilder()

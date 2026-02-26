@@ -119,7 +119,7 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
         } else if (e.getSource() == DISCORD_BUTTON) {
             try {
                 URI oURL = new URI("https://discord.com/invite/erUg4NnADM");
-                if (OS.getOS() == OS.LINUX)
+                if(OS.getOS().getOsName().equals("LINUX"))
                     Runtime.getRuntime().exec(new String[] {"xdg-open", String.valueOf(oURL)});
                 else
                     Desktop.getDesktop().browse(oURL);
@@ -129,7 +129,7 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
         } else if (e.getSource() == SITE_BUTTON) {
             try {
                 URI oURL = new URI("https://munchies.websr.fr");
-                if(OS.getOS() == OS.LINUX)
+                if(OS.getOS().getOsName().equals("LINUX"))
                     Runtime.getRuntime().exec(new String[] {"xdg-open", String.valueOf(oURL)});
                 else
                     Desktop.getDesktop().browse(oURL);

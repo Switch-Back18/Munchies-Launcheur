@@ -26,7 +26,7 @@ public class Launcher {
             javaSession = MinecraftAuth.JAVA_DEVICE_CODE_LOGIN.getFromInput(httpClient, new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
                 try {
                     URI uri = URI.create(msaDeviceCode.getDirectVerificationUri());
-                    if(OS.getOS() == OS.LINUX)
+                    if(OS.getOS().getOsName().equals("LINUX"))
                         Runtime.getRuntime().exec(new String[] {"xdg-open", String.valueOf(uri)});
                     else
                         Desktop.getDesktop().browse(uri);
