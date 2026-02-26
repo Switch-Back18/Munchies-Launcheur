@@ -44,7 +44,7 @@ public class Launcher {
     public static void update() throws Exception {
         Utils.UPDATER.update(Utils.MC_DIR);
         if(Utils.UPDATER.getModLoaderVersion().name().equals("Cleanroom"))
-            Utils.cleanMinecraftJson(Utils.MC_DIR.resolve("1.12.2.json").toFile());
+            Utils.removeLwjgl2(Utils.MC_DIR.resolve("1.12.2.json").toFile());
     }
 
     public static void launch() throws Exception {

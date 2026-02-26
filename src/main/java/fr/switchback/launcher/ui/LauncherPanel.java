@@ -19,15 +19,12 @@ import java.net.URISyntaxException;
 import java.util.Objects;
 
 public class LauncherPanel extends JPanel implements SwingerEventListener {
-
-    //Images
     private final BufferedImage TRANSPARENT_IMAGE;
     private final BufferedImage PLAY_IMAGE;
     private final BufferedImage LAUNCHER_IMAGE;
 
     private final STexturedProgressBar PROGRESSBAR;
 
-    //Buttons
     private final STexturedButton FOLDER_BUTTON;
     private final STexturedButton PLAY_BUTTON;
     private final STexturedButton OPTION_BUTTON;

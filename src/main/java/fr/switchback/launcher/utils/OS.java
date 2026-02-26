@@ -16,8 +16,7 @@ public class OS {
             return new OS("WINDOWS", AzulJavaOS.WINDOWS);
         else if(System.getProperty("os.name").toLowerCase().contains("mac"))
             return new OS("MACOS", AzulJavaOS.MACOS);
-        else
-            return new OS("LINUX", AzulJavaOS.LINUX);
+        return new OS("LINUX", AzulJavaOS.LINUX);
     }
 
     public AzulJavaOS getAzulJavaOS() {

@@ -5,11 +5,11 @@ import fr.flowarg.flowupdater.utils.builderapi.BuilderException;
 import fr.flowarg.flowupdater.versions.ModLoaderVersionBuilder;
 
 public class CleanroomVersionBuilder extends ModLoaderVersionBuilder<CleanroomVersion, CleanroomVersionBuilder> {
-    private final BuilderArgument<String> forgeVersionArgument = new BuilderArgument<String>("ForgeVersion").required();
+    private final BuilderArgument<String> cleanroomVersionArgument = new BuilderArgument<String>("CleanroomVersion").required();
 
-    public CleanroomVersionBuilder withCleanroomVersion(String forgeVersion)
+    public CleanroomVersionBuilder withCleanroomVersion(String cleanroomVersion)
     {
-        this.forgeVersionArgument.set(forgeVersion);
+        this.cleanroomVersionArgument.set(cleanroomVersion);
         return this;
     }
 
@@ -17,7 +17,7 @@ public class CleanroomVersionBuilder extends ModLoaderVersionBuilder<CleanroomVe
     public CleanroomVersion build() throws BuilderException
     {
         return new CleanroomVersion(
-                this.forgeVersionArgument.get(),
+                this.cleanroomVersionArgument.get(),
                 this.modsArgument.get(),
                 this.curseModsArgument.get(),
                 this.modrinthModsArgument.get(),

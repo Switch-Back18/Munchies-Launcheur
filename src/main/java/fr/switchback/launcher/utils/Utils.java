@@ -31,26 +31,39 @@ public class Utils {
     public static final Path TEMP = MC_DIR.resolve(".cfp");
     public static final Path MANIFEST = MC_DIR.resolve("manifest.json");
     public static final Path MANIFEST_CACHE = MC_DIR.resolve("manifest.cache.json");
-    public static final String MODPACK_VERSION = getModPackVersion();
-    public static final Path MODPACK_ZIP = TEMP.resolve(getModPackName() + MODPACK_VERSION + ".zip");
+    public static final Path MODPACK_ZIP = TEMP.resolve(getModPackName() + getModPackVersion() + ".zip");
 
     public static final RamSelector RAM_SELECTOR = new RamSelector(MC_DIR.resolve("launcher").resolve("ram.properties"));
 
     public static final int PROJECT_ID = getProjectID();
     public static final int FILE_ID = getFileID();
+
+    public static final CurseModPackInfo MODPACK = new CurseModPackInfo(PROJECT_ID, FILE_ID, true);
+
     public static final ILogger LOGGER = new Logger("[Munchies Launcher]", MC_DIR.resolve("launcher").resolve("logs.log"), false);
 
     public static final IProgressCallback CALLBACK = new ProgressBarAPI();
+
     public static final VanillaVersion VANILLA = new VanillaVersion.VanillaVersionBuilder()
             .withName(getMinecraftVersion())
             .build();
-
-    public static final CurseModPackInfo MODPACK = new CurseModPackInfo(PROJECT_ID, FILE_ID, true);
 
     public static final CleanroomVersion CLEANROOM_VERSION = new CleanroomVersionBuilder()
             .withCleanroomVersion(getLoaderVersion())
             .withCurseModPack(MODPACK)
             .withFileDeleter(new ModFileDeleter(true))
+            .build();
+
+    public static final UpdaterOptions OPTIONS = new UpdaterOptions.UpdaterOptionsBuilder()
+            .withJavaPath(System.getProperty("java.home"))
+            .build();
+
+    public static final FlowUpdater UPDATER = new FlowUpdater.FlowUpdaterBuilder()
+            .withVanillaVersion(VANILLA)
+            .withLogger(LOGGER)
+            .withProgressCallback(CALLBACK)
+            .withModLoaderVersion(CLEANROOM_VERSION)
+            .withUpdaterOptions(OPTIONS)
             .build();
 
     public static void javaSetup(String javaVersion) throws IOException {
@@ -64,18 +77,6 @@ public class Utils {
         System.setProperty("java.home", javaHome.toAbsolutePath().toString());
         System.out.println("Java Setup for " + OS.getOS().getOsName());
     }
-
-    public static final UpdaterOptions OPTIONS = new UpdaterOptions.UpdaterOptionsBuilder()
-            .withJavaPath(System.getProperty("java.home"))
-            .build();
-
-    public static final FlowUpdater UPDATER = new FlowUpdater.FlowUpdaterBuilder()
-            .withVanillaVersion(VANILLA)
-            .withLogger(LOGGER)
-            .withProgressCallback(CALLBACK)
-            .withModLoaderVersion(CLEANROOM_VERSION)
-            .withUpdaterOptions(OPTIONS)
-            .build();
 
     public static void removeOlderFiles() throws IOException {
         Files.deleteIfExists(MANIFEST);
@@ -95,30 +96,6 @@ public class Utils {
         return json;
     }
 
-    public static String getMinecraftVersion() {
-        return loadLauncherConfig().get("MINECRAFT_VERSION").getAsString();
-    }
-
-    public static String getLoaderVersion() {
-        return loadLauncherConfig().get("LOADER_VERSION").getAsString();
-    }
-
-    public static String getModPackVersion() {
-        return loadLauncherConfig().get("MODPACK_VERSION").getAsString();
-    }
-
-    public static int getProjectID() {
-        return loadLauncherConfig().get("MODPACK_ID").getAsInt();
-    }
-
-    public static int getFileID() {
-        return loadLauncherConfig().get("MODPACK_FILE").getAsInt();
-    }
-
-    public static String getModPackName() {
-        return loadLauncherConfig().get("MODPACK_NAME").getAsString();
-    }
-
     public static void setMinimumRam(int min) {
         int y = 0;
         for (int i = min; i <= min + 9; i++) {
@@ -132,8 +109,9 @@ public class Utils {
     }
 
     public static void saveLoginJson(JsonObject json) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try (FileWriter fileWriter = new FileWriter(LAUNCHER_DIR.resolve("login.json").toFile())) {
-            fileWriter.write(json.toString());
+            gson.toJson(json, fileWriter);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -149,7 +127,7 @@ public class Utils {
         return json;
     }
 
-    public static void cleanMinecraftJson(File file) throws IOException {
+    public static void removeLwjgl2(File file) throws IOException {
         String content = new String(Files.readAllBytes(file.toPath()));
         JsonObject root = JsonParser.parseString(content).getAsJsonObject();
         JsonArray libraries = root.getAsJsonArray("libraries");
@@ -175,5 +153,29 @@ public class Utils {
         }).build();
         DiscordRPC.discordInitialize("399951697360846859", handlers, true);
         DiscordRPC.discordRegister("399951697360846859", "");
+    }
+
+    public static String getMinecraftVersion() {
+        return loadLauncherConfig().get("MINECRAFT_VERSION").getAsString();
+    }
+
+    public static String getLoaderVersion() {
+        return loadLauncherConfig().get("LOADER_VERSION").getAsString();
+    }
+
+    public static String getModPackVersion() {
+        return loadLauncherConfig().get("MODPACK_VERSION").getAsString();
+    }
+
+    public static int getProjectID() {
+        return loadLauncherConfig().get("MODPACK_ID").getAsInt();
+    }
+
+    public static int getFileID() {
+        return loadLauncherConfig().get("MODPACK_FILE").getAsInt();
+    }
+
+    public static String getModPackName() {
+        return loadLauncherConfig().get("MODPACK_NAME").getAsString();
     }
 }
