@@ -10,26 +10,30 @@ group = "fr.switchback"
 application {
     mainClass = "fr.switchback.launcher.Main"
     applicationDefaultJvmArgs = ["--enable-native-access=ALL-UNNAMED"]
+
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(25))
+    }
 }
 
 repositories {
     mavenCentral()
-    maven {
-        url 'https://jitpack.io/'
-    }
-    maven {
-        url 'https://litarvan.github.io/maven'
-    }
+    maven { url = uri("https://jitpack.io") }
+    maven { url = uri("https://litarvan.github.io/maven") }
+    maven { url = uri("https://maven.paulem.net/releases") }
 }
 
 dependencies {
-    implementation "fr.flowarg:flowupdater:1.9.3"
-    implementation "fr.flowarg:openlauncherlib:3.2.11"
-    implementation "fr.flowarg:azuljavadownloader:1.0.2"
-    implementation "net.raphimc:MinecraftAuth:4.1.2"
-    implementation "org.json:json:20250517"
-    implementation "com.github.minndevelopment:java-discord-rpc:2.0.1"
-    implementation "fr.theshark34.swinger:swinger:1.0.0-BETA"
+    implementation("fr.flowarg:flowupdater:1.9.3")
+    implementation("fr.flowarg:openlauncherlib:3.2.11")
+    implementation("fr.flowarg:azuljavadownloader:1.0.2")
+    implementation("net.raphimc:MinecraftAuth:5.0.0")
+    implementation("org.json:json:20251224")
+    implementation("club.minnced:java-discord-rpc:2.0.3")
+    implementation("fr.theshark34.swinger:swinger:1.0.0-BETA")
 }
 
 jar {
@@ -42,3 +46,4 @@ shadowJar {
 
 test {
 }
+

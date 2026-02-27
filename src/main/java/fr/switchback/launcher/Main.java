@@ -9,16 +9,14 @@ import java.io.IOException;
 public class Main {
     public static LauncherFrame frameInstance;
     void main() {
-         Utils.startDiscordRPC();
-         Swinger.setSystemLookNFeel();
-         try {
-             Utils.setMinimumRam(8);
-             frameInstance = new LauncherFrame();
-             Utils.removeOlderFiles();
-             Utils.javaSetup("25");
-         } catch (IOException e) {
-             System.out.println(e.getMessage());
-         }
-         frameInstance.setVisible(true);
+        Utils.setMinimumRam(8);
+        Utils.startDiscordRPC();
+        Swinger.setSystemLookNFeel();
+        try {
+            frameInstance = new LauncherFrame();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        frameInstance.setVisible(true);
     }
 }

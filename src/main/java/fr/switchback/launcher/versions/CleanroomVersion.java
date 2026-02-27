@@ -11,7 +11,6 @@ import fr.flowarg.flowupdater.versions.ParsedLibrary;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URI;
-import java.net.URL;
 import java.nio.file.*;
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +60,7 @@ public class CleanroomVersion extends AbstractModLoaderVersion {
         final Path installerFile = installDir.resolve(installerUrlParts[installerUrlParts.length - 1]);
         IOUtils.download(
                 this.logger,
-                new URL(installerUrl),
+                new URI(installerUrl).toURL(),
                 installerFile
         );
 

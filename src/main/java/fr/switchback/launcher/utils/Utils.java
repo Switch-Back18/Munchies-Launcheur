@@ -14,13 +14,14 @@ import fr.flowarg.flowupdater.download.json.*;
 import fr.flowarg.flowupdater.utils.ModFileDeleter;
 import fr.flowarg.flowupdater.utils.UpdaterOptions;
 import fr.flowarg.flowupdater.versions.*;
-import fr.switchback.launcher.Main;
 import fr.switchback.launcher.versions.CleanroomVersion;
 import fr.switchback.launcher.versions.CleanroomVersionBuilder;
 import fr.theshark34.openlauncherlib.minecraft.util.GameDirGenerator;
 import fr.theshark34.openlauncherlib.util.ramselector.RamSelector;
 
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
@@ -68,10 +69,7 @@ public class Utils {
             .build();
 
     public static void javaSetup(String javaVersion) throws IOException {
-        final AzulJavaDownloader downloader = new AzulJavaDownloader(step -> {
-            if(step == Callback.Step.DONE)
-                Main.frameInstance.getLauncherPanel().getPlayButton().setEnabled(true);
-        });
+        AzulJavaDownloader downloader = new AzulJavaDownloader();
         Path java = LAUNCHER_DIR.resolve("java");
         AzulJavaBuildInfo buildInfo = downloader.getBuildInfo(new RequestedJavaInfo(javaVersion, AzulJavaType.JRE, OS.getOS().getAzulJavaOS(), AzulJavaArch.X64).setJavaFxBundled(true));
         Path javaHome = downloader.downloadAndInstall(buildInfo, java);
@@ -142,9 +140,16 @@ public class Utils {
                 iterator.remove();
             }
         }
-        try (Writer writer = new FileWriter(minecraftJson.toFile())) {
+        try (FileWriter writer = new FileWriter(minecraftJson.toFile())) {
             new GsonBuilder().setPrettyPrinting().create().toJson(root, writer);
         }
+    }
+
+    public static void downloadResourcePack() throws IOException, URISyntaxException {
+            URI resourcePackURI = new URI("https://munchies.websr.fr/download/Faithful32_MC1.12.2_v1.4.5.zip");
+            Path resourcePackPath = MC_DIR.resolve("resourcepacks").resolve("Faithful32_MC1.12.2_v1.4.5.zip");
+            if (!resourcePackPath.toFile().exists())
+                org.apache.commons.io.FileUtils.copyURLToFile(resourcePackURI.toURL(), resourcePackPath.toFile());
     }
 
     public static void startDiscordRPC() {

@@ -65,7 +65,6 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
         add(PROGRESSBAR);
 
         PLAY_BUTTON.setBounds(346, 556, 320, 114);
-        PLAY_BUTTON.setEnabled(false);
         PLAY_BUTTON.addEventListener(this);
         add(PLAY_BUTTON);
 
