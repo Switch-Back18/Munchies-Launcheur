@@ -14,17 +14,22 @@ application {
 
 repositories {
     mavenCentral()
+    maven {
+        url 'https://jitpack.io/'
+    }
+    maven {
+        url 'https://litarvan.github.io/maven'
+    }
 }
 
 dependencies {
-    implementation files("libs/swinger-1.0.1-BETA.jar")
-    implementation files("libs/discord-rpc.jar")
     implementation "fr.flowarg:flowupdater:1.9.3"
     implementation "fr.flowarg:openlauncherlib:3.2.11"
     implementation "fr.flowarg:azuljavadownloader:1.0.2"
     implementation "net.raphimc:MinecraftAuth:4.1.2"
     implementation "org.json:json:20250517"
-    implementation "ch.qos.logback:logback-classic:1.5.20"
+    implementation "com.github.minndevelopment:java-discord-rpc:2.0.1"
+    implementation "fr.theshark34.swinger:swinger:1.0.0-BETA"
 }
 
 jar {

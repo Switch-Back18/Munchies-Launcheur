@@ -1,5 +1,8 @@
 package fr.switchback.launcher.utils;
 
+import club.minnced.discord.rpc.DiscordEventHandlers;
+import club.minnced.discord.rpc.DiscordRPC;
+import club.minnced.discord.rpc.DiscordRichPresence;
 import com.google.gson.*;
 import fr.flowarg.azuljavadownloader.*;
 import fr.flowarg.flowio.FileUtils;
@@ -16,9 +19,6 @@ import fr.switchback.launcher.versions.CleanroomVersion;
 import fr.switchback.launcher.versions.CleanroomVersionBuilder;
 import fr.theshark34.openlauncherlib.minecraft.util.GameDirGenerator;
 import fr.theshark34.openlauncherlib.util.ramselector.RamSelector;
-import net.arikia.dev.drpc.DiscordEventHandlers;
-import net.arikia.dev.drpc.DiscordRPC;
-import net.arikia.dev.drpc.DiscordRichPresence;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -31,7 +31,8 @@ public class Utils {
     public static final Path TEMP = MC_DIR.resolve(".cfp");
     public static final Path MANIFEST = MC_DIR.resolve("manifest.json");
     public static final Path MANIFEST_CACHE = MC_DIR.resolve("manifest.cache.json");
-    public static final Path MODPACK_ZIP = TEMP.resolve(getModPackName() + getModPackVersion() + ".zip");
+    public static final Path MODPACK_ZIP = TEMP.resolve(getModPackName() + "-" + getModPackVersion() + ".zip");
+    public static final Path LOGIN = LAUNCHER_DIR.resolve("login.json");
 
     public static final RamSelector RAM_SELECTOR = new RamSelector(MC_DIR.resolve("launcher").resolve("ram.properties"));
 
@@ -105,12 +106,12 @@ public class Utils {
     }
 
     public static boolean loggedBefore() {
-        return Files.exists(LAUNCHER_DIR.resolve("login.json"));
+        return Files.exists(LOGIN);
     }
 
     public static void saveLoginJson(JsonObject json) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        try (FileWriter fileWriter = new FileWriter(LAUNCHER_DIR.resolve("login.json").toFile())) {
+        try (FileWriter fileWriter = new FileWriter(LOGIN.toFile())) {
             gson.toJson(json, fileWriter);
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -119,7 +120,7 @@ public class Utils {
 
     public static JsonObject loadLoginJson() {
         JsonObject json = new JsonObject();
-        try (FileReader reader = new FileReader(LAUNCHER_DIR.resolve("login.json").toFile())) {
+        try (FileReader reader = new FileReader(LOGIN.toFile())) {
             json = JsonParser.parseReader(reader).getAsJsonObject();
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -127,11 +128,11 @@ public class Utils {
         return json;
     }
 
-    public static void removeLwjgl2(File file) throws IOException {
-        String content = new String(Files.readAllBytes(file.toPath()));
+    public static void removeLwjgl2() throws IOException {
+        Path minecraftJson = MC_DIR.resolve(getMinecraftVersion() + ".json");
+        String content = new String(Files.readAllBytes(minecraftJson));
         JsonObject root = JsonParser.parseString(content).getAsJsonObject();
         JsonArray libraries = root.getAsJsonArray("libraries");
-
         Iterator<JsonElement> iterator = libraries.iterator();
         while (iterator.hasNext()) {
             JsonObject lib = iterator.next().getAsJsonObject();
@@ -141,18 +142,20 @@ public class Utils {
                 iterator.remove();
             }
         }
-        try (Writer writer = new FileWriter(file)) {
+        try (Writer writer = new FileWriter(minecraftJson.toFile())) {
             new GsonBuilder().setPrettyPrinting().create().toJson(root, writer);
         }
     }
 
     public static void startDiscordRPC() {
-        DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler((_) -> {
-            DiscordRichPresence richPresence = new DiscordRichPresence.Builder("Launcheur du Serveur Munchies").setStartTimestamps(System.currentTimeMillis() / 1000).setBigImage("logo", "Munchies : Beyond Limits - v" + Utils.getModPackVersion()).build();
-            DiscordRPC.discordUpdatePresence(richPresence);
-        }).build();
-        DiscordRPC.discordInitialize("399951697360846859", handlers, true);
-        DiscordRPC.discordRegister("399951697360846859", "");
+        DiscordRPC discordRPC = DiscordRPC.INSTANCE;
+        String applicationId = "399951697360846859";
+        DiscordEventHandlers handlers = new DiscordEventHandlers();
+        discordRPC.Discord_Initialize(applicationId, handlers, true, null);
+        DiscordRichPresence presence = new DiscordRichPresence();
+        presence.startTimestamp = System.currentTimeMillis() / 1000;
+        presence.details = getModPackName()  + " " + getModPackVersion();
+        discordRPC.Discord_UpdatePresence(presence);
     }
 
     public static String getMinecraftVersion() {

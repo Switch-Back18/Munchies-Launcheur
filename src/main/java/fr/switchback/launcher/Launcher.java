@@ -1,11 +1,11 @@
 package fr.switchback.launcher;
 
+import club.minnced.discord.rpc.DiscordRPC;
 import fr.flowarg.openlauncherlib.NoFramework;
 import fr.switchback.launcher.utils.OS;
 import fr.switchback.launcher.utils.Utils;
 import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
 import fr.theshark34.openlauncherlib.minecraft.GameFolder;
-import net.arikia.dev.drpc.DiscordRPC;
 import net.lenni0451.commons.httpclient.HttpClient;
 import net.raphimc.minecraftauth.MinecraftAuth;
 import net.raphimc.minecraftauth.step.java.session.StepFullJavaSession.FullJavaSession;
@@ -44,7 +44,7 @@ public class Launcher {
     public static void update() throws Exception {
         Utils.UPDATER.update(Utils.MC_DIR);
         if(Utils.UPDATER.getModLoaderVersion().name().equals("Cleanroom"))
-            Utils.removeLwjgl2(Utils.MC_DIR.resolve("1.12.2.json").toFile());
+            Utils.removeLwjgl2();
     }
 
     public static void launch() throws Exception {
@@ -60,7 +60,7 @@ public class Launcher {
         try {
             Thread.sleep(5000L);
             Main.frameInstance.setVisible(false);
-            DiscordRPC.discordShutdown();
+            DiscordRPC.INSTANCE.Discord_Shutdown();
             process.waitFor();
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());
