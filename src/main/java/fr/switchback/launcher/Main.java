@@ -8,6 +8,7 @@ import javax.swing.*;
 
 public class Main {
     public static volatile LauncherFrame frameInstance;
+
     void main() {
         Utils.setMinimumRam(8);
         Utils.startDiscordRPC();

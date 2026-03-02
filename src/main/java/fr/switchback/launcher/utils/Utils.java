@@ -27,22 +27,22 @@ import java.nio.file.Path;
 import java.util.Iterator;
 
 public class Utils {
-    public static final Path MC_DIR = GameDirGenerator.createGameDir("munchies", true);
-    public static final Path LAUNCHER_DIR = MC_DIR.resolve("launcher");
-    public static final Path TEMP = MC_DIR.resolve(".cfp");
-    public static final Path MANIFEST = MC_DIR.resolve("manifest.json");
-    public static final Path MANIFEST_CACHE = MC_DIR.resolve("manifest.cache.json");
+    public static final Path GAME_DIR = GameDirGenerator.createGameDir("munchies", true);
+    public static final Path LAUNCHER_DIR = GAME_DIR.resolve("launcher");
+    public static final Path TEMP = GAME_DIR.resolve(".cfp");
+    public static final Path MANIFEST = GAME_DIR.resolve("manifest.json");
+    public static final Path MANIFEST_CACHE = GAME_DIR.resolve("manifest.cache.json");
     public static final Path MODPACK_ZIP = TEMP.resolve(getModPackName() + "-" + getModPackVersion() + ".zip");
     public static final Path LOGIN = LAUNCHER_DIR.resolve("login.json");
 
-    public static final RamSelector RAM_SELECTOR = new RamSelector(MC_DIR.resolve("launcher").resolve("ram.properties"));
+    public static final RamSelector RAM_SELECTOR = new RamSelector(GAME_DIR.resolve("launcher").resolve("ram.properties"));
 
     public static final int PROJECT_ID = getProjectID();
     public static final int FILE_ID = getFileID();
 
     public static final CurseModPackInfo MODPACK = new CurseModPackInfo(PROJECT_ID, FILE_ID, true);
 
-    public static final ILogger LOGGER = new Logger("[Munchies Launcher]", MC_DIR.resolve("launcher").resolve("logs.log"), false);
+    public static final ILogger LOGGER = new Logger("[Munchies Launcher]", GAME_DIR.resolve("launcher").resolve("logs.log"), false);
 
     public static final IProgressCallback CALLBACK = new ProgressBarAPI();
 
@@ -127,7 +127,7 @@ public class Utils {
     }
 
     public static void removeLwjgl2() throws IOException {
-        Path minecraftJson = MC_DIR.resolve(getMinecraftVersion() + ".json");
+        Path minecraftJson = GAME_DIR.resolve(getMinecraftVersion() + ".json");
         String content = new String(Files.readAllBytes(minecraftJson));
         JsonObject root = JsonParser.parseString(content).getAsJsonObject();
         JsonArray libraries = root.getAsJsonArray("libraries");
@@ -147,7 +147,7 @@ public class Utils {
 
     public static void downloadResourcePack() throws IOException {
             URI resourcePackURI = URI.create("https://munchies.websr.fr/download/Faithful32_MC1.12.2_v1.4.5.zip");
-            Path resourcePackPath = MC_DIR.resolve("resourcepacks").resolve("Faithful32_MC1.12.2_v1.4.5.zip");
+            Path resourcePackPath = GAME_DIR.resolve("resourcepacks").resolve("Faithful32_MC1.12.2_v1.4.5.zip");
             if (!resourcePackPath.toFile().exists())
                 org.apache.commons.io.FileUtils.copyURLToFile(resourcePackURI.toURL(), resourcePackPath.toFile());
     }
@@ -175,9 +175,9 @@ public class Utils {
         }
     }
 
-    public static void openGameFolder() {
+    public static void openFolder(Path filePath) {
         try {
-            Desktop.getDesktop().open(MC_DIR.toFile());
+            Desktop.getDesktop().open(filePath.toFile());
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }

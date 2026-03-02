@@ -4,6 +4,7 @@ import fr.flowarg.azuljavadownloader.AzulJavaOS;
 
 public class OS {
     private final String OS_NAME;
+
     private final AzulJavaOS AZUL_JAVA_OS;
 
     public OS(String osName, AzulJavaOS azulJavaOS) {

@@ -98,10 +98,10 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
     @Override
     public void onEvent(SwingerEvent e) {
         Object source = e.getSource();
-        if (source == OPTION_BUTTON) { Utils.RAM_SELECTOR.display(); return; }
         if (source == QUIT_BUTTON) { System.exit(0); }
+        if (source == OPTION_BUTTON) { Utils.RAM_SELECTOR.display(); return; }
         if (source == MINIMIZED_BUTTON) { Main.frameInstance.setState(Frame.ICONIFIED); return; }
-        if (source == FOLDER_BUTTON) { Utils.openGameFolder(); return; }
+        if (source == FOLDER_BUTTON) { Utils.openFolder(Utils.GAME_DIR); return; }
         if (source == DISCORD_BUTTON) { Utils.openWebPage("https://discord.com/invite/erUg4NnADM"); return; }
         if (source == SITE_BUTTON) { Utils.openWebPage("https://munchies.websr.fr"); return; }
         if (source == PLAY_BUTTON) { handleLaunchProcess(); }

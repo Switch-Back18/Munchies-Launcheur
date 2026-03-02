@@ -44,6 +44,3 @@ shadowJar {
     archiveFileName = "MunchiesLauncher.jar"
 }
 
-test {
-}
-
