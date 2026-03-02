@@ -4,19 +4,24 @@ import fr.switchback.launcher.ui.LauncherFrame;
 import fr.switchback.launcher.utils.Utils;
 import fr.theshark34.swinger.Swinger;
 
-import java.io.IOException;
+import javax.swing.*;
 
 public class Main {
-    public static LauncherFrame frameInstance;
+    public static volatile LauncherFrame frameInstance;
     void main() {
         Utils.setMinimumRam(8);
         Utils.startDiscordRPC();
-        Swinger.setSystemLookNFeel();
-        try {
-            frameInstance = new LauncherFrame();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        frameInstance.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            try {
+                Swinger.setSystemLookNFeel();
+                frameInstance = new LauncherFrame();
+                frameInstance.setVisible(true);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null,
+                        "Erreur critique au démarrage : " + e.getMessage(),
+                        "Erreur", JOptionPane.ERROR_MESSAGE);
+                System.exit(1);
+            }
+        });
     }
 }

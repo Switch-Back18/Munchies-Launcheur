@@ -2,7 +2,6 @@ package fr.switchback.launcher;
 
 import club.minnced.discord.rpc.DiscordRPC;
 import fr.flowarg.openlauncherlib.NoFramework;
-import fr.switchback.launcher.utils.OS;
 import fr.switchback.launcher.utils.Utils;
 import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
 import fr.theshark34.openlauncherlib.minecraft.GameFolder;
@@ -12,9 +11,6 @@ import net.raphimc.minecraftauth.java.JavaAuthManager;
 import net.raphimc.minecraftauth.msa.model.MsaDeviceCode;
 import net.raphimc.minecraftauth.msa.service.impl.DeviceCodeMsaAuthService;
 
-import java.awt.Desktop;
-import java.io.IOException;
-import java.net.URI;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -29,21 +25,7 @@ public class Launcher {
             authManager = authManagerBuilder.login(DeviceCodeMsaAuthService::new, new Consumer<MsaDeviceCode>() {
                 @Override
                 public void accept(MsaDeviceCode deviceCode) {
-                    URI uri = URI.create(deviceCode.getDirectVerificationUri());
-                    if (OS.getOS().getOsName().equals("LINUX")) {
-                        try {
-                            Runtime.getRuntime().exec(new String[]{"xdg-open", String.valueOf(uri)});
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                    else {
-                        try {
-                            Desktop.getDesktop().browse(uri);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
+                    Utils.openWebPage(deviceCode.getDirectVerificationUri());
                 }
             });
         } else {

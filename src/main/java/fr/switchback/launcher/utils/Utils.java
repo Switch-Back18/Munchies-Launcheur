@@ -19,9 +19,9 @@ import fr.switchback.launcher.versions.CleanroomVersionBuilder;
 import fr.theshark34.openlauncherlib.minecraft.util.GameDirGenerator;
 import fr.theshark34.openlauncherlib.util.ramselector.RamSelector;
 
+import java.awt.*;
 import java.io.*;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
@@ -145,8 +145,8 @@ public class Utils {
         }
     }
 
-    public static void downloadResourcePack() throws IOException, URISyntaxException {
-            URI resourcePackURI = new URI("https://munchies.websr.fr/download/Faithful32_MC1.12.2_v1.4.5.zip");
+    public static void downloadResourcePack() throws IOException {
+            URI resourcePackURI = URI.create("https://munchies.websr.fr/download/Faithful32_MC1.12.2_v1.4.5.zip");
             Path resourcePackPath = MC_DIR.resolve("resourcepacks").resolve("Faithful32_MC1.12.2_v1.4.5.zip");
             if (!resourcePackPath.toFile().exists())
                 org.apache.commons.io.FileUtils.copyURLToFile(resourcePackURI.toURL(), resourcePackPath.toFile());
@@ -161,6 +161,26 @@ public class Utils {
         presence.startTimestamp = System.currentTimeMillis() / 1000;
         presence.details = getModPackName()  + " " + getModPackVersion();
         discordRPC.Discord_UpdatePresence(presence);
+    }
+
+    public static void openWebPage(String link) {
+        try {
+            URI uri = URI.create(link);
+            if (OS.getOS().getOsName().equals("LINUX"))
+                Runtime.getRuntime().exec(new String[]{"xdg-open", link});
+            else
+                Desktop.getDesktop().browse(uri);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void openGameFolder() {
+        try {
+            Desktop.getDesktop().open(MC_DIR.toFile());
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     public static String getMinecraftVersion() {

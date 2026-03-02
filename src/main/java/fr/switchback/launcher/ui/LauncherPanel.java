@@ -2,7 +2,6 @@ package fr.switchback.launcher.ui;
 
 import fr.switchback.launcher.Launcher;
 import fr.switchback.launcher.Main;
-import fr.switchback.launcher.utils.OS;
 import fr.switchback.launcher.utils.Utils;
 import fr.theshark34.swinger.event.SwingerEvent;
 import fr.theshark34.swinger.event.SwingerEventListener;
@@ -14,8 +13,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Objects;
 
 public class LauncherPanel extends JPanel implements SwingerEventListener {
@@ -100,72 +97,48 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
 
     @Override
     public void onEvent(SwingerEvent e) {
-        if (e.getSource() == OPTION_BUTTON)
-            Utils.RAM_SELECTOR.display();
-        else if (e.getSource() == QUIT_BUTTON)
-            System.exit(0);
-        else if (e.getSource() == MINIMIZED_BUTTON)
-            Main.frameInstance.setState(Frame.ICONIFIED);
-        else if (e.getSource() == FOLDER_BUTTON) {
-            try {
-                Desktop.getDesktop().open(Utils.MC_DIR.toFile());
-            } catch (IOException ex) {
-                System.out.println(ex.getMessage());
-            }
-        } else if (e.getSource() == DISCORD_BUTTON) {
-            try {
-                URI oURL = new URI("https://discord.com/invite/erUg4NnADM");
-                if(OS.getOS().getOsName().equals("LINUX"))
-                    Runtime.getRuntime().exec(new String[] {"xdg-open", String.valueOf(oURL)});
-                else
-                    Desktop.getDesktop().browse(oURL);
-            } catch (URISyntaxException | IOException ex) {
-                System.out.println(ex.getMessage());
-            }
-        } else if (e.getSource() == SITE_BUTTON) {
-            try {
-                URI oURL = new URI("https://munchies.websr.fr");
-                if(OS.getOS().getOsName().equals("LINUX"))
-                    Runtime.getRuntime().exec(new String[] {"xdg-open", String.valueOf(oURL)});
-                else
-                    Desktop.getDesktop().browse(oURL);
-            } catch (URISyntaxException | IOException ex) {
-                System.out.println(ex.getMessage());
-            }
-        } else if (e.getSource() == PLAY_BUTTON) {
-            if(!isLaunching) {
-                isLaunching = true;
-                PLAY_BUTTON.setTexture(PLAY_IMAGE);
-                Thread launchThread = new Thread(() -> {
-                    try {
-                        Launcher.auth();
-                        try {
-                            Launcher.update();
-                            if (Utils.MC_DIR.toFile().exists())
-                                Utils.RAM_SELECTOR.save();
-                            Launcher.launch();
-                        } catch (Exception ex) {
-                            System.out.println(ex.getMessage());
-                        }
-                    } catch (Exception ex) {
-                        isLaunching = false;
-                        PLAY_BUTTON.setTexture(TRANSPARENT_IMAGE);
-                        JOptionPane.showMessageDialog(Main.frameInstance,
-                                "Impossible de se connecter : Vérifie si tu as un compte Microsoft lié à un compte Minecraft.", "Erreur",
-                                JOptionPane.ERROR_MESSAGE);
-                        System.out.println(ex.getMessage());
-                    }
-                });
-                launchThread.start();
-            }
-        }
+        Object source = e.getSource();
+        if (source == OPTION_BUTTON) { Utils.RAM_SELECTOR.display(); return; }
+        if (source == QUIT_BUTTON) { System.exit(0); }
+        if (source == MINIMIZED_BUTTON) { Main.frameInstance.setState(Frame.ICONIFIED); return; }
+        if (source == FOLDER_BUTTON) { Utils.openGameFolder(); return; }
+        if (source == DISCORD_BUTTON) { Utils.openWebPage("https://discord.com/invite/erUg4NnADM"); return; }
+        if (source == SITE_BUTTON) { Utils.openWebPage("https://munchies.websr.fr"); return; }
+        if (source == PLAY_BUTTON) { handleLaunchProcess(); }
     }
 
     public STexturedProgressBar getProgressBar() {
         return PROGRESSBAR;
     }
 
-    public STexturedButton getPlayButton() {
-        return PLAY_BUTTON;
+    private void handleLaunchProcess() {
+        if (isLaunching) return;
+
+        isLaunching = true;
+        PLAY_BUTTON.setTexture(PLAY_IMAGE);
+        new Thread(() -> {
+            try {
+                Launcher.auth();
+                Launcher.update();
+                if (Utils.LAUNCHER_DIR.toFile().exists()) {
+                    Utils.RAM_SELECTOR.save();
+                }
+                Launcher.launch();
+            } catch (Exception ex) {
+                handleLaunchError(ex);
+            }
+        }).start();
+    }
+
+    private void handleLaunchError(Exception ex) {
+        isLaunching = false;
+        PLAY_BUTTON.setTexture(TRANSPARENT_IMAGE);
+        JOptionPane.showMessageDialog(
+                Main.frameInstance,
+                "Erreur de connexion : Vérifie ton compte Microsoft lié à Minecraft.",
+                "Erreur",
+                JOptionPane.ERROR_MESSAGE
+        );
+        System.out.println(ex.getMessage());
     }
 }
